@@ -1,0 +1,16 @@
+{
+  "name": "wain_back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "NODE_ENV=TESTING mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://alshehry@bitbucket.org/mutawa/wain_back-end.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/mutawa/wain_back-end#readme"
+}
