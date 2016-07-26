@@ -2,9 +2,11 @@
   "name": "wain_back-end",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "NODE_ENV=TESTING mocha"
+    "start": "node src/server.js",
+    "test": "NODE_ENV=TESTING mocha",
+    "debug": "node --debug-brk --expose_debug_as=v8debug server.js"
   },
   "repository": {
     "type": "git",
@@ -12,5 +14,16 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/mutawa/wain_back-end#readme"
+  "homepage": "https://bitbucket.org/mutawa/wain_back-end#readme",
+  "dependencies": {
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.2",
+    "cors": "^2.7.1",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.7",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7"
+  }
 }

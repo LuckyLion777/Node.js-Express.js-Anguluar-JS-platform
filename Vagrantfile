@@ -22,8 +22,8 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 3000, host: 3000
-  config.vm.network "forwarded_port", guest: 5858, host: 5858
+  config.vm.network "forwarded_port", guest: 3000, host: 2000
+  config.vm.network "forwarded_port", guest: 5858, host: 4858
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -75,6 +75,6 @@ Vagrant.configure(2) do |config|
     echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
     sudo apt-get update
     sudo apt-get install -y mongodb-org
-    cat "cd /vagrant" >> ~/.bashrc
+    echo "cd /vagrant" >> ~/.bashrc
   SHELL
 end
