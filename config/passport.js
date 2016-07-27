@@ -1,7 +1,9 @@
-const models          = require("../models/");
-const passport        = require("passport");
-const LocalStrategy   = require("passport-local");
-const bcrypt          = require("bcryptjs");
+const models = require("../models/");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const bcrypt = require("bcryptjs");
 
 passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
     models.User.findOne({ email: email }).then( (user) => {
@@ -20,6 +22,22 @@ passport.use(new LocalStrategy({ usernameField: "email", passwordField: "passwor
     }, (err) => {
         return done(err);
     });
+}));
+
+passport.use(new JwtStrategy({
+    secretOrKey: process.env.SERVER_KEY,
+    jwtFromRequest: ExtractJwt.fromAuthHeader()
+}, (credentials, done) => {
+    models.User.findById(credentials.userId)
+        .then( user => {
+            if(!user) {
+                return done(null, false);
+            } else {
+                return done(null, user);
+            }
+        }, err => {
+            return done(err);
+        })
 }));
 
 module.exports = passport;

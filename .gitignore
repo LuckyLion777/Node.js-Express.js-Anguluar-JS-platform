@@ -1,0 +1,6 @@
+config/key_rsa
+test.js
+.idea/
+.vagrant/
+doc/
+node_modules/

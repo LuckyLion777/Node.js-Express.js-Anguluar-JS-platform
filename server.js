@@ -24,8 +24,8 @@ server.use(passport.initialize());
 server.use(cors());
 
 server.use("/api", require("./controllers/userController"));
+server.use("/api", require("./controllers/businessUserController"));
 
-server.use(feedbackHandler.successHandler);
 server.use(feedbackHandler.failureHandler);
 
 
