@@ -1,28 +1,35 @@
-var express = require("express");
-var server = express();
-var passport = require("./config/passport");
-var path = require("path");
-var bodyParser = require("body-parser");
-var cors = require("cors");
-var mongoose = require("mongoose");
+const express = require("express");
+const server = express();
+const passport = require("./config/passport");
+const path = require("path");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const mongoose = require("mongoose");
 mongoose.connect(require("./config/database"));
-var logger = require("morgan");
+const logger = require("morgan");
+const feedbackHandler = require("./util/feedbackHandler");
 
 server.use(express.static(path.join(__dirname, "./public")));
 
+
+
 server.use(logger("dev", {
-    skip: function () {
+    skip: () => {
         return process.env.NODE_ENV == "test"
     }
 }));
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(passport.initialize());
+server.use(cors());
 
 server.use("/api", require("./controllers/userController"));
 
+server.use(feedbackHandler.successHandler);
+server.use(feedbackHandler.failureHandler);
 
-var port = 3000;
+
+const port = 3000;
 server.listen(port, () => {
     console.log("Listening on port", port);
 });

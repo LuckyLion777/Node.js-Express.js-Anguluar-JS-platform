@@ -1,8 +1,8 @@
 
-describe("userController.js", function () {
-    beforeEach(function (done) {
+describe("userController.js", () => {
+    beforeEach( (done) => {
     });
 
-    it("", function (done) {
+    it("", (done) => {
     });
 });

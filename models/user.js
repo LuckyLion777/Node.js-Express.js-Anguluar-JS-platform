@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-var userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
@@ -14,13 +14,13 @@ var userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.statics.createUser = function (userInfo, callback) {
+userSchema.statics.createUser = function (userInfo, callback)  {
     userInfo.password = bcrypt.hashSync(userInfo.password);
 
     this.create(userInfo)
-        .then(function (user) {
+        .then( (user) => {
             return callback(null, user);
-        }, function (err) {
+        }, (err) => {
             return callback(err, null);
         })
 };

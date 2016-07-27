@@ -1,17 +1,26 @@
-var models = require("../models");
-var router = require("express").Router();
-var passport = require("passport");
+const models = require("../models");
+const router = require("express").Router();
+const passport = require("passport");
+const jwtGenerator = require("../util/jwtGenerator");
 
-router.post("/user/login", passport.authenticate("local", { session: false }), function (req, res, next) {
-    res.send("logged in");
+router.post("/user/login", passport.authenticate("local", { session: false }), (req, res, next) => {
+    jwtGenerator.generateJwt(req.user.id, (err, jwt) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.result = jwt;
+            return next();
+        }
+    })
 });
 
-router.post("/user", function (req, res, next) {
-    models.User.createUser(req.body, function (err, user) {
+router.post("/user", (req, res, next) => {
+    models.User.createUser(req.body, (err, user) => {
         if(err) {
-            return res.send(err)
+            return next(err)
         } else {
-            return res.send(user);
+            res.result = user;
+            return next();
         }
     })
 });
