@@ -6,8 +6,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose.connect(require("./config/database"));
+mongoose.Promise = require("bluebird");
 const logger = require("morgan");
 const feedbackHandler = require("./util/feedbackHandler");
+var mustBe = require("mustbe");
+var mustBeConfig = require("./config/mustbe");
+mustBe.configure(mustBeConfig);
 
 server.use(express.static(path.join(__dirname, "./public")));
 
@@ -25,6 +29,8 @@ server.use(cors());
 
 server.use("/api", require("./controllers/userController"));
 server.use("/api", require("./controllers/businessUserController"));
+server.use("/api", require("./controllers/articleController").protectedRouter);
+server.use("/api", require("./controllers/articleController").router);
 
 server.use(feedbackHandler.failureHandler);
 

@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
-const ms = require("ms");
 
-const expiresIn = ms("10 days");
+const expiresIn = "10d";
 
 module.exports.generateJwt = (userId, callback) => {
     if(!process.env.SERVER_KEY) {

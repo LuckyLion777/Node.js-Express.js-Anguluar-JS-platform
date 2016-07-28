@@ -25,19 +25,20 @@ passport.use(new LocalStrategy({ usernameField: "email", passwordField: "passwor
 }));
 
 passport.use(new JwtStrategy({
-    secretOrKey: process.env.SERVER_KEY,
-    jwtFromRequest: ExtractJwt.fromAuthHeader()
-}, (credentials, done) => {
-    models.User.findById(credentials.userId)
-        .then( user => {
-            if(!user) {
-                return done(null, false);
-            } else {
-                return done(null, user);
-            }
-        }, err => {
-            return done(err);
-        })
-}));
+        secretOrKey: process.env.SERVER_KEY,
+        jwtFromRequest: ExtractJwt.fromAuthHeader()
+    },
+    (credentials, done) => {
+        models.User.findById(credentials.userId)
+            .then( user => {
+                if(!user) {
+                    return done(null, false);
+                } else {
+                    return done(null, user);
+                }
+            }, err => {
+                return done(err);
+            })
+    }));
 
 module.exports = passport;

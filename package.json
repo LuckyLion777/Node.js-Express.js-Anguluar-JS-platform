@@ -17,6 +17,7 @@
   "homepage": "https://bitbucket.org/mutawa/wain_back-end#readme",
   "dependencies": {
     "bcryptjs": "^2.3.0",
+    "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "cors": "^2.7.1",
     "express": "^4.14.0",
@@ -24,11 +25,12 @@
     "jsonwebtoken": "^7.1.6",
     "mongoose": "^4.5.7",
     "morgan": "^1.7.0",
-    "ms": "^0.7.1",
+    "mustbe": "^0.4.0",
     "npm": "^3.10.5",
     "passport": "^0.3.2",
     "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "validator": "^5.5.0"
   }
 }

@@ -16,16 +16,37 @@ router.post("/users/login", passport.authenticate("local", { session: false }), 
 
 router.post("/users", (req, res, next) => {
     models.User.createUser(req.body, (err, user) => {
-        if(err) {
-            return next(err)
-        } else {
-            return res.send(user);
-        }
+        user
+            .then(user => {
+                return res.send(user);
+            }, err => {
+                return next(err)
+            });
     })
 });
 
-router.post("/users/getUser", passport.authenticate("jwt", { session: false}), (req, res, next) => {
+router.put("/users", passport.authenticate("jwt", { session: false}), (req, res, next) => {
+    req.user.updateUser(req.body, (err, user) => {
+        user
+            .then(result => {
+                return res.send(result);
+            }, err => {
+                return next(err);
+            });
+    })
+});
+
+router.get("/users", passport.authenticate("jwt", { session: false}), (req, res, next) => {
     res.send(req.user);
+});
+
+router.delete("/users", passport.authenticate("jwt", { session: false}), (req, res, next) => {
+    req.user.removeUser
+    .then(user => {
+        return res.send(user);
+    }, err => {
+        return next(err);
+    })
 });
 
 
