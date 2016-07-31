@@ -9,5 +9,9 @@ const languageSchema = new mongoose.Schema({
     }
 });
 
+languageSchema.methods.createLanguage = function (langaugeInfo) {
+    return this.create(langaugeInfo);
+};
+
 module.exports.languageSchema = languageSchema;
 module.exports.Language = mongoose.model("Language", languageSchema);

@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const imageSchema = require("./image").imageSchema;
-const likeSchema = require("./like").likeSchema;
 const commentSchema = require("./comment").commentSchema;
-const models = require("../models");
+const User = require("./user").User;
+const Language = require("./language").Language;
+
 
 
 const STATUS = {
@@ -19,12 +20,12 @@ const articleSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: (userId, done) => {
-                models.User.count({ id: userId })
+                User.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {
                         //TODO: log
-                        return done(false)
+                        return done(false, err)
                     })
             },
             message: "User Does Not Exist"
@@ -36,16 +37,33 @@ const articleSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: (languageId, done) => {
-                models.Language.count({ id: languageId})
+                Language.count({ _id: languageId})
                     .then(count => {
                         return done(count);
                     }, err => {
                         //TODO: log
-                        return done(false);
+                        return done(false, err);
                     })
             }
         }
     },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        unique: true,
+        validate: {
+            validator: (userId, done) => {
+                User.count({ _id: userId })
+                    .then(count => {
+                        return done(count)
+                    }, err => {
+                        //TODO: log
+                        return done(false, err)
+                    })
+            },
+            message: "User Does Not Exist"
+        }
+    }],
     title: {
         type: String,
         required: true
@@ -63,7 +81,6 @@ const articleSchema = new mongoose.Schema({
     cover: imageSchema,
     published: Boolean,
     photos: [ imageSchema ],
-    likes: [ likeSchema ],
     comments: [ commentSchema ]
 }, { timestamps: true });
 
@@ -76,12 +93,37 @@ articleSchema.methods.updateArticle = function (articleInfo) {
 };
 
 articleSchema.methods.removeArticle = function () {
-    return this.delete();
+    return this.remove();
+};
+
+articleSchema.statics.getArticles = function () {
+    return this.find()
 };
 
 
-articleSchema.methods.addTag = function (tag) {
-    this.tags.addToSet(tag);
+articleSchema.methods.addComment = function (commentInfo) {
+    this.comments.addToSet(commentInfo);
+    return this.save();
+};
+
+articleSchema.methods.removeComment = function (commentId) {
+    this.comments.pull(commentId);
+    return this.save();
+};
+
+articleSchema.methods.addPhoto = function (photoInfo) {
+    this.photos.addToSet(photoInfo);
+    return this.save();
+};
+
+articleSchema.methods.removePhoto = function (photoId) {
+    this.photos.pull(photoId);
+    return this.save();
+};
+
+
+articleSchema.methods.addTag = function (tagInfo) {
+    this.tags.addToSet(tagInfo.tag);
     return this.save();
 };
 
@@ -91,14 +133,41 @@ articleSchema.methods.removeTag = function (tag) {
 };
 
 
-articleSchema.methods.addPhoto = function (photo) {
-    this.photos.addToSet(photo);
+articleSchema.methods.like = function (userId) {
+    this.likes.addToSet(userId);
     return this.save();
 };
 
-articleSchema.methods.addPhoto = function (photo) {
-    this.photos.pull(photo);
+articleSchema.methods.unlike = function (userId) {
+    this.likes.pull(userId);
     return this.save();
+};
+
+
+articleSchema.methods.publish = function () {
+    this.published = true;
+    return this.save();
+};
+
+
+articleSchema.methods.approve = function () {
+    this.status = STATUS.APPROVED;
+    return this.save();
+};
+
+articleSchema.methods.hold = function () {
+    this.status = STATUS.ONHOLD;
+    return this.save();
+};
+
+articleSchema.methods.suspend = function () {
+    this.status = STATUS.PENDING;
+    return this.save();
+};
+
+articleSchema.methods.provoke = function () {
+    this.status = STATUS.PROVOKED;
+    return this.save()
 };
 
 

@@ -2,11 +2,11 @@
   "name": "wain_back-end",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node server.js",
     "test": "NODE_ENV=TESTING mocha",
-    "debug": "node --debug-brk --expose_debug_as=v8debug server.js"
+    "debug": "node --debug --expose_debug_as=v8debug server.js"
   },
   "repository": {
     "type": "git",

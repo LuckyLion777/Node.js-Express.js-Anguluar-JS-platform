@@ -2,6 +2,11 @@ const models = require("../models/");
 const mustbe = require("mustbe");
 const passport = require("passport");
 
+const admin = function (config) {
+    this.type = "admin";
+    this.config = config;
+};
+
 
 module.exports = function (config) {
 
@@ -49,7 +54,59 @@ module.exports = function (config) {
             return done(null, true);
         });
 
-        activities.can("Get Article", function (identity, params, done) {
+        activities.can("Add Photo", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Photo", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Add Tag", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Tag", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Like", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Unlike", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Admin", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Add Comment", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Comment", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Publish", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Approve", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Hold", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Suspend", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Provoke", function (identity, params, done) {
             return done(null, true);
         });
 

@@ -31,6 +31,8 @@ server.use("/api", require("./controllers/userController"));
 server.use("/api", require("./controllers/businessUserController"));
 server.use("/api", require("./controllers/articleController").protectedRouter);
 server.use("/api", require("./controllers/articleController").router);
+server.use("/api", require("./controllers/adminController"));
+
 
 server.use(feedbackHandler.failureHandler);
 
