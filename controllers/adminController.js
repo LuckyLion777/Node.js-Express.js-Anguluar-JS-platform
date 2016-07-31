@@ -1,11 +1,10 @@
 const models = require("../models");
 const mustbe = require("mustbe").routeHelpers();
 const passport = require("passport");
-const router = require("express").Router();
-router.use(passport.authenticate("jwt", { session: false}));
+const protectedRouter = require("express").Router();
 
 
-router.post("/language", mustbe.authorized("Admin"), (req, res, next) => {
+protectedRouter.post("/language", mustbe.authorized("Admin"), (req, res, next) => {
     models.Language.create(req.body)
         .then(language => {
             return res.send(language);
@@ -15,4 +14,6 @@ router.post("/language", mustbe.authorized("Admin"), (req, res, next) => {
 });
 
 
-module.exports = router;
+module.exports = {
+    protectedRouter: protectedRouter
+};

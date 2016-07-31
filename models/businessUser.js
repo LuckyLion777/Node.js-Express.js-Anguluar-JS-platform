@@ -5,7 +5,8 @@ const businessUserSchema = User.discriminator("BusinessUser", new mongoose.Schem
     name: {
         type: String,
         require: true
-    }
+    },
 }));
+
 
 module.exports.BusinessUser = mongoose.model("BusinessUser", businessUserSchema);

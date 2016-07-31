@@ -6,9 +6,9 @@ module.exports.successHandler = (req, res, next) => {
 module.exports.failureHandler = (err, req, res, next) => {
     if (res.headersSent) {
         return next(err);
-    } else if(err.message) {
-        return res.status(400).send(err.message);
-    } else {
+    } else if(err.__proto__.constructor.name == "MongooseError") {
         return res.status(400).send(err);
+    } else {
+        return res.status(400).send(err.message);
     }
 };

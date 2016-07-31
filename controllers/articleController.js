@@ -1,9 +1,8 @@
 const models = require("../models");
 const router = require("express").Router();
+const protectedRouter = require("express").Router();
 const mustbe = require("mustbe").routeHelpers();
 const passport = require("passport");
-const protectedRouter = require("express").Router();
-protectedRouter.use(passport.authenticate("jwt", { session: false}));
 
 
 protectedRouter.post("/article", mustbe.authorized("Create Article"), (req, res, next) => {
@@ -193,5 +192,7 @@ protectedRouter.param("articleId", findArticle);
 router.param("articleId", findArticle);
 
 
-module.exports.protectedRouter = protectedRouter;
-module.exports.router = router;
+module.exports = {
+    protectedRouter: protectedRouter,
+    router: router
+};

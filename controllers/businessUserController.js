@@ -1,7 +1,6 @@
 const models = require("../models");
 const router = require("express").Router();
 
-
 router.post("/businessUsers", function (req, res, next) {
     models.BusinessUser.createUser(req.body, (err, user) => {
         user
@@ -14,4 +13,8 @@ router.post("/businessUsers", function (req, res, next) {
 });
 
 
-module.exports = router;
+
+
+module.exports = {
+    router: router
+};

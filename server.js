@@ -28,10 +28,15 @@ server.use(passport.initialize());
 server.use(cors());
 
 server.use("/api", require("./controllers/userController"));
-server.use("/api", require("./controllers/businessUserController"));
-server.use("/api", require("./controllers/articleController").protectedRouter);
+server.use("/api", require("./controllers/businessUserController").router);
+server.use("/api", require("./controllers/businessController").router);
 server.use("/api", require("./controllers/articleController").router);
-server.use("/api", require("./controllers/adminController"));
+
+server.use("/api", passport.authenticate("jwt", { session: false}));
+
+server.use("/api", require("./controllers/adminController").protectedRouter);
+server.use("/api", require("./controllers/articleController").protectedRouter);
+server.use("/api", require("./controllers/businessController").protectedRouter);
 
 
 server.use(feedbackHandler.failureHandler);

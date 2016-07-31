@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const imageSchema = require("./image").imageSchema;
 const commentSchema = require("./comment").commentSchema;
 const User = require("./user").User;
-const Language = require("./language").Language;
-
 
 
 const STATUS = {
@@ -110,6 +108,7 @@ articleSchema.methods.removeComment = function (commentId) {
     this.comments.pull(commentId);
     return this.save();
 };
+
 
 articleSchema.methods.addPhoto = function (photoInfo) {
     this.photos.addToSet(photoInfo);

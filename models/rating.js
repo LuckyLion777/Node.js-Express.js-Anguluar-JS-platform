@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./user").User;
 
-
-const commentSchema = new mongoose.Schema({
+const ratingSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -20,11 +19,12 @@ const commentSchema = new mongoose.Schema({
             message: "User Does Not Exist"
         }
     },
-    comment: {
-        type: String,
-        required: true
+    rating: {
+        type: Number,
+        default: 0,
+        min: [0, "The Rating Must Be Positive"],
+        max: [5, "The Rating Must Not Exceeds 5"]
     }
-    //TODO: add language
 });
 
-module.exports.commentSchema = commentSchema;
+module.exports.ratingSchema = ratingSchema;
