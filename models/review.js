@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const commentSchema = require("./comment").commentSchema;
 const User = require("./user").User;
-const Language = require("./language").Language
+const Language = require("./language").Language;
 
 const reviewSchema = new mongoose.Schema({
     user: {
@@ -43,6 +43,14 @@ const reviewSchema = new mongoose.Schema({
     },
     comments: [ commentSchema ]
 });
+
+reviewSchema.methods.addComment = function (commentInfo) {
+    this.comments.addToSet(commentInfo);
+};
+
+reviewSchema.methods.removeComment = function (commentId) {
+    this.comments.pull(commentId);
+};
 
 module.exports.reviewSchema = reviewSchema;
 module.exports.Review = mongoose.model("Review", reviewSchema);

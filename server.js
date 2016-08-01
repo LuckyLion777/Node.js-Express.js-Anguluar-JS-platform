@@ -34,9 +34,10 @@ server.use("/api", require("./controllers/articleController").router);
 
 server.use("/api", passport.authenticate("jwt", { session: false}));
 
-server.use("/api", require("./controllers/adminController").protectedRouter);
 server.use("/api", require("./controllers/articleController").protectedRouter);
 server.use("/api", require("./controllers/businessController").protectedRouter);
+server.use("/api", require("./controllers/categoryController").protectedRouter);
+server.use("/api", require("./controllers/languageController").protectedRouter);
 
 
 server.use(feedbackHandler.failureHandler);

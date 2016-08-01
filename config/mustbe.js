@@ -126,5 +126,86 @@ module.exports = function (config) {
         });
 
 
+        activities.can("Add Business Social Media", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Business Social Media", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Photo", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Delete Business Photo", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Tag", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Delete Business Tag", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Branch", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Delete Business Branch", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Category", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Business Category", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Option", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Delete Business Option", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Review", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Business Review", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Comment Business Review", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Comment On Business Review", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+
+
+        activities.can("Add Business Rating", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Business Rating", function (identity, params, done) {
+            return done(null, true);
+        });
+
     });
 };

@@ -6,6 +6,7 @@ const branchSchema = require("./branch").branchSchema;
 const optionSchema = require("./option").optionSchema;
 const reviewSchema = require("./review").reviewSchema;
 const ratingSchema = require("./rating").ratingSchema;
+const Category = require("./category").Category;
 const validator = require("validator");
 
 
@@ -56,8 +57,21 @@ const businessSchema = new mongoose.Schema({
         unique: true
     }],
     branches: [ branchSchema ],
-    //TODO: change this
-    categories: [ String ],
+    categories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        validate: {
+            validator: (categoryId, callback) => {
+                Category.count({ _id: categoryId})
+                    .then(count => {
+                        return callback(count);
+                    }, err => {
+                        //TODO: log
+                        return callback(0, err);
+                    })
+            }
+        }
+    }],
     options: [ optionSchema ],
     reviews: [ reviewSchema ],
     ratings: [ ratingSchema ]
@@ -125,35 +139,56 @@ businessSchema.methods.removeBranch = function (branchId) {
 };
 
 
-branchSchema.methods.addOption = function (optionInfo) {
+businessSchema.methods.addCategory = function (categoryId) {
+    this.categories.addToSet(categoryId);
+    return this.save();
+};
+
+businessSchema.methods.removeCategory = function (categoryId) {
+    this.categories.pull(categoryId);
+    return this.save();
+};
+
+
+businessSchema.methods.addOption = function (optionInfo) {
     this.options.addToSet(optionInfo);
     return this.save();
 };
 
-branchSchema.methods.removeOption = function (optionId) {
+businessSchema.methods.removeOption = function (optionId) {
     this.options.pull(optionId);
     return this.save();
 };
 
 
-branchSchema.methods.addReview = function (reviewInfo) {
+businessSchema.methods.addReview = function (reviewInfo) {
     this.reviews.addToSet(reviewInfo);
     return this.save();
 };
 
-branchSchema.methods.removeReview = function (reviewId) {
+businessSchema.methods.removeReview = function (reviewId) {
     this.reviews.pull(reviewId);
     return this.save();
 };
 
+businessSchema.methods.addCommentToReview = function (reviewId, commentInfo) {
+    this.reviews.id(reviewId).addComment(commentInfo);
+    return this.save();
+};
 
-branchSchema.methods.addRating = function (ratingInfo) {
+businessSchema.methods.removeCommentFromReview = function (reviewId, commentId) {
+    this.reviews.id(reviewId).removeComment(commentId);
+    return this.save();
+};
+
+
+businessSchema.methods.addRating = function (ratingInfo) {
     this.ratings.addToSet(ratingInfo);
     return this.save();
 };
 
-branchSchema.methods.removeRating = function (ratingId) {
-    this.options.pull(ratingId);
+businessSchema.methods.removeRating = function (ratingId) {
+    this.ratings.pull(ratingId);
     return this.save();
 };
 

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("./user").User;
+const Language = require("./language").Language;
 
 
 const commentSchema = new mongoose.Schema({
@@ -23,8 +24,23 @@ const commentSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: true
+    },
+    language: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Language",
+        required: true,
+        validate: {
+            validator: (languageId, done) => {
+                Language.count({ _id: languageId})
+                    .then(count => {
+                        return done(count);
+                    }, err => {
+                        //TODO: log
+                        return done(false, err);
+                    })
+            }
+        }
     }
-    //TODO: add language
 });
 
 module.exports.commentSchema = commentSchema;

@@ -19,8 +19,8 @@ const branchSchema = new mongoose.Schema({
         type: String,
         required: true,
         validate: {
-            validator: website => {
-                return validator.isURL(website);
+            validator: location => {
+                return validator.isURL(location);
             },
             message: "Must Be a Valid URL"
         }
