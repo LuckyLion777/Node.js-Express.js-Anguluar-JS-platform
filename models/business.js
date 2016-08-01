@@ -52,9 +52,6 @@ const businessSchema = new mongoose.Schema({
     photos: [ imageSchema ],
     tags: [{
         type:String,
-        //TODO: check the effect of these two
-        required: true,
-        unique: true
     }],
     branches: [ branchSchema ],
     categories: [{
