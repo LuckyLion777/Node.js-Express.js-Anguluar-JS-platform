@@ -1,7 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
+const Language = require("./language").Language;
+const imageSchema = require("./image");
 
+const STATUS = {
+    ACTIVE: "ACTIVE",
+    PENDING: "PENDING",
+    BLOCKED: "BLOCKED"
+};
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -19,6 +26,49 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    language: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Language",
+        required: true,
+        validate: {
+            validator: (languageId, done) => {
+                Language.count({ _id: languageId})
+                    .then(count => {
+                        return done(count);
+                    }, err => {
+                        //TODO: log
+                        return done(false, err);
+                    })
+            }
+        }
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    birthDate: {
+        type: Date,
+        required: true
+    },
+    //TODO: change this
+    location: String,
+    userName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    photo: imageSchema,
+    biography: String,
+    phone: Number,
+    status: {
+        type: String,
+        enum: [ STATUS.ACTIVE, STATUS.PENDING, STATUS.BLOCKED ],
+        default: STATUS.PENDING
+    }
 });
 
 userSchema.statics.createUser = function (userInfo, callback)  {

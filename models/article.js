@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const imageSchema = require("./image").imageSchema;
 const commentSchema = require("./comment").commentSchema;
 const User = require("./user").User;
+const Language = require("./language").Language;
 
 
 const STATUS = {
