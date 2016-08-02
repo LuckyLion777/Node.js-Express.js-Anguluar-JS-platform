@@ -111,8 +111,8 @@ articleSchema.methods.removeComment = function (commentId) {
 };
 
 
-articleSchema.methods.addPhoto = function (photoInfo) {
-    this.photos.addToSet(photoInfo);
+articleSchema.methods.addPhoto = function (...photosInfo) {
+    this.photos.addToSet(...photosInfo);
     return this.save();
 };
 

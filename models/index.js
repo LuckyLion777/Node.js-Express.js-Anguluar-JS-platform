@@ -4,5 +4,6 @@ module.exports = {
     Article: require("./article").Article,
     Language: require("./language").Language,
     Business: require("./business").Business,
-    Category: require("./category").Category
+    Category: require("./category").Category,
+    Location: require("./location").Location
 };

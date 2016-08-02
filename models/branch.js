@@ -5,6 +5,7 @@ const branchSchema = new mongoose.Schema({
     phoneNumber: {
         type: Number,
         required: true
+        //TODO: validate
     },
     email: {
         type: String,

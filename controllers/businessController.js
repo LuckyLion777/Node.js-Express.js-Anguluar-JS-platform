@@ -3,10 +3,12 @@ const protectedRouter = require("express").Router();
 const router = require("express").Router();
 const mustbe = require("mustbe").routeHelpers();
 const passport = require("passport");
+const upload = require("multer")({ dest: "uploads/business" });
 
 
-protectedRouter.post("/business", mustbe.authorized("Create Business"), (req, res, next) => {
+protectedRouter.post("/business", mustbe.authorized("Create Business"), upload.single("logo"), (req, res, next) => {
     req.body.owner = req.user;
+    if(req.file) req.body.logo = { path: req.file.path };
 
     models.Business.createBusiness(req.body)
         .then(business => {
@@ -16,7 +18,9 @@ protectedRouter.post("/business", mustbe.authorized("Create Business"), (req, re
         })
 });
 
-protectedRouter.put("/business/:businessId", mustbe.authorized("Update Business"), (req, res, next) => {
+protectedRouter.put("/business/:businessId", upload.single("logo"), mustbe.authorized("Update Business"), (req, res, next) => {
+    if(req.file) req.body.logo = { path: req.file.path };
+
     req.params.business.updateBusiness(req.body)
         .then(result => {
             return res.send(result);
@@ -66,14 +70,18 @@ protectedRouter.delete("/business/:businessId/socialMedia/:socialMediaId", mustb
         })
 });
 
-
-protectedRouter.post("/business/:businessId/photo", mustbe.authorized("Add Business Photo"), (req, res, next) => {
-    req.params.business.addPhoto(req.body)
-        .then(business => {
-            return res.send(business);
-        }, err => {
-            return next(err);
-        })
+//TODO: set a limit of the number of uploads
+protectedRouter.post("/business/:businessId/photo", upload.array("photo"), mustbe.authorized("Add Business Photo"), (req, res, next) => {
+    try {
+        req.params.business.addPhoto(...req.files.map(photo => { return { path: photo.path }}))
+            .then(business => {
+                return res.send(business);
+            }, err => {
+                return next(err);
+            })
+    } catch(err) {
+        return next(new Error("You Should Use Form-Data Encoding Only With This End Point"))
+    }
 });
 
 protectedRouter.delete("/business/:businessId/photo/:photoId", mustbe.authorized("Delete Business Photo"), (req, res, next) => {

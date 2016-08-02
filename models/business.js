@@ -11,7 +11,7 @@ const validator = require("validator");
 
 
 const businessSchema = new mongoose.Schema({
-    businessUser: {
+    owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "BusinessUser",
         required: true,
@@ -66,7 +66,8 @@ const businessSchema = new mongoose.Schema({
                         //TODO: log
                         return callback(0, err);
                     })
-            }
+            },
+            message: "Category Does Not Exist"
         }
     }],
     options: [ optionSchema ],
@@ -103,8 +104,8 @@ businessSchema.methods.removeSocialMedia = function (socialMediaId) {
 };
 
 
-businessSchema.methods.addPhoto = function (photoInfo) {
-    this.photos.addToSet(photoInfo);
+businessSchema.methods.addPhoto = function (...photoInfo) {
+    this.photos.addToSet(...photoInfo);
     return this.save();
 };
 

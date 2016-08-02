@@ -3,10 +3,12 @@ const router = require("express").Router();
 const protectedRouter = require("express").Router();
 const mustbe = require("mustbe").routeHelpers();
 const passport = require("passport");
+const upload = require("multer")({ dest: "uploads/article" });
 
 
-protectedRouter.post("/article", mustbe.authorized("Create Article"), (req, res, next) => {
+protectedRouter.post("/article", upload.single("cover"), mustbe.authorized("Create Article"), (req, res, next) => {
     req.body.user = req.user;
+    if(req.file) req.body.cover = req.file.path;
 
     models.Article.createArticle(req.body)
         .then(article => {
@@ -16,7 +18,9 @@ protectedRouter.post("/article", mustbe.authorized("Create Article"), (req, res,
         })
 });
 
-protectedRouter.put("/article/:articleId", mustbe.authorized("Update Article"), (req, res, next) => {
+protectedRouter.put("/article/:articleId", upload.single("cover"), mustbe.authorized("Update Article"), (req, res, next) => {
+    if(req.file) req.body.cover = req.file.path;
+
     req.params.article.updateArticle(req.body)
         .then(result => {
             return res.send(result);
@@ -68,14 +72,18 @@ protectedRouter.delete("/article/:articleId/comment/:commentId", mustbe.authoriz
         })
 });
 
-
-protectedRouter.post("/article/:articleId/photo", mustbe.authorized("Add Photo"), (req, res, next) => {
-    req.params.article.addPhoto(req.body)
-        .then(article => {
-            return res.send(article);
-        }, err => {
-            return next(err);
-        })
+//TODO: set a limit for the number of uploads
+protectedRouter.post("/article/:articleId/photo", upload.array("photo"), mustbe.authorized("Add Photo"), (req, res, next) => {
+    try{
+        req.params.article.addPhoto(...req.files.map(photo => { return { path: photo.path } }))
+            .then(article => {
+                return res.send(article);
+            }, err => {
+                return next(err);
+            })
+    } catch(err) {
+        return next(new Error("You Should Use Form-Data Encoding Only With This End Point"))
+    }
 });
 
 protectedRouter.delete("/article/:articleId/photo/:photoId", mustbe.authorized("Remove Photo"), (req, res, next) => {

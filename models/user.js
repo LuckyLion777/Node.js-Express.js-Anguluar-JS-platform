@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const Language = require("./language").Language;
-const imageSchema = require("./image");
+const imageSchema = require("./image").imageSchema;
 
 const STATUS = {
     ACTIVE: "ACTIVE",
@@ -56,12 +56,12 @@ const userSchema = new mongoose.Schema({
     },
     //TODO: change this
     location: String,
-    userName: {
+    username: {
         type: String,
         required: true,
         unique: true
     },
-    photo: imageSchema,
+    avatar: imageSchema,
     biography: String,
     phone: Number,
     status: {
@@ -95,6 +95,7 @@ userSchema.methods.removeUser = function () {
     return this.remove()
 };
 
+
 const hashPassword = (userInfo, callback) => {
     if(!userInfo.password) {
         return callback();
@@ -109,6 +110,7 @@ const hashPassword = (userInfo, callback) => {
         });
     }
 };
+
 
 module.exports.userSchema = userSchema;
 module.exports.User = mongoose.model("User", userSchema);

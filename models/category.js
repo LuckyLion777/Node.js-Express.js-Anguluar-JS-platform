@@ -9,13 +9,23 @@ const categorySchema = new mongoose.Schema({
     },
 });
 
+categorySchema.statics.createCategory = function(categoryInfo) {
+    return this.create(categoryInfo);
+};
+
+
+module.exports.categorySchema = categorySchema;
+const Category = mongoose.model("Category", categorySchema);
+module.exports.Category = Category;
+
+
 categorySchema.add({
     parent: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
         validate: {
             validator: (categoryId, callback) => {
-                this.count({ _id: categoryId})
+                Category.count({ _id: categoryId})
                     .then(count => {
                         return callback(count);
                     }, err => {
@@ -26,11 +36,3 @@ categorySchema.add({
         }
     }
 });
-
-categorySchema.statics.createCategory = function(categoryInfo) {
-    return this.create(categoryInfo);
-};
-
-
-module.exports.categorySchema = categorySchema;
-module.exports.Category = mongoose.model("Category", categorySchema);

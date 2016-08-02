@@ -76,12 +76,6 @@ module.exports = function (config) {
             return done(null, true);
         });
 
-
-        activities.can("Admin", function (identity, params, done) {
-            return done(null, true);
-        });
-
-
         activities.can("Add Comment", function (identity, params, done) {
             return done(null, true);
         });
@@ -197,13 +191,37 @@ module.exports = function (config) {
         });
 
 
-
-
         activities.can("Add Business Rating", function (identity, params, done) {
             return done(null, true);
         });
 
         activities.can("Remove Business Rating", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Create Location", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Update Location", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Delete Location", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Create Language", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Update Language", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Language", function (identity, params, done) {
             return done(null, true);
         });
 

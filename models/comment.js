@@ -31,7 +31,7 @@ const commentSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: (languageId, done) => {
-                Language.count({ _id: languageId})
+                Language.count({ _id: languageId })
                     .then(count => {
                         return done(count);
                     }, err => {
