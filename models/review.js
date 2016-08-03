@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const commentSchema = require("./comment").commentSchema;
+const commentSchema = require("./comment");
 const User = require("./user").User;
 const Language = require("./language").Language;
 
@@ -52,5 +52,5 @@ reviewSchema.methods.removeComment = function (commentId) {
     this.comments.pull(commentId);
 };
 
+
 module.exports.reviewSchema = reviewSchema;
-module.exports.Review = mongoose.model("Review", reviewSchema);

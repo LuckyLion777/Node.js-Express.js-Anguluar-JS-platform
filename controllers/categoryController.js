@@ -4,13 +4,9 @@ const protectedRouter = require("express").Router();
 
 
 
-protectedRouter.post("/category", mustbe.authorized("Admin"), (req, res, next) => {
-    models.Category.createCategory(req.body)
-        .then(category => {
-            return res.send(category);
-        }, err => {
-            return next(err);
-        })
+protectedRouter.post("/category", mustbe.authorized("Create Category"), (req, res, next) => {
+    res.locals.promise = models.Category.createCategory(req.body);
+    return next();
 });
 
 

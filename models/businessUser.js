@@ -10,4 +10,7 @@ const businessUserSchema = User.discriminator("BusinessUser", new mongoose.Schem
 }));
 
 
-module.exports.BusinessUser = mongoose.model("BusinessUser", businessUserSchema);
+module.exports = {
+    businessUserSchema: businessUserSchema,
+    BusinessUser: mongoose.model("BusinessUser", businessUserSchema)
+};

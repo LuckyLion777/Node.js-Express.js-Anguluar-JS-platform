@@ -5,43 +5,25 @@ const router = require("express").Router();
 const protectedRouter = require("express").Router();
 
 protectedRouter.post("/location", mustbe.authorized("Create Location"), (req, res, next) => {
-    models.Location.createLocation(req.body)
-        .then(location => {
-            return res.send(location);
-        }, err => {
-            return next(err);
-        })
+    res.locals.promise = models.Location.createLocation(req.body);
+    return next();
 });
 
 protectedRouter.put("/location/:locationId", mustbe.authorized("Update Location"), (req, res, next) => {
-    req.params.location.updateLocation(req.body)
-        .then(result => {
-            return res.send(result);
-        }, err => {
-            return next(err);
-        })
+    res.locals.promise = req.params.location.updateLocation(req.body);
+    return next();
 });
 
 protectedRouter.delete("/location/:locationId", mustbe.authorized("Delete Location"), (req, res, next) => {
-    req.params.location.removeLocation()
-        .then(location => {
-            return res.send(location);
-        }, err => {
-            return next(err);
-        })
+    res.locals.promise = req.params.location.removeLocation();
+    return next();
 });
 
-router.get("/location/:locationId", (req, res, next) => {
-    return res.send(req.params.location);
-});
+router.get("/location/:locationId", (req, res, next) => res.send(req.params.location) );
 
 router.get("/locations", (req, res, next) => {
-    models.Location.getLocations()
-        .then(locations => {
-            return res.send(locations);
-        }, err => {
-            return next(err);
-        })
+    res.locals.promise = models.Location.getLocations();
+    return next();
 });
 
 
@@ -54,9 +36,7 @@ const findLocation = (req, res, next, locationId) => {
                 req.params.location = location;
                 return next();
             }
-        }, err => {
-            return next(err);
-        })
+        }, err => next(err) )
 };
 
 protectedRouter.param("locationId", findLocation);

@@ -18,4 +18,4 @@ const socialMediaSchema = new mongoose.Schema({
     }
 });
 
-module.exports.socialMediaSchema = socialMediaSchema;
+module.exports = socialMediaSchema;

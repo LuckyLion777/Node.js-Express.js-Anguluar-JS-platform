@@ -3,17 +3,12 @@ const server = express();
 const passport = require("./config/passport");
 const path = require("path");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose.connect(require("./config/database"));
 mongoose.Promise = require("bluebird");
 const logger = require("morgan");
-const feedbackHandler = require("./util/feedbackHandler");
-var mustBe = require("mustbe");
 var mustBeConfig = require("./config/mustbe");
-
-
-mustBe.configure(mustBeConfig);
+var mustBe = require("mustbe").configure(mustBeConfig);
 
 
 server.use(express.static(path.join(__dirname, "./public")));
@@ -27,25 +22,8 @@ server.use(logger("dev", {
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(passport.initialize());
-server.use(cors());
-
-
-server.use("/api", require("./controllers/userController"));
-server.use("/api", require("./controllers/articleController").router);
-server.use("/api", require("./controllers/businessController").router);
-server.use("/api", require("./controllers/locationController").router);
-server.use("/api", require("./controllers/languageController").router);
-server.use("/api", require("./controllers/businessUserController").router);
-
-server.use("/api", passport.authenticate("jwt", { session: false}));
-
-server.use("/api", require("./controllers/articleController").protectedRouter);
-server.use("/api", require("./controllers/businessController").protectedRouter);
-server.use("/api", require("./controllers/locationController").protectedRouter);
-server.use("/api", require("./controllers/languageController").protectedRouter);
-server.use("/api", require("./controllers/categoryController").protectedRouter);
-
-server.use(feedbackHandler.failureHandler);
+server.use(require("cors")());
+server.use("/api", require("./controllers"));
 
 
 const port = 3000;

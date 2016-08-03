@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const imageSchema = require("./image").imageSchema;
-const commentSchema = require("./comment").commentSchema;
+const imageSchema = require("./image");
+const commentSchema = require("./comment");
 const User = require("./user").User;
 const Language = require("./language").Language;
 
@@ -111,7 +111,7 @@ articleSchema.methods.removeComment = function (commentId) {
 };
 
 
-articleSchema.methods.addPhoto = function (...photosInfo) {
+articleSchema.methods.addPhoto = function (photosInfo) {
     this.photos.addToSet(...photosInfo);
     return this.save();
 };
@@ -171,5 +171,7 @@ articleSchema.methods.provoke = function () {
 };
 
 
-module.exports.articleSchema = articleSchema;
-module.exports.Article = mongoose.model("Article", articleSchema);
+module.exports = {
+    articleSchema: articleSchema,
+    Article: mongoose.model("Article", articleSchema)
+};

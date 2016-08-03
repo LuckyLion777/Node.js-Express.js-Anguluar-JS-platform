@@ -32,4 +32,4 @@ const branchSchema = new mongoose.Schema({
     EnglishOpeningHours: String
 });
 
-module.exports.branchSchema = branchSchema;
+module.exports = branchSchema;

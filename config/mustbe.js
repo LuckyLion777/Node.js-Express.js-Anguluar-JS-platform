@@ -5,32 +5,20 @@ const passport = require("passport");
 
 module.exports = function (config) {
 
-    config.userIdentity(function (id) {
-        id.isAuthenticated(function (user, done) {
-            done(null, user);
-        })
+    config.userIdentity(id => {
+        id.isAuthenticated((user, done) => done(null, user))
     });
 
     config.routeHelpers(function (rh) {
 
-        rh.getUser(function (req, callback) {
-            callback(null, req.user);
-        });
+        rh.getUser((req, callback) => callback(null, req.user));
 
-        rh.notAuthorized(function (req, res, next) {
-            return next(new Error("You Are Not Authorized"));
-        });
+        rh.notAuthorized((req, res, next) => next(new Error("You Are Not Authorized")));
 
-        rh.notAuthenticated(function (req, res, next) {
-            return next(new Error("You Are Not Logged In"));
-        });
+        rh.notAuthenticated((req, res, next) => next(new Error("You Are Not Logged In")));
 
         rh.parameterMaps(function (params) {
-            params.map("Access User", function (req) {
-                return {
-                    user: req.user,
-                }
-            });
+            params.map("Access User", (req) => ({ user: req.user }));
         });
 
     });
@@ -222,6 +210,37 @@ module.exports = function (config) {
         });
 
         activities.can("Remove Language", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Create Event", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Update Event", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Event", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Create Category", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Create Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Update Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Collection", function (identity, params, done) {
             return done(null, true);
         });
 

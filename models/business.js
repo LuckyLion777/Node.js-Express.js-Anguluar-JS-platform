@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const imageSchema = require("./image").imageSchema;
+const imageSchema = require("./image");
 const BusinessUser = require("./businessUser").BusinessUser;
-const socialMediaSchema = require("./socialMedia").socialMediaSchema;
-const branchSchema = require("./branch").branchSchema;
-const optionSchema = require("./option").optionSchema;
-const reviewSchema = require("./review").reviewSchema;
-const ratingSchema = require("./rating").ratingSchema;
+const socialMediaSchema = require("./socialMedia");
+const branchSchema = require("./branch");
+const optionSchema = require("./option");
+const reviewSchema = require("./review");
+const ratingSchema = require("./rating");
 const Category = require("./category").Category;
 const validator = require("validator");
 
@@ -85,7 +85,7 @@ businessSchema.statics.getBusinesses = function () {
 };
 
 businessSchema.methods.updateBusiness = function (businessInfo) {
-    return this.update(businessInfo);
+    return this.update(businessInfo, { runValidators: true });
 };
 
 businessSchema.methods.removeBusiness = function () {
@@ -104,7 +104,7 @@ businessSchema.methods.removeSocialMedia = function (socialMediaId) {
 };
 
 
-businessSchema.methods.addPhoto = function (...photoInfo) {
+businessSchema.methods.addPhoto = function (photoInfo) {
     this.photos.addToSet(...photoInfo);
     return this.save();
 };
@@ -191,6 +191,7 @@ businessSchema.methods.removeRating = function (ratingId) {
 };
 
 
-module.exports.businessSchema = businessSchema;
-
-module.exports.Business = mongoose.model("Business", businessSchema);
+module.exports = {
+    businessSchema: businessSchema,
+    Business: mongoose.model("Business", businessSchema)
+};

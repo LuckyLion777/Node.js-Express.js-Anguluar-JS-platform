@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const Language = require("./language").Language;
-const imageSchema = require("./image").imageSchema;
+const imageSchema = require("./image");
+const Location = require("./location").Location;
 
 const STATUS = {
     ACTIVE: "ACTIVE",
@@ -54,8 +55,17 @@ const userSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    //TODO: change this
-    location: String,
+    location: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Location",
+        validate: {
+            validator: (locationId, done) => {
+                Location.count({ _id: locationId })
+                //TODO: Log
+                    .then(count => done(count), err => done(false, err) )
+            }
+        }
+    },
     username: {
         type: String,
         required: true,
@@ -86,7 +96,7 @@ userSchema.methods.updateUser = function (userInfo, callback) {
         if(err) {
             return callback(err, null);
         } else {
-            return callback(null, this.update(userInfo))
+            return callback(null, this.update(userInfo, { runValidators: true }))
         }
     })
 };
@@ -112,5 +122,7 @@ const hashPassword = (userInfo, callback) => {
 };
 
 
-module.exports.userSchema = userSchema;
-module.exports.User = mongoose.model("User", userSchema);
+module.exports = {
+    userSchema: userSchema,
+    User: mongoose.model("User", userSchema)
+};

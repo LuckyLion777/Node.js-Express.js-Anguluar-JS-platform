@@ -14,10 +14,7 @@ categorySchema.statics.createCategory = function(categoryInfo) {
 };
 
 
-module.exports.categorySchema = categorySchema;
 const Category = mongoose.model("Category", categorySchema);
-module.exports.Category = Category;
-
 
 categorySchema.add({
     parent: {
@@ -36,3 +33,11 @@ categorySchema.add({
         }
     }
 });
+
+
+module.exports = {
+    categorySchema: categorySchema,
+    Category: Category
+};
+
+

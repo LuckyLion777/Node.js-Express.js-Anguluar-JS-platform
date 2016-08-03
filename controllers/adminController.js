@@ -1,11 +1,9 @@
 const models = require("../models");
 const mustbe = require("mustbe").routeHelpers();
 const passport = require("passport");
-const protectedRouter = require("express").Router();
+const router = require("express").Router();
 
 
 
 
-module.exports = {
-    protectedRouter: protectedRouter
-};
+module.exports = router;

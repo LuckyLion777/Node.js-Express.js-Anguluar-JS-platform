@@ -12,4 +12,4 @@ const optionSchema = new mongoose.Schema({
     }
 });
 
-module.exports.optionSchema = optionSchema;
+module.exports = optionSchema;

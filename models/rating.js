@@ -27,4 +27,4 @@ const ratingSchema = new mongoose.Schema({
     }
 });
 
-module.exports.ratingSchema = ratingSchema;
+module.exports = ratingSchema;

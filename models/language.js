@@ -26,5 +26,7 @@ languageSchema.statics.getLanguages = function () {
 };
 
 
-module.exports.languageSchema = languageSchema;
-module.exports.Language = mongoose.model("Language", languageSchema);
+module.exports = {
+    languageSchema: languageSchema,
+    Language: mongoose.model("Language", languageSchema)
+};
