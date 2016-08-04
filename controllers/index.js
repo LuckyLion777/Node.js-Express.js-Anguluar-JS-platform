@@ -11,6 +11,7 @@ router.use(require("./languageController").router);
 router.use(require("./businessUserController").router);
 router.use(require("./eventController").router);
 router.use(require("./collectionController").router);
+router.use(require("./adminController"));
 
 
 protectedRouter.use(require("./articleController").protectedRouter);

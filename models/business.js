@@ -7,6 +7,7 @@ const optionSchema = require("./option");
 const reviewSchema = require("./review");
 const ratingSchema = require("./rating");
 const Category = require("./category").Category;
+const Collection = require("./collection").Collection;
 const validator = require("validator");
 
 
@@ -25,7 +26,7 @@ const businessSchema = new mongoose.Schema({
                         return done(false, err)
                     })
             },
-            message: "User Does Not Exist"
+            message: "AbstractUser Does Not Exist"
         }
     },
     arabicName: {
@@ -72,7 +73,18 @@ const businessSchema = new mongoose.Schema({
     }],
     options: [ optionSchema ],
     reviews: [ reviewSchema ],
-    ratings: [ ratingSchema ]
+    ratings: [ ratingSchema ],
+    collections: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Collection",
+        validate: {
+            validator: (collectionId, done) => {
+                Collection.count({ _id: collectionId })
+                    .then( count => done(count) , err => done(false, err) )
+            },
+            message: "Collection Does Not Exist"
+        }
+    }]
 });
 
 
@@ -187,6 +199,17 @@ businessSchema.methods.addRating = function (ratingInfo) {
 
 businessSchema.methods.removeRating = function (ratingId) {
     this.ratings.pull(ratingId);
+    return this.save();
+};
+
+
+businessSchema.methods.addCollection = function (collectionInfo) {
+    this.collections.addToSet(collectionInfo);
+    return this.save();
+};
+
+businessSchema.methods.removeCollection = function (collectionId) {
+    this.collections.pull(collectionId);
     return this.save();
 };
 

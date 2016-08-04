@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const AbstractUser = require("./abstractUser").AbstractUser;
 const validator = require("validator");
 const Language = require("./language").Language;
-const imageSchema = require("./image");
 const Location = require("./location").Location;
 
 const STATUS = {
@@ -11,22 +10,7 @@ const STATUS = {
     BLOCKED: "BLOCKED"
 };
 
-const userSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        validate: {
-            validator: (email) => {
-                return validator.isEmail(email);
-            }
-        }
-    },
-    password: {
-        type: String,
-        required: true,
-        unique: true
-    },
+const userSchema = AbstractUser.discriminator("AbstractUser", new mongoose.Schema({
     language: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Language",
@@ -40,7 +24,8 @@ const userSchema = new mongoose.Schema({
                         //TODO: log
                         return done(false, err);
                     })
-            }
+            },
+            message: "Language Does Not Exist"
         }
     },
     firstName: {
@@ -66,12 +51,6 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    username: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    avatar: imageSchema,
     biography: String,
     phone: Number,
     status: {
@@ -79,50 +58,10 @@ const userSchema = new mongoose.Schema({
         enum: [ STATUS.ACTIVE, STATUS.PENDING, STATUS.BLOCKED ],
         default: STATUS.PENDING
     }
-});
-
-userSchema.statics.createUser = function (userInfo, callback)  {
-    hashPassword(userInfo, (err) => {
-        if(err) {
-            return callback(err, null);
-        } else {
-            return callback(null, this.create(userInfo))
-        }
-    })
-};
-
-userSchema.methods.updateUser = function (userInfo, callback) {
-    hashPassword(userInfo, (err) => {
-        if(err) {
-            return callback(err, null);
-        } else {
-            return callback(null, this.update(userInfo, { runValidators: true }))
-        }
-    })
-};
-
-userSchema.methods.removeUser = function () {
-    return this.remove()
-};
-
-
-const hashPassword = (userInfo, callback) => {
-    if(!userInfo.password) {
-        return callback();
-    } else {
-        bcrypt.hash(userInfo.password, 10, (err, hashedPassword) => {
-            if(err) {
-                return callback(err);
-            } else {
-                userInfo.password = hashedPassword;
-                return callback()
-            }
-        });
-    }
-};
+}));
 
 
 module.exports = {
     userSchema: userSchema,
-    User: mongoose.model("User", userSchema)
+    User: mongoose.model("AbstractUser", userSchema)
 };

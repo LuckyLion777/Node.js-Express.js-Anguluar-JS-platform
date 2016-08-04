@@ -18,7 +18,7 @@ module.exports = function (config) {
         rh.notAuthenticated((req, res, next) => next(new Error("You Are Not Logged In")));
 
         rh.parameterMaps(function (params) {
-            params.map("Access User", (req) => ({ user: req.user }));
+            params.map("Access AbstractUser", (req) => ({ user: req.user }));
         });
 
     });
@@ -243,6 +243,97 @@ module.exports = function (config) {
         activities.can("Remove Collection", function (identity, params, done) {
             return done(null, true);
         });
+
+
+        activities.can("Add Event Option", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Delete Event Option", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Event Social Media", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Event Social Media", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Event Attendant", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Event Attendant", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Event Rating", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Event Rating", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Tag", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Tag", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Comment", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Comment", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Photo", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Photo", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Category", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Category", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Business Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Business Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Article Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Article Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
 
     });
 };

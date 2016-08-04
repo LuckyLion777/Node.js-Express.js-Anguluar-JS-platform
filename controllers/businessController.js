@@ -149,6 +149,17 @@ protectedRouter.delete("/business/:businessId/rating/:ratingId", mustbe.authoriz
 });
 
 
+protectedRouter.post("/business/:businessId/collection", mustbe.authorized("Add Business Collection"), (req, res, next) => {
+    res.locals.promise = req.params.business.addCollection(req.body.collection);
+    return next();
+});
+
+protectedRouter.delete("/business/:businessId/collection/:collectionId", mustbe.authorized("Remove Business Collection"), (req, res, next) => {
+    res.locals.promise = req.params.business.removeCollection(req.params.collectionId);
+    return next();
+});
+
+
 const findBusiness = (req, res, next, bossinessId) => {
     models.Business.findById(bossinessId)
         .then(business => {

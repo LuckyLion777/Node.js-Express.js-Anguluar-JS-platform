@@ -48,14 +48,14 @@ protectedRouter.post("/event/:eventId/socialMedia", mustbe.authorized("Add Event
     return next();
 });
 
-protectedRouter.delete("/event/:eventId/socialMediasId/:socialMediasId", mustbe.authorized("Remove Event Social Media"), (req, res, next) => {
+protectedRouter.delete("/event/:eventId/socialMedia/:socialMediaId", mustbe.authorized("Remove Event Social Media"), (req, res, next) => {
     res.locals.promise = req.params.event.removeSocialMedia(req.params.socialMediaId);
     return next();
 });
 
 
 protectedRouter.post("/event/:eventId/attendant", mustbe.authorized("Add Event Attendant"), (req, res, next) => {
-    res.locals.promise = req.params.event.addAttendant(req.body);
+    res.locals.promise = req.params.event.addAttendant(req.body.attendant);
     return next();
 });
 
@@ -66,6 +66,8 @@ protectedRouter.delete("/event/:eventId/attendant/:attendantId", mustbe.authoriz
 
 
 protectedRouter.post("/event/:eventId/rating", mustbe.authorized("Add Event Rating"), (req, res, next) => {
+    req.body.user = req.user;
+
     res.locals.promise = req.params.event.addRating(req.body);
     return next();
 });
@@ -88,6 +90,8 @@ protectedRouter.delete("/event/:eventId/tag/:tag", mustbe.authorized("Remove Tag
 
 
 protectedRouter.post("/event/:eventId/comment", mustbe.authorized("Add Comment"), (req, res, next) => {
+    req.body.user = req.user;
+
     res.locals.promise = req.params.event.addComment(req.body);
     return next();
 });
@@ -101,10 +105,10 @@ protectedRouter.delete("/event/:eventId/comment/:commentId", mustbe.authorized("
 //TODO: check if you need simple check for req.files instead of try-catch
 protectedRouter.post("/event/:eventId/photo", mustbe.authorized("Add Photo"), upload.array("photo"), (req, res, next) => {
     try {
-        res.locals.promise = req.params.event.addPhoto(req.files.map(photo => ({ path: photo.path })));
+        res.locals.promise = req.params.event.addPhoto(req.files.map( photo => ({ path: photo.path }) ));
         return next();
     } catch(err) {
-        return next(new Error("You Should Use Form-Data Encoding Only With This End Point"))
+        return next(new Error("You Should Use Form-Data Encoding Only With This End Point"));
     }
 });
 

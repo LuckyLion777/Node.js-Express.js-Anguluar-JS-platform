@@ -111,6 +111,17 @@ protectedRouter.post("/article/:articleId/provoke", mustbe.authorized("Provoke")
 });
 
 
+protectedRouter.post("/article/:articleId/collection", mustbe.authorized("Add Article Collection"), (req, res, next) => {
+    res.locals.promise = req.params.article.addCollection(req.body.collection);
+    return next();
+});
+
+protectedRouter.delete("/article/:articleId/collection/:collectionId", mustbe.authorized("Remove Article Collection"), (req, res, next) => {
+    res.locals.promise = req.params.article.removeCollection(req.params.collectionId);
+    return next();
+});
+
+
 const findArticle = (req, res, next, articleId) => {
     models.Article.findById(articleId)
         .then(article => {

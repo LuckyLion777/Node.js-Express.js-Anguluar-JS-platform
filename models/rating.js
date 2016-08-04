@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
-const User = require("./user").User;
+const AbstractUser = require("./abstractUser").AbstractUser;
 
 const ratingSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "AbstractUser",
         required: true,
         validate: {
             validator: (userId, done) => {
-                User.count({ _id: userId })
+                AbstractUser.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {
@@ -16,14 +16,14 @@ const ratingSchema = new mongoose.Schema({
                         return done(false, err)
                     })
             },
-            message: "User Does Not Exist"
+            message: "AbstractUser Does Not Exist"
         }
     },
     rating: {
         type: Number,
-        default: 0,
         min: [0, "The Rating Must Be Positive"],
-        max: [5, "The Rating Must Not Exceeds 5"]
+        max: [5, "The Rating Must Not Exceeds 5"],
+        required: true
     }
 });
 

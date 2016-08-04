@@ -6,7 +6,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const bcrypt = require("bcryptjs");
 
 passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
-    models.User.findOne({ email: email }).then( (user) => {
+    models.AbstractUser.findOne({ email: email }).then( (user) => {
         if (!user) {
             return done(null, false);
         } else {
@@ -29,7 +29,7 @@ passport.use(new JwtStrategy({
         jwtFromRequest: ExtractJwt.fromAuthHeader()
     },
     (credentials, done) => {
-        models.User.findById(credentials.userId)
+        models.AbstractUser.findById(credentials.userId)
             .then( user => {
                 if(!user) {
                     return done(null, false);

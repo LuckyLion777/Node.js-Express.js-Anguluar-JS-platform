@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const imageSchema = require("./image");
 const commentSchema = require("./comment");
-const User = require("./user").User;
+const AbstractUser = require("./abstractUser").AbstractUser;
 const Language = require("./language").Language;
+const Collection = require("./collection").Collection;
 
 
 const STATUS = {
@@ -15,11 +16,11 @@ const STATUS = {
 const articleSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "AbstractUser",
         required: true,
         validate: {
             validator: (userId, done) => {
-                User.count({ _id: userId })
+                AbstractUser.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {
@@ -27,7 +28,7 @@ const articleSchema = new mongoose.Schema({
                         return done(false, err)
                     })
             },
-            message: "User Does Not Exist"
+            message: "AbstractUser Does Not Exist"
         }
     },
     language: {
@@ -43,7 +44,8 @@ const articleSchema = new mongoose.Schema({
                         //TODO: log
                         return done(false, err);
                     })
-            }
+            },
+            message: "Language Does Not Exist"
         }
     },
     likes: [{
@@ -52,7 +54,7 @@ const articleSchema = new mongoose.Schema({
         unique: true,
         validate: {
             validator: (userId, done) => {
-                User.count({ _id: userId })
+                AbstractUser.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {
@@ -60,7 +62,7 @@ const articleSchema = new mongoose.Schema({
                         return done(false, err)
                     })
             },
-            message: "User Does Not Exist"
+            message: "AbstractUser Does Not Exist"
         }
     }],
     title: {
@@ -80,8 +82,20 @@ const articleSchema = new mongoose.Schema({
     cover: imageSchema,
     published: Boolean,
     photos: [ imageSchema ],
-    comments: [ commentSchema ]
+    comments: [ commentSchema ],
+    collections: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Collection",
+        validate: {
+            validator: (collectionId, done) => {
+                Collection.count({ _id: collectionId })
+                    .then( count => done(count) , err => done(false, err) )
+            },
+            message: "Collection Does Not Exist"
+        }
+    }]
 }, { timestamps: true });
+
 
 articleSchema.statics.createArticle = function (articleInfo) {
     return this.create(articleInfo)
@@ -168,6 +182,17 @@ articleSchema.methods.suspend = function () {
 articleSchema.methods.provoke = function () {
     this.status = STATUS.PROVOKED;
     return this.save()
+};
+
+
+articleSchema.methods.addCollection = function (collectionInfo) {
+    this.collections.addToSet(collectionInfo);
+    return this.save();
+};
+
+articleSchema.methods.removeCollection = function (collectionId) {
+    this.collections.pull(collectionId);
+    return this.save();
 };
 
 

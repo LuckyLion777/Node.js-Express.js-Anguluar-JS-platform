@@ -2,6 +2,7 @@ const models = require("../models");
 const router = require("express").Router();
 const upload = require("multer")({ dest: "uploads/businessUsers" });
 
+
 router.post("/businessUsers", upload.single("avatar"), (req, res, next) => {
     if(req.file) req.body.avatar = { path: req.file.path };
 
@@ -14,8 +15,6 @@ router.post("/businessUsers", upload.single("avatar"), (req, res, next) => {
         }
     })
 });
-
-
 
 
 module.exports = {
