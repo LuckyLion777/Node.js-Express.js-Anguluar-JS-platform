@@ -23,7 +23,8 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(passport.initialize());
 server.use(require("cors")());
-server.use("/api", require("./controllers"));
+server.use("/api", require("./routes"));
+server.use("/api", require("./util/resultHandler"));
 
 
 const port = 3000;

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const AbstractUser = require("./abstractUser").AbstractUser;
+const Language = require("./language").Language;
 
 const STATUS = {
     ACTIVE: "ACTIVE",

@@ -1,12 +1,12 @@
 const models = require("../models");
 const router = require("express").Router();
-const upload = require("multer")({ dest: "uploads/businessUsers" });
+const upload = require("multer")({ dest: "uploads/admin" });
 
 
-router.post("/businessUsers", upload.single("avatar"), (req, res, next) => {
+router.post("/admin", upload.single("avatar"), (req, res, next) => {
     if(req.file) req.body.avatar = { path: req.file.path };
 
-    models.BusinessUser.createUser(req.body, (err, user) => {
+    models.Admin.createUser(req.body, (err, user) => {
         if(err) {
             return next(err);
         } else {
@@ -17,6 +17,4 @@ router.post("/businessUsers", upload.single("avatar"), (req, res, next) => {
 });
 
 
-module.exports = {
-    router: router
-};
+module.exports = router;

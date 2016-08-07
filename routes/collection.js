@@ -1,21 +1,24 @@
 const models = require("../models");
 const mustbe = require("mustbe").routeHelpers();
-const protectedRouter = require("express").Router();
 const router = require("express").Router();
+const passport = require("passport");
 
 
 
-protectedRouter.post("/collection", mustbe.authorized("Create Collection"), (req, res, next) => {
+router.post("/collection", passport.authenticate("jwt", { session: false }),
+    mustbe.authorized("Create Collection"), (req, res, next) => {
     res.locals.promise = models.Collection.createCollection(req.body);
     return next();
 });
 
-protectedRouter.put("/collection/:collectionId", mustbe.authorized("Update Collection"), (req, res, next) => {
+router.put("/collection/:collectionId", passport.authenticate("jwt", { session: false }),
+    mustbe.authorized("Update Collection"), (req, res, next) => {
     res.locals.promise = req.params.collection.updateCollection(req.body);
     return next();
 });
 
-protectedRouter.delete("/collection/:collectionId", mustbe.authorized("Remove Collection"), (req, res, next) => {
+router.delete("/collection/:collectionId", passport.authenticate("jwt", { session: false }),
+    mustbe.authorized("Remove Collection"), (req, res, next) => {
     res.locals.promise = req.params.collection.removeCollection();
     return next();
 });
@@ -28,7 +31,7 @@ router.get("/collections", (req, res, next) => {
 });
 
 
-const findCollection = (req, res, next, collectionId) => {
+router.param("collectionId", (req, res, next, collectionId) => {
     models.Collection.findById(collectionId)
         .then( collection => {
             if(!collection) {
@@ -38,14 +41,7 @@ const findCollection = (req, res, next, collectionId) => {
                 return next();
             }
         }, err => next(err) )
-};
-
-protectedRouter.param("collectionId", findCollection);
-
-router.param("collectionId", findCollection);
+});
 
 
-module.exports = {
-    protectedRouter: protectedRouter,
-    router: router
-};
+module.exports = router;

@@ -9,12 +9,7 @@ const failureHandler = (err, req, res, next) => {
     }
 };
 
-const resultHandler = (req, res, next) => {
-    if(!res.locals.promise) {
-        return next();
-    } else {
-        res.locals.promise.then(result => res.send(result), err => failureHandler(err, req, res, next));
-    }
-};
+const resultHandler = (req, res, next) => res.locals.promise
+    .then(result => res.send(result), err => failureHandler(err, req, res, next));
 
 module.exports = [ resultHandler, failureHandler ];

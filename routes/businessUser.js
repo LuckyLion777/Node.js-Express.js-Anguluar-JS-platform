@@ -1,14 +1,12 @@
 const models = require("../models");
-const mustbe = require("mustbe").routeHelpers();
-const passport = require("passport");
 const router = require("express").Router();
-const upload = require("multer")({ dest: "uploads/admin" });
+const upload = require("multer")({ dest: "uploads/businessUsers" });
 
 
-router.post("/admin", upload.single("avatar"), (req, res, next) => {
+router.post("/businessUsers", upload.single("avatar"), (req, res, next) => {
     if(req.file) req.body.avatar = { path: req.file.path };
 
-    models.Admin.createUser(req.body, (err, user) => {
+    models.BusinessUser.createUser(req.body, (err, user) => {
         if(err) {
             return next(err);
         } else {

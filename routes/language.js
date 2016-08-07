@@ -1,21 +1,23 @@
 const models = require("../models");
 const mustbe = require("mustbe").routeHelpers();
 const passport = require("passport");
-const protectedRouter = require("express").Router();
 const router = require("express").Router();
 
 
-protectedRouter.post("/language", mustbe.authorized("Create Language"), (req, res, next) => {
+router.post("/language", passport.authenticate("jwt", { session: false }),
+    mustbe.authorized("Create Language"), (req, res, next) => {
     res.locals.promise = models.Language.create(req.body);
     return next();
 });
 
-protectedRouter.put("/language/:languageId", mustbe.authorized("Update Language"), (req, res, next) => {
+router.put("/language/:languageId", passport.authenticate("jwt", { session: false }),
+    mustbe.authorized("Update Language"), (req, res, next) => {
     req.params.language.updateLanguage(req.body);
     return next();
 });
 
-protectedRouter.delete("/language/:languageId", mustbe.authorized("Remove Language"), (req, res, next) => {
+router.delete("/language/:languageId", passport.authenticate("jwt", { session: false }),
+    mustbe.authorized("Remove Language"), (req, res, next) => {
     req.params.language.removeLanguage();
     return next();
 });
@@ -28,7 +30,7 @@ router.get("/languages", (req, res, next) => {
 });
 
 
-const findLanguage = (req, res, next, languageId) => {
+router.param("languageId", (req, res, next, languageId) => {
     models.Language.findById(languageId)
         .then(language => {
             if(!language) {
@@ -38,13 +40,7 @@ const findLanguage = (req, res, next, languageId) => {
                 return next()
             }
         }, err => next(err))
-};
+});
 
-protectedRouter.param("languageId", findLanguage);
 
-router.param("languageId", findLanguage);
-
-module.exports = {
-    protectedRouter: protectedRouter,
-    router: router
-};
+module.exports = router;

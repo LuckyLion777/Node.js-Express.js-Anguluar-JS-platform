@@ -1,6 +1,5 @@
 const models = require("../models");
 const router = require("express").Router();
-const passport = require("passport");
 const jwtGenerator = require("../util/jwtGenerator");
 const upload = require("multer")({ dest: "uploads/user" });
 

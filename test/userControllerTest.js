@@ -1,5 +1,5 @@
 
-describe("userController.js", () => {
+describe("user.js", () => {
     beforeEach( (done) => {
     });
 

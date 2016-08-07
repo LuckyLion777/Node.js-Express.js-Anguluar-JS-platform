@@ -1,6 +1,5 @@
 const models = require("../models/");
 const mustbe = require("mustbe");
-const passport = require("passport");
 
 
 module.exports = function (config) {
@@ -25,9 +24,13 @@ module.exports = function (config) {
 
     config.activities(function (activities) {
 
-        activities.can("Create Article", function (identity, params, done) {
-            return done(null, true);
+
+        activities.allow( (identity, params, done) => {
+            done(null, identity.user.__t == "Admin");
         });
+
+
+        activities.can("Create Article", (identity, params, done) => true );
 
         activities.can("Update Article", function (identity, params, done) {
             return done(null, true);
@@ -38,61 +41,73 @@ module.exports = function (config) {
         });
 
 
-        activities.can("Add Photo", function (identity, params, done) {
+        activities.can("Add Article Photo", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Remove Photo", function (identity, params, done) {
-            return done(null, true);
-        });
-
-
-        activities.can("Add Tag", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Remove Tag", function (identity, params, done) {
+        activities.can("Remove Article Photo", function (identity, params, done) {
             return done(null, true);
         });
 
 
-        activities.can("Like", function (identity, params, done) {
+        activities.can("Add Article Tag", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Unlike", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Add Comment", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Remove Comment", function (identity, params, done) {
+        activities.can("Remove Article Tag", function (identity, params, done) {
             return done(null, true);
         });
 
 
-        activities.can("Publish", function (identity, params, done) {
+        activities.can("Like Article", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Unlike Article", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Add Article Comment", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Article Comment", function (identity, params, done) {
             return done(null, true);
         });
 
 
-        activities.can("Approve", function (identity, params, done) {
+        activities.can("Publish Article", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Hold", function (identity, params, done) {
+
+        activities.can("Approve Article", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Suspend", function (identity, params, done) {
+        activities.can("Hold Article", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Provoke", function (identity, params, done) {
+        activities.can("Suspend Article", function (identity, params, done) {
             return done(null, true);
         });
+
+        activities.can("Provoke Article", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        activities.can("Add Article Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Article Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        /************************************END OF ARTICLE SECTION****************************************************/
 
 
         activities.can("Create Business", function (identity, params, done) {
@@ -188,6 +203,18 @@ module.exports = function (config) {
         });
 
 
+        activities.can("Add Business Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Business Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        /************************************END OF BUSINESS SECTION***************************************************/
+
+
         activities.can("Create Location", function (identity, params, done) {
             return done(null, true);
         });
@@ -199,6 +226,9 @@ module.exports = function (config) {
         activities.can("Delete Location", function (identity, params, done) {
             return done(null, true);
         });
+
+
+        /************************************END OF Location SECTION***************************************************/
 
 
         activities.can("Create Language", function (identity, params, done) {
@@ -214,22 +244,15 @@ module.exports = function (config) {
         });
 
 
-        activities.can("Create Event", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Update Event", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Remove Event", function (identity, params, done) {
-            return done(null, true);
-        });
+        /************************************END OF Language SECTION***************************************************/
 
 
         activities.can("Create Category", function (identity, params, done) {
             return done(null, true);
         });
+
+
+        /************************************END OF Category SECTION***************************************************/
 
 
         activities.can("Create Collection", function (identity, params, done) {
@@ -241,6 +264,22 @@ module.exports = function (config) {
         });
 
         activities.can("Remove Collection", function (identity, params, done) {
+            return done(null, true);
+        });
+
+
+        /************************************END OF Collection SECTION***************************************************/
+
+
+        activities.can("Create Event", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Update Event", function (identity, params, done) {
+            return done(null, true);
+        });
+
+        activities.can("Remove Event", function (identity, params, done) {
             return done(null, true);
         });
 
@@ -281,16 +320,16 @@ module.exports = function (config) {
         });
 
 
-        activities.can("Add Tag", function (identity, params, done) {
+        activities.can("Add Event Tag", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Remove Tag", function (identity, params, done) {
+        activities.can("Remove Event Tag", function (identity, params, done) {
             return done(null, true);
         });
 
 
-        activities.can("Add Comment", function (identity, params, done) {
+        activities.can("Add Event Comment", function (identity, params, done) {
             return done(null, true);
         });
 
@@ -299,38 +338,20 @@ module.exports = function (config) {
         });
 
 
-        activities.can("Add Photo", function (identity, params, done) {
+        activities.can("Add Event Photo", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Remove Photo", function (identity, params, done) {
-            return done(null, true);
-        });
-
-
-        activities.can("Add Category", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Remove Category", function (identity, params, done) {
+        activities.can("Remove Event Photo", function (identity, params, done) {
             return done(null, true);
         });
 
 
-        activities.can("Add Business Collection", function (identity, params, done) {
+        activities.can("Add Event Category", function (identity, params, done) {
             return done(null, true);
         });
 
-        activities.can("Remove Business Collection", function (identity, params, done) {
-            return done(null, true);
-        });
-
-
-        activities.can("Add Article Collection", function (identity, params, done) {
-            return done(null, true);
-        });
-
-        activities.can("Remove Article Collection", function (identity, params, done) {
+        activities.can("Remove Event Category", function (identity, params, done) {
             return done(null, true);
         });
 
