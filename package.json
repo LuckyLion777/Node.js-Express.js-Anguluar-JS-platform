@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": ". config/key-rsa; node server.js",
     "test": "NODE_ENV=TESTING mocha",
     "debug": "node --debug --expose_debug_as=v8debug server.js"
   },
