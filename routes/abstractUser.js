@@ -3,6 +3,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const jwtGenerator = require("../util/jwtGenerator");
 const upload = require("multer")({ dest: "uploads/user" });
+const mustbe = require("mustbe").routeHelpers();
 
 
 router.post("/user/login", passport.authenticate("local", { session: false }), (req, res, next) => {
@@ -26,8 +27,8 @@ router.get("/user", passport.authenticate("jwt", { session: false }), (req, res,
     return res.send(req.user);
 });
 
-router.get("/users", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-    res.locals.promise = models.User.getUsers();
+router.get("/users", passport.authenticate("jwt", { session: false }), mustbe.authorized("List Users"), (req, res, next) => {
+    res.locals.promise = models.AbstractUser.getUsers();
     return next();
 });
 

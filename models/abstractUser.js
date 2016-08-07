@@ -17,7 +17,8 @@ const abstractUserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        select: false
     },
     username: {
         type: String,
@@ -75,5 +76,5 @@ const hashPassword = (userInfo, callback) => {
 
 module.exports = {
     abstractUserSchema: abstractUserSchema,
-    AbstractUser: mongoose.model("abstractUserSchema", abstractUserSchema)
+    AbstractUser: mongoose.model("abstractUser", abstractUserSchema)
 };

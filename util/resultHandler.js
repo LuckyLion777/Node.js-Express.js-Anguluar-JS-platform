@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 
 const failureHandler = (err, req, res, next) => {
     if (res.headersSent) {
@@ -9,7 +11,23 @@ const failureHandler = (err, req, res, next) => {
     }
 };
 
-const resultHandler = (req, res, next) => res.locals.promise
-    .then(result => res.send(result), err => failureHandler(err, req, res, next));
+const resultHandler = (req, res, next) => {
+    if(!res.locals.promise) {
+        return next();
+    } else {
+        res.locals.promise
+            .then(result =>  {
+                try {
+                    return res.send(_.omit(result.toObject(), "password"));
+                } catch(err) {
+                    return res.send(result);
+                }
+            }, err => failureHandler(err, req, res, next))
+            .catch(err => {
+                //TODO: log
+                throw(err)
+            });
+    }
+};
 
 module.exports = [ resultHandler, failureHandler ];

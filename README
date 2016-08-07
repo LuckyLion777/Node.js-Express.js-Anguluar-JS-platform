@@ -1,12 +1,13 @@
 WHAT TO DO:
-    - Edit jwt to use key pair
-    - Fix get all.
-    - Implement collection.
+    - Edit jwt to use key pair.
     - Implement user bookmark.
     - When removing non-existing item from embedded array no err is thrown.
-    - User can rate more than once, fix it.
-    - When GET localhost:3000/api/articles/57a06de21e5cc13c0fad7196 you get unauthorized, fix it
-    - Secure admin CRUD
+    - When GET localhost:3000/api/articles/57a06de21e5cc13c0fad7196 you get unauthorized, fix it.
+    - Secure admin CRUD.
+    - Make sure user can not change its status manually.
+    - Implement the security checks.
+    - Remove id from singleton entities.
+
     
 Vagrant Setup:
     sudo apt-get update
