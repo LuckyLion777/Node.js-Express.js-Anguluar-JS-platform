@@ -10,6 +10,9 @@
 ```
 
 ### Install Dependencies
+* [Vagrant](https://www.vagrantup.com/downloads.html)
+* [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+* After the instalation of Vagrant and Virtualbox
 ```bash
    vagrant up
    npm install webpack -g
@@ -25,6 +28,9 @@
 ```
 ### Run
 ```bash
+   vagrant ssh
+   cd /vagrant
+   npm i --no-bin-links
    npm start
 ```
 
