@@ -37,8 +37,20 @@ router.delete("/user", passport.authenticate("jwt", { session: false }), (req, r
     return next();
 });
 
+
 router.patch("/user/:userId/activate", passport.authenticate("jwt", { session: false }), auth.can("Activate User"), (req, res, next) => {
     res.locals.promise = req.params.user.activate();
+    return next();
+});
+
+
+router.post("/user/bookmark/:articleId", passport.authenticate("jwt", { session: false }), auth.can("Add Bookmark"), (req, res, next) => {
+    res.locals.promise = req.user.addBookmark(req.params.articleId);
+    return next();
+});
+
+router.delete("/user/bookmark/:articleId", passport.authenticate("jwt", { session: false }), auth.can("Remove Bookmark"), (req, res, next) => {
+    res.locals.promise = req.user.removeBookmark(req.params.articleId);
     return next();
 });
 

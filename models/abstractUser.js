@@ -34,6 +34,10 @@ const abstractUserSchema = new mongoose.Schema({
         unique: true
     },
     avatar: imageSchema,
+    bookmarks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Article"
+    }]
 });
 
 
@@ -69,6 +73,16 @@ abstractUserSchema.methods.activate = function () {
     return this.update({ status: STATUS.ACTIVE })
 };
 
+abstractUserSchema.methods.addBookmark = function (articleId) {
+    this.bookmarks.addToSet(articleId);
+    return this.save();
+};
+
+abstractUserSchema.methods.removeBookmark = function (articleId) {
+    this.bookmarks.pull(articleId);
+    return this.save();
+};
+
 
 const hashPassword = (userInfo, callback) => {
     if(!userInfo.password) {
@@ -90,3 +104,11 @@ module.exports = {
     abstractUserSchema: abstractUserSchema,
     AbstractUser: mongoose.model("AbstractUser", abstractUserSchema)
 };
+
+
+const Article = require("./article").Article;
+//TODO: log
+abstractUserSchema.path("bookmarks").validate((articleId, done) => {
+    Article.count({ _id: articleId })
+        .then(count => done(count), err => done(false) );
+});

@@ -491,6 +491,18 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "Add Bookmark":
+                new Permission(req, next)
+                    .isActive()
+                    .done();
+                break;
+
+            case "Remove Bookmark":
+                new Permission(req, next)
+                    .isActive()
+                    .done();
+                break;
+
             //TODO: Add a handler if the activity does not exist
         }
     }
