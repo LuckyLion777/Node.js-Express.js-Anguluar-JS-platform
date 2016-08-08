@@ -1,23 +1,23 @@
 const models = require("../models");
-const mustbe = require("mustbe").routeHelpers();
+const auth = require("../util/auth/index");
 const passport = require("passport");
 const router = require("express").Router();
 
 
 router.post("/language", passport.authenticate("jwt", { session: false }),
-    mustbe.authorized("Create Language"), (req, res, next) => {
+    auth.can("Create Language"), (req, res, next) => {
     res.locals.promise = models.Language.create(req.body);
     return next();
 });
 
 router.put("/language/:languageId", passport.authenticate("jwt", { session: false }),
-    mustbe.authorized("Update Language"), (req, res, next) => {
+    auth.can("Update Language"), (req, res, next) => {
     req.params.language.updateLanguage(req.body);
     return next();
 });
 
 router.delete("/language/:languageId", passport.authenticate("jwt", { session: false }),
-    mustbe.authorized("Remove Language"), (req, res, next) => {
+    auth.can("Remove Language"), (req, res, next) => {
     req.params.language.removeLanguage();
     return next();
 });

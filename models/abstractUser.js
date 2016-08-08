@@ -3,6 +3,14 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const imageSchema = require("./image");
 
+
+const STATUS = {
+    ACTIVE: "ACTIVE",
+    PENDING: "PENDING",
+    BLOCKED: "BLOCKED"
+};
+
+
 const abstractUserSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -57,6 +65,10 @@ abstractUserSchema.statics.getUsers = function () {
     return this.find();
 };
 
+abstractUserSchema.methods.activate = function () {
+    return this.update({ status: STATUS.ACTIVE })
+};
+
 
 const hashPassword = (userInfo, callback) => {
     if(!userInfo.password) {
@@ -76,5 +88,5 @@ const hashPassword = (userInfo, callback) => {
 
 module.exports = {
     abstractUserSchema: abstractUserSchema,
-    AbstractUser: mongoose.model("abstractUser", abstractUserSchema)
+    AbstractUser: mongoose.model("AbstractUser", abstractUserSchema)
 };

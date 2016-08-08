@@ -6,7 +6,6 @@ WHAT TO DO:
     - Secure admin CRUD.
     - Make sure user can not change its status manually.
     - Implement the security checks.
-    - Remove id from singleton entities.
 
     
 Vagrant Setup:

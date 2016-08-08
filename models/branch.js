@@ -28,8 +28,8 @@ const branchSchema = new mongoose.Schema({
     },
     arabicAddress: String,
     englishAddress: String,
-    ArabicOpeningHours: String,
-    EnglishOpeningHours: String
+    arabicOpeningHours: String,
+    englishOpeningHours: String
 });
 
 module.exports = branchSchema;

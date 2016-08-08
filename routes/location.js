@@ -1,22 +1,22 @@
 const models = require("../models");
-const mustbe = require("mustbe").routeHelpers();
+const auth = require("../util/auth/index");
 const passport = require("passport");
 const router = require("express").Router();
 
 router.post("/location", passport.authenticate("jwt", { session: false }),
-    mustbe.authorized("Create Location"), (req, res, next) => {
+    auth.can("Create Location"), (req, res, next) => {
     res.locals.promise = models.Location.createLocation(req.body);
     return next();
 });
 
 router.put("/location/:locationId", passport.authenticate("jwt", { session: false }),
-    mustbe.authorized("Update Location"), (req, res, next) => {
+    auth.can("Update Location"), (req, res, next) => {
     res.locals.promise = req.params.location.updateLocation(req.body);
     return next();
 });
 
 router.delete("/location/:locationId", passport.authenticate("jwt", { session: false }),
-    mustbe.authorized("Delete Location"), (req, res, next) => {
+    auth.can("Delete Location"), (req, res, next) => {
     res.locals.promise = req.params.location.removeLocation();
     return next();
 });

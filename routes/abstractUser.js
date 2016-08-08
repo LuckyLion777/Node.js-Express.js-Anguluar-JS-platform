@@ -3,7 +3,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const jwtGenerator = require("../util/jwtGenerator");
 const upload = require("multer")({ dest: "uploads/user" });
-const mustbe = require("mustbe").routeHelpers();
+const auth = require("../util/auth/index");
 
 
 router.post("/user/login", passport.authenticate("local", { session: false }), (req, res, next) => {
@@ -27,7 +27,7 @@ router.get("/user", passport.authenticate("jwt", { session: false }), (req, res,
     return res.send(req.user);
 });
 
-router.get("/users", passport.authenticate("jwt", { session: false }), mustbe.authorized("List Users"), (req, res, next) => {
+router.get("/users", passport.authenticate("jwt", { session: false }), auth.can("List Users"), (req, res, next) => {
     res.locals.promise = models.AbstractUser.getUsers();
     return next();
 });
@@ -35,6 +35,24 @@ router.get("/users", passport.authenticate("jwt", { session: false }), mustbe.au
 router.delete("/user", passport.authenticate("jwt", { session: false }), (req, res, next) => {
     res.locals.promise = req.user.removeUser;
     return next();
+});
+
+router.patch("/user/:userId/activate", passport.authenticate("jwt", { session: false }), auth.can("Activate User"), (req, res, next) => {
+    res.locals.promise = req.params.user.activate();
+    return next();
+});
+
+
+router.param("userId", (req, res, next, userId) => {
+    models.AbstractUser.findById(userId)
+        .then(user => {
+            if(!user) {
+                return next(new Error("User Does Not Exist"));
+            } else {
+                req.params.user = user;
+                return next();
+            }
+        }, err => next(err));
 });
 
 

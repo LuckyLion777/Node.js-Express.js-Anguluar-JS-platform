@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const AbstractUser = require("./abstractUser").AbstractUser;
 
 const ratingSchema = new mongoose.Schema({
-    user: {
+    _id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "AbstractUser",
         required: true,

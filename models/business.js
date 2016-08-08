@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const imageSchema = require("./image");
-const BusinessUser = require("./businessUser").BusinessUser;
+const AbstractUser = require("./abstractUser").AbstractUser;
 const socialMediaSchema = require("./socialMedia");
 const branchSchema = require("./branch");
 const optionSchema = require("./option");
@@ -14,11 +14,11 @@ const validator = require("validator");
 const businessSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "BusinessUser",
+        ref: "AbstractUser",
         required: true,
         validate: {
             validator: (userId, done) => {
-                BusinessUser.count({ _id: userId })
+                AbstractUser.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {

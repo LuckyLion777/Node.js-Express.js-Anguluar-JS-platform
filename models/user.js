@@ -10,7 +10,7 @@ const STATUS = {
     BLOCKED: "BLOCKED"
 };
 
-const userSchema = AbstractUser.discriminator("AbstractUser", new mongoose.Schema({
+const userSchema = AbstractUser.discriminator("User", new mongoose.Schema({
     language: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Language",
@@ -63,5 +63,5 @@ const userSchema = AbstractUser.discriminator("AbstractUser", new mongoose.Schem
 
 module.exports = {
     userSchema: userSchema,
-    User: mongoose.model("AbstractUser", userSchema)
+    User: mongoose.model("User", userSchema)
 };

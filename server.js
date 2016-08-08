@@ -7,8 +7,6 @@ const mongoose = require("mongoose");
 mongoose.connect(require("./config/database"));
 mongoose.Promise = require("bluebird");
 const logger = require("morgan");
-var mustBeConfig = require("./config/mustbe");
-var mustBe = require("mustbe").configure(mustBeConfig);
 
 
 server.use(express.static(path.join(__dirname, "./public")));
