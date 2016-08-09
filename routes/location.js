@@ -3,27 +3,27 @@ const auth = require("../util/auth/index");
 const passport = require("passport");
 const router = require("express").Router();
 
-router.post("/location", passport.authenticate("jwt", { session: false }),
+router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Location"), (req, res, next) => {
     res.locals.promise = models.Location.createLocation(req.body);
     return next();
 });
 
-router.put("/location/:locationId", passport.authenticate("jwt", { session: false }),
+router.put("/:locationId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Location"), (req, res, next) => {
     res.locals.promise = req.params.location.updateLocation(req.body);
     return next();
 });
 
-router.delete("/location/:locationId", passport.authenticate("jwt", { session: false }),
+router.delete("/:locationId", passport.authenticate("jwt", { session: false }),
     auth.can("Delete Location"), (req, res, next) => {
     res.locals.promise = req.params.location.removeLocation();
     return next();
 });
 
-router.get("/location/:locationId", (req, res, next) => res.send(req.params.location) );
+router.get("/:locationId", (req, res, next) => res.send(req.params.location) );
 
-router.get("/locations", (req, res, next) => {
+router.get("/", (req, res, next) => {
     res.locals.promise = models.Location.getLocations();
     return next();
 });

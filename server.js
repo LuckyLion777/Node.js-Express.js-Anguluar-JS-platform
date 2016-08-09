@@ -7,20 +7,22 @@ const mongoose = require("mongoose");
 mongoose.connect(require("./config/database"));
 mongoose.Promise = require("bluebird");
 const logger = require("morgan");
+const cors = require("cors");
 
 
-server.use(express.static(path.join(__dirname, "./public")));
+server.use([
+    express.static(path.join(__dirname, "./public")),
+    logger("dev", {
+        skip: () => {
+            return process.env.NODE_ENV == "test"
+        }
+    }),
+    bodyParser.urlencoded({ extended: true }),
+    bodyParser.json(),
+    passport.initialize(),
+    cors()
+]);
 
-
-server.use(logger("dev", {
-    skip: () => {
-        return process.env.NODE_ENV == "test"
-    }
-}));
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
-server.use(passport.initialize());
-server.use(require("cors")());
 server.use("/api", require("./routes"));
 server.use("/api", require("./util/resultHandler"));
 

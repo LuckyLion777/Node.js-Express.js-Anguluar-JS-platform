@@ -107,8 +107,10 @@ module.exports = {
 
 
 const Article = require("./article").Article;
-//TODO: log
-abstractUserSchema.path("bookmarks").validate((articleId, done) => {
+
+abstractUserSchema.path("bookmarks").SchemaArray.path("id").validate((articleId, done) => {
+    console.log(articleId);
     Article.count({ _id: articleId })
-        .then(count => done(count), err => done(false) );
+    //TODO: log
+        .then(count => done(count), err => done(false, err) );
 });

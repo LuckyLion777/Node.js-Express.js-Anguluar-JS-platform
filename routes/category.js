@@ -5,8 +5,7 @@ const passport = require("passport");
 
 
 
-router.post("/category", passport.authenticate("jwt", { session: false }),
-    auth.can("Create Category"), (req, res, next) => {
+router.post("/", passport.authenticate("jwt", { session: false }), auth.can("Create Category"), (req, res, next) => {
     res.locals.promise = models.Category.createCategory(req.body);
     return next();
 });

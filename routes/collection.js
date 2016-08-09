@@ -5,27 +5,27 @@ const passport = require("passport");
 
 
 
-router.post("/collection", passport.authenticate("jwt", { session: false }),
+router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Collection"), (req, res, next) => {
     res.locals.promise = models.Collection.createCollection(req.body);
     return next();
 });
 
-router.put("/collection/:collectionId", passport.authenticate("jwt", { session: false }),
+router.put("/:collectionId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Collection"), (req, res, next) => {
     res.locals.promise = req.params.collection.updateCollection(req.body);
     return next();
 });
 
-router.delete("/collection/:collectionId", passport.authenticate("jwt", { session: false }),
+router.delete("/:collectionId", passport.authenticate("jwt", { session: false }),
     auth.can("Remove Collection"), (req, res, next) => {
     res.locals.promise = req.params.collection.removeCollection();
     return next();
 });
 
-router.get("/collection/:collectionId", (req, res, next) => res.send(req.params.collection) );
+router.get("/:collectionId", (req, res, next) => res.send(req.params.collection) );
 
-router.get("/collections", (req, res, next) => {
+router.get("/", (req, res, next) => {
     res.locals.promise = models.Collection.getCollections();
     return next();
 });
