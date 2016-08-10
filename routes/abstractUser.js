@@ -46,6 +46,11 @@ router.delete("/bookmark/:articleId", passport.authenticate("jwt", { session: fa
 });
 
 
+router.post("/login", passport.authenticate("local", { session: false }), (req, res, next) => {
+    jwtGenerator.generateJwt(req.user.id, (err, jwt) => err ? next(err): res.send(jwt) );
+});
+
+
 router.param("userId", (req, res, next, userId) => {
     models.AbstractUser.findById(userId)
         .then(user => {

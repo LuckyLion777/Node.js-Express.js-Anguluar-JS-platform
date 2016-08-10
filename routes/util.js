@@ -10,10 +10,6 @@ router.get("/users", passport.authenticate("jwt", { session: false }), auth.can(
     return next();
 });
 
-router.post("/login", passport.authenticate("local", { session: false }), (req, res, next) => {
-    jwtGenerator.generateJwt(req.user.id, (err, jwt) => err ? next(err): res.send(jwt) );
-});
-
 
 module.exports = router;
 
