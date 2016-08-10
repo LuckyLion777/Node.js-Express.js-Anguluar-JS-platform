@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const imageSchema = require("./image");
 
+//This Module Require In The End
+//const Article = require("./article").Article;
+
 
 const STATUS = {
     ACTIVE: "ACTIVE",
@@ -33,11 +36,7 @@ const abstractUserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    avatar: imageSchema,
-    bookmarks: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Article"
-    }]
+    avatar: imageSchema
 });
 
 
@@ -105,12 +104,19 @@ module.exports = {
     AbstractUser: mongoose.model("AbstractUser", abstractUserSchema)
 };
 
-
 const Article = require("./article").Article;
 
-abstractUserSchema.path("bookmarks").SchemaArray.path("id").validate((articleId, done) => {
-    console.log(articleId);
-    Article.count({ _id: articleId })
-    //TODO: log
-        .then(count => done(count), err => done(false, err) );
+abstractUserSchema.add({
+    bookmarks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Article",
+        validate: {
+            validator: (articleId, done) => {
+                Article.count({ _id: articleId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Article Does Not Exist"
+        }
+    }]
 });
