@@ -10,6 +10,9 @@ const logger = require("morgan");
 const cors = require("cors");
 
 
+server.use(express.static(path.join(__dirname, "uploads")));
+
+
 server.use([
     express.static(path.join(__dirname, "./public")),
     logger("dev", {
@@ -25,6 +28,8 @@ server.use([
 
 server.use("/api", require("./routes"));
 server.use("/api", require("./util/resultHandler"));
+
+
 
 
 const port = 3000;
