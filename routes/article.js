@@ -8,7 +8,7 @@ const upload = require("../config/multer");
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Article"), upload.single("cover"), (req, res, next) => {
     req.body.user = req.user;
-    if(req.file) req.body.cover = { path: req.file.path };
+    if(req.file) req.body.cover = { filename: req.file.filename };
 
     res.locals.promise = models.Article.createArticle(req.body);
     return next();
@@ -16,7 +16,7 @@ router.post("/", passport.authenticate("jwt", { session: false }),
 
 router.put("/:articleId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Article"), upload.single("cover"), (req, res, next) => {
-    if(req.file) req.body.cover = { path: req.file.path };
+    if(req.file) req.body.cover = { filename: req.file.filename };
 
     res.locals.promise = req.params.article.updateArticle(req.body);
     return next();
@@ -54,7 +54,7 @@ router.delete("/:articleId/comment/:commentId", passport.authenticate("jwt", { s
 router.post("/:articleId/photo", passport.authenticate("jwt", { session: false }),
     auth.can("Add Article Photo"), upload.array("photo"), (req, res, next) => {
     try{
-        res.locals.promise = req.params.article.addPhoto(req.files.map(photo => ({ path: photo.path }) ));
+        res.locals.promise = req.params.article.addPhoto(req.files.map(photo => ({ filename: photo.filename }) ));
         return next();
     } catch(err) {
         return next(new Error("You Should Use Form-Data Encoding Only With This End Point"))

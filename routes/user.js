@@ -3,7 +3,7 @@ const router = require("express").Router();
 const upload = require("../config/multer");
 
 router.post("/", upload.single("avatar"), (req, res, next) => {
-    if(req.file) req.body.avatar = { path: req.file.path };
+    if(req.file) req.body.avatar = { filename: req.file.filename };
 
     models.User.createUser(req.body, (err, user) => {
         if(err) {

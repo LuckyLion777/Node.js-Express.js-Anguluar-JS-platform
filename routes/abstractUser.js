@@ -7,7 +7,7 @@ const auth = require("../util/auth/index");
 
 
 router.put("/", passport.authenticate("jwt", { session: false }), upload.single("avatar"), (req, res, next) => {
-    if(req.file) req.body.avatar = { path: req.file.path };
+    if(req.file) req.body.avatar = { filename: req.file.filename };
 
     req.user.updateUser(req.body, (err, user) => {
         if(err) {

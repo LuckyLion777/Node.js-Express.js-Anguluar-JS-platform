@@ -7,7 +7,7 @@ const upload = require("../config/multer");
 
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Event"), upload.single("cover"), (req, res, next) => {
-        if(req.file) req.body.cover = { path: req.file.path };
+        if(req.file) req.body.cover = { filename: req.file.filename };
 
         res.locals.promise = models.Event.createEvent(req.body);
         return next();
@@ -121,7 +121,7 @@ router.delete("/:eventId/comment/:commentId", passport.authenticate("jwt", { ses
 router.post("/:eventId/photo", passport.authenticate("jwt", { session: false }),
     auth.can("Add Event Photo"), upload.array("photo"), (req, res, next) => {
         try {
-            res.locals.promise = req.params.event.addPhoto(req.files.map( photo => ({ path: photo.path }) ));
+            res.locals.promise = req.params.event.addPhoto(req.files.map( photo => ({ filename: photo.filename }) ));
             return next();
         } catch(err) {
             return next(new Error("You Should Use Form-Data Encoding Only With This End Point"));
