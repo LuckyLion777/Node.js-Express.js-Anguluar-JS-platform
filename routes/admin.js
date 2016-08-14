@@ -1,6 +1,6 @@
 const models = require("../models");
 const router = require("express").Router();
-const upload = require("multer")({ dest: "uploads/admin" });
+const upload = require("../config/multer");
 
 
 router.post("/", upload.single("avatar"), (req, res, next) => {

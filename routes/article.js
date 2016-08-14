@@ -2,7 +2,7 @@ const models = require("../models");
 const router = require("express").Router();
 const auth = require("../util/auth/index");
 const passport = require("passport");
-const upload = require("multer")({ dest: "uploads/article" });
+const upload = require("../config/multer");
 
 
 router.post("/", passport.authenticate("jwt", { session: false }),
