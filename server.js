@@ -10,7 +10,7 @@ const logger = require("morgan");
 const cors = require("cors");
 
 
-server.use(express.static(path.join(__dirname, "uploads")));
+server.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 server.use([
