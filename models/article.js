@@ -110,9 +110,12 @@ articleSchema.methods.removeArticle = function () {
 };
 
 articleSchema.statics.getArticles = function () {
-    return this.find()
+    return this.find();
 };
 
+articleSchema.statics.getArticles = function (status) {
+    return this.find({ status: status });
+};
 
 articleSchema.methods.addComment = function (commentInfo) {
     this.comments.addToSet(commentInfo);
