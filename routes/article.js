@@ -32,7 +32,7 @@ router.get("/:articleId", (req, res, next) => res.send(req.params.article));
 
 router.get("/:status?", (req, res, next) => {
     if(req.query.status) {
-        res.locals.promise = models.Article.getArticles(req.query.status);
+        res.locals.promise = models.Article.getFilteredArticles(req.query.status);
         return next();
     } else {
         res.locals.promise = models.Article.getArticles();

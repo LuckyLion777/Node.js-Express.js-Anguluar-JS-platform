@@ -113,7 +113,7 @@ articleSchema.statics.getArticles = function () {
     return this.find();
 };
 
-articleSchema.statics.getArticles = function (status) {
+articleSchema.statics.getFilteredArticles = function (status) {
     return this.find({ status: status });
 };
 
