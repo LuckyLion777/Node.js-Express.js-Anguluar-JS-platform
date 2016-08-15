@@ -28,6 +28,11 @@ router.delete("/", passport.authenticate("jwt", { session: false }), (req, res, 
     return next();
 });
 
+router.get("/:userId", (req, res, next) => {
+    res.locals.promise = models.User.findById(req.params.userId);
+    return next();
+});
+
 
 router.patch("/:userId/activate", passport.authenticate("jwt", { session: false }), auth.can("Activate User"), (req, res, next) => {
     res.locals.promise = req.params.user.activate();
