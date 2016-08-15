@@ -36,6 +36,7 @@ router.get("/:status?", (req, res, next) => {
         return next();
     } else {
         res.locals.promise = models.Article.getArticles();
+        return next();
     }
 });
 
