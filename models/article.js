@@ -10,7 +10,8 @@ const STATUS = {
     APPROVED: "APPROVED",
     PROVOKED: "PROVOKED",
     PENDING: "PENDING",
-    ONHOLD: "ONHOLD"
+    ONHOLD: "ONHOLD",
+    SUSPEND: "SUSPENDED"
 };
 
 const articleSchema = new mongoose.Schema({
@@ -178,7 +179,7 @@ articleSchema.methods.hold = function () {
 };
 
 articleSchema.methods.suspend = function () {
-    this.status = STATUS.PENDING;
+    this.status = STATUS.SUSPENDED;
     return this.save();
 };
 
