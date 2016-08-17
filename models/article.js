@@ -190,7 +190,7 @@ articleSchema.methods.provoke = function () {
 
 
 articleSchema.methods.addCollection = function (collectionInfo) {
-    this.collections.addToSet(collectionInfo);
+    this.collections.addToSet(...collectionInfo);
     return this.save();
 };
 
