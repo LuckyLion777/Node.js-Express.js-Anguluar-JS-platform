@@ -6,7 +6,7 @@ const categorySchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
+    }
 });
 
 categorySchema.statics.createCategory = function(categoryInfo) {

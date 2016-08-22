@@ -36,9 +36,7 @@
 
 WHAT TO DO:
     - Edit jwt to use key pair.
-    - Implement user bookmark.
     - When removing non-existing item from embedded array no err is thrown.
-    - When GET localhost:3000/api/articles/57a06de21e5cc13c0fad7196 you get unauthorized, fix it.
     - Secure admin CRUD.
     - Make sure user can not change its status manually.
     - Implement the security checks.
