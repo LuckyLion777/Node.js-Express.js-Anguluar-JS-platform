@@ -25,7 +25,7 @@ router.route("/")
     })
 
     .delete(passport.authenticate("jwt", {session: false}), (req, res, next) => {
-        res.locals.promise = req.user.removeUser;
+        res.locals.promise = req.user.removeUser();
         return next();
     });
 
@@ -35,9 +35,24 @@ router.get("/:userId", (req, res, next) => {
     return next();
 });
 
+router.delete("/:userId", passport.authenticate("jwt", {session: false}), auth.can("Remove User"), (req, res, next) => {
+    res.locals.promise = req.user.removeUser();
+    return next();
+});
+
 
 router.patch("/:userId/activate", passport.authenticate("jwt", {session: false}), auth.can("Activate User"), (req, res, next) => {
     res.locals.promise = req.params.user.activate();
+    return next();
+});
+
+router.patch("/:userId/hold", passport.authenticate("jwt", {session: false}), auth.can("Hold User"), (req, res, next) => {
+    res.locals.promise = req.params.user.hold();
+    return next();
+});
+
+router.patch("/:userId/block", passport.authenticate("jwt", {session: false}), auth.can("Block User"), (req, res, next) => {
+    res.locals.promise = req.params.user.block();
     return next();
 });
 

@@ -485,7 +485,25 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "Remove Users":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
             case "Activate User":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Hold User":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Block User":
                 new Permission(req, next)
                     .isAdmin()
                     .done();

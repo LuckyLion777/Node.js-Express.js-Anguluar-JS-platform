@@ -72,6 +72,14 @@ abstractUserSchema.methods.activate = function () {
     return this.update({ status: STATUS.ACTIVE })
 };
 
+abstractUserSchema.methods.hold = function () {
+    return this.update({ status: STATUS.PENDING })
+};
+
+abstractUserSchema.methods.block = function () {
+    return this.update({ status: STATUS.BLOCKED })
+};
+
 abstractUserSchema.methods.addBookmark = function (articleId) {
     this.bookmarks.addToSet(articleId);
     return this.save();
