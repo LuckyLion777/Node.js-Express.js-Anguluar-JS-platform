@@ -40,3 +40,5 @@ WHAT TO DO:
     - Secure admin CRUD.
     - Make sure user can not change its status manually.
     - Implement the security checks.
+    - Make parent of a category a list.
+    - Add delete user for admin.
