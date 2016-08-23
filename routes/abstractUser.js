@@ -36,7 +36,7 @@ router.get("/:userId", (req, res, next) => {
 });
 
 router.delete("/:userId", passport.authenticate("jwt", {session: false}), auth.can("Remove User"), (req, res, next) => {
-    res.locals.promise = req.user.removeUser();
+    res.locals.promise = req.params.user.removeUser();
     return next();
 });
 
