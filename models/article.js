@@ -11,7 +11,7 @@ const STATUS = {
     PROVOKED: "PROVOKED",
     PENDING: "PENDING",
     ONHOLD: "ONHOLD",
-    SUSPEND: "SUSPENDED"
+    SUSPENDED: "SUSPENDED"
 };
 
 const articleSchema = new mongoose.Schema({
