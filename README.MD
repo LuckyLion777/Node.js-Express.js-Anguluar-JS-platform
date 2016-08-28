@@ -34,7 +34,7 @@
    npm start
 ```
 
-WHAT TO DO:
+TO DO:
     - Edit jwt to use key pair.
     - When removing non-existing item from embedded array no err is thrown.
     - Secure admin CRUD.
@@ -42,3 +42,4 @@ WHAT TO DO:
     - Implement the security checks.
     - Make parent of a category a list.
     - Add delete user for admin.
+    - What to do with collection that depend on removed collections.
