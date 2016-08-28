@@ -76,7 +76,7 @@ const articleSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: [ STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD ],
+        enum: [ STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
         default: STATUS.PENDING
     },
     tags: [ String ],
