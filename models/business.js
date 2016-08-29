@@ -29,13 +29,15 @@ const businessSchema = new mongoose.Schema({
             message: "AbstractUser Does Not Exist"
         }
     },
-    arabicName: {
-        type: String,
-        required: true
-    },
-    englishName: {
-        type: String,
-        required: true
+    name: {
+        arabicName: {
+            type: String,
+            required: true
+        },
+        englishName: {
+            type: String,
+            required: true
+        }
     },
     logo: imageSchema,
     description: {
