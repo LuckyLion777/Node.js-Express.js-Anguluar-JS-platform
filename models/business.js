@@ -38,8 +38,10 @@ const businessSchema = new mongoose.Schema({
         required: true
     },
     logo: imageSchema,
-    arabicDescription: String,
-    englishDescription: String,
+    description: {
+        arabicDescription: String,
+        englishDescription: String
+    },
     website: {
         type: String,
         validate: {
