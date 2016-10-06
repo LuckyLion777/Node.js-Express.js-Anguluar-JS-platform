@@ -157,7 +157,7 @@ eventSchema.methods.removeRating = function (ratingId) {
 
 
 eventSchema.methods.addTag = function (tagInfo) {
-    this.tags.addToSet(tagInfo.tag);
+    this.tags.addToSet(...tagInfo.tags);
     return this.save();
 };
 

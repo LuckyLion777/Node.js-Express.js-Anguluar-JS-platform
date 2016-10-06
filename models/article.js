@@ -141,7 +141,7 @@ articleSchema.methods.removePhoto = function (photoId) {
 
 
 articleSchema.methods.addTag = function (tagInfo) {
-    this.tags.addToSet(tagInfo.tag);
+    this.tags.addToSet(...tagInfo.tags);
     return this.save();
 };
 

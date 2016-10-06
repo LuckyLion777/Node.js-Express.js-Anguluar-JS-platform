@@ -132,7 +132,7 @@ businessSchema.methods.removePhoto = function (photoId) {
 
 
 businessSchema.methods.addTag = function (tagInfo) {
-    this.tags.addToSet(tagInfo.tag);
+    this.tags.addToSet(...tagInfo.tags);
     return this.save();
 };
 
