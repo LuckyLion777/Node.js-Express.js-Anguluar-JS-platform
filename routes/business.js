@@ -24,7 +24,7 @@ router.put("/:businessId", passport.authenticate("jwt", { session: false }),
 
 router.delete("/:businessId", passport.authenticate("jwt", { session: false }),
     auth.can("Delete Business"), (req, res, next) => {
-    req.params.business.removeBusiness();
+        res.locals.promise = req.params.business.removeBusiness();
     return next();
 });
 
@@ -38,13 +38,13 @@ router.get("/", (req, res, next) => {
 
 router.post("/:businessId/socialMedia", passport.authenticate("jwt", { session: false }),
     auth.can("Add Business Social Media"), (req, res, next) => {
-    req.params.business.addSocialMedia(req.body);
+        res.locals.promise = req.params.business.addSocialMedia(req.body);
     return next();
 });
 
 router.delete("/:businessId/socialMedia/:socialMediaId", passport.authenticate("jwt", { session: false }),
     auth.can("Remove Business Social Media"), (req, res, next) => {
-    req.params.business.removeSocialMedia(req.params.socialMediaId);
+        res.locals.promise = req.params.business.removeSocialMedia(req.params.socialMediaId);
     return next();
 });
 
