@@ -15,5 +15,4 @@ router.post("/", upload.single("avatar"), (req, res, next) => {
     })
 });
 
-
 module.exports = router;

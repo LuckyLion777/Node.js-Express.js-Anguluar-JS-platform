@@ -30,8 +30,8 @@ router.route("/")
     });
 
 
-router.get("/:userId", (req, res, next) => {
-    res.locals.promise = models.User.findById(req.params.userId);
+router.get("/:userId", passport.authenticate("jwt", {session: false}), (req, res, next) => {
+    res.locals.promise = models.AbstractUser.getUser(req.params.userId);
     return next();
 });
 

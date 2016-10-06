@@ -65,7 +65,15 @@ abstractUserSchema.methods.removeUser = function () {
 };
 
 abstractUserSchema.statics.getUsers = function () {
-    return this.find();
+    return this.find().populate('bookmarks')
+        .exec(function(err, user){
+        });
+};
+
+abstractUserSchema.statics.getUser = function (userId) {
+    return this.findById(userId).populate('bookmarks')
+        .exec(function(err, user){
+        });
 };
 
 abstractUserSchema.methods.activate = function () {
