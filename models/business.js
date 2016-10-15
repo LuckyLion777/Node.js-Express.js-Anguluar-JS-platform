@@ -100,6 +100,31 @@ businessSchema.statics.getBusinesses = function () {
     return this.find();
 };
 
+businessSchema.statics.searchBusinesses = function (searchInfo) {
+
+/*    var filteredQuery = {},
+        acceptableFields = ['name.englishName', 'race', /!* etc *!/ ];
+
+    return this.find();
+
+
+
+    acceptableFields.forEach(function(field) {
+        req.query[field] &&  = req.query[field];
+    });
+
+    var query = Character.find()
+    if(searchInfo){
+        if(searchInfo.search){
+            if(searchInfo.search.name){
+                filteredQuery["name"] = {$or : [ {'name.englishName':searchInfo.search.name.englishName}
+                    ,{'name.arabicName':searchInfo.search.name.arabicName} ]}
+            }
+        }
+    }*/
+    return this.find();//.where('tags').in(searchInfo.tags);
+};
+
 businessSchema.methods.updateBusiness = function (businessInfo) {
     return this.update(businessInfo, { runValidators: true });
 };

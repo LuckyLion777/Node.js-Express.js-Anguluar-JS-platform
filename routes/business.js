@@ -35,6 +35,11 @@ router.get("/", (req, res, next) => {
     return next();
 });
 
+router.post("/search", (req, res, next) => {
+    res.locals.promise = models.Business.searchBusinesses(req.body);
+    return next();
+});
+
 
 router.post("/:businessId/socialMedia", passport.authenticate("jwt", { session: false }),
     auth.can("Add Business Social Media"), (req, res, next) => {

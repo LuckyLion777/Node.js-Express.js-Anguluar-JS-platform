@@ -111,7 +111,7 @@ articleSchema.methods.removeArticle = function () {
 };
 
 articleSchema.statics.getArticles = function () {
-    return this.find();
+    return this.find().populate('user').populate('language');
 };
 
 articleSchema.statics.getFilteredArticles = function (status) {
