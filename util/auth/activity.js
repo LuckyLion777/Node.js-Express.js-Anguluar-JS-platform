@@ -521,6 +521,11 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "Upload Photo":
+                new Permission(req, next)
+                    .isActive()
+                    .done();
+                break;
             //TODO: Add a handler if the activity does not exist
         }
     }

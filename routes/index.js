@@ -12,6 +12,7 @@ router.use("/events?", require("./event"));
 router.use("/collections?", require("./collection"));
 router.use("/admin", require("./admin"));
 router.use("/category", require("./category"));
+router.use("/upload", require("./upload"));
 router.use("/", require("./util"));
 
 

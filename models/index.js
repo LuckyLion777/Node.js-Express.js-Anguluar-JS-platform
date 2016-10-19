@@ -7,6 +7,7 @@ module.exports = {
     Language: require("./language").Language,
     Business: require("./business").Business,
     Category: require("./category").Category,
+    Upload: require("./upload").Upload,
     Location: require("./location").Location,
     Event: require("./event").Event,
     Collection: require("./collection").Collection

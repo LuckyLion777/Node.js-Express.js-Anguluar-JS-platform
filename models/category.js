@@ -23,7 +23,11 @@ const categorySchema = new mongoose.Schema({
             }
         }
     },
-    icon: imageSchema
+    icon: imageSchema,
+    color: {
+        type: String,
+        required: true
+    },
 });
 
 categorySchema.statics.createCategory = function(categoryInfo) {

@@ -9,6 +9,7 @@ router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Business"), upload.single("logo"), (req, res, next) => {
     req.body.owner = req.user;
     if(req.file) req.body.logo = { filename: req.file.filename };
+    //if(req.cover) req.body.cover = { filename: req.cover.filename };
 
     res.locals.promise = models.Business.createBusiness(req.body);
     return next();

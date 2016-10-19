@@ -40,6 +40,7 @@ const businessSchema = new mongoose.Schema({
         }
     },
     logo: imageSchema,
+    cover: imageSchema,
     description: {
         arabicDescription: String,
         englishDescription: String
@@ -97,7 +98,7 @@ businessSchema.statics.createBusiness = function (businessInfo) {
 };
 
 businessSchema.statics.getBusinesses = function () {
-    return this.find();
+    return this.find().populate('reviews');
 };
 
 businessSchema.statics.searchBusinesses = function (searchInfo) {
