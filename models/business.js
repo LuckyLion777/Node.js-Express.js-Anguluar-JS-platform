@@ -6,7 +6,7 @@ const branchSchema = require("./branch");
 const optionSchema = require("./option");
 const reviewSchema = require("./review");
 const ratingSchema = require("./rating");
-const Category = require("./category").Category;
+const Category = require("./businessCategory").BusinessCategory;
 const Collection = require("./collection").Collection;
 const validator = require("validator");
 
@@ -71,7 +71,7 @@ const businessSchema = new mongoose.Schema({
     branches: [ branchSchema ],
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: "BusinessCategory",
         validate: {
             validator: (categoryId, callback) => {
                 Category.count({ _id: categoryId})
@@ -112,12 +112,12 @@ businessSchema.statics.createBusiness = function (businessInfo) {
 };
 
 businessSchema.statics.getBusinesses = function () {
-    return this.find().populate('reviews');
+    return this.find().populate('reviews').populate('categories');
 };
 
 businessSchema.statics.getFilteredBusinesses = function (status) {
     console.log(status);
-    return this.find({ status: status }).populate('reviews');;
+    return this.find({ status: status }).populate('reviews').populate('categories');
 };
 
 businessSchema.statics.searchBusinesses = function (searchInfo) {

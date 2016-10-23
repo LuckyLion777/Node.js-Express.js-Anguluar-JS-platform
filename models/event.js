@@ -5,7 +5,7 @@ const socialMediaSchema = require("./socialMedia");
 const ratingSchema = require("./rating");
 const commentSchema = require("./comment");
 const AbstractUser = require("./abstractUser").AbstractUser;
-const Category = require("./category").Category;
+const Category = require("./eventCategory").EventCategory;
 const validator = require("validator");
 
 const STATUS = {
@@ -92,7 +92,7 @@ const eventSchema = new mongoose.Schema({
     photos: [ imageSchema ],
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: "EventCategory",
         validate: {
             validator: (categoryId, callback) => {
                 Category.count({ _id: categoryId})
@@ -122,11 +122,11 @@ eventSchema.methods.removeEvent = function () {
 };
 
 eventSchema.statics.getEvents = function () {
-    return this.find();
+    return this.find().populate('categories');;
 };
 
 eventSchema.statics.getFilteredEvents = function (status) {
-    return this.find({ status: status });
+    return this.find({ status: status }).populate('categories');;
 };
 
 eventSchema.methods.addOption = function (optionInfo) {

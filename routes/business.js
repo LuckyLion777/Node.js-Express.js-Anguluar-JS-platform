@@ -197,7 +197,7 @@ router.delete("/:businessId/collection/:collectionId", passport.authenticate("jw
 
 
 router.param("businessId", (req, res, next, bossinessId) => {
-    models.Business.findById(bossinessId)
+    models.Business.findById(bossinessId).populate('categories')
         .then(business => {
             if(!business) {
                 return next(new Error("Business Does Not Exist"));

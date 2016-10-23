@@ -14,10 +14,10 @@ const categorySchema = new mongoose.Schema({
     },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: "EventCategory",
         validate: {
             validator: (categoryId, done) => {
-                Category.count({ _id: categoryId })
+                EventCategory.count({ _id: categoryId })
                 //TODO: Log
                     .then(count => done(count), err => done(false, err) )
             }
@@ -35,9 +35,7 @@ categorySchema.statics.createCategory = function(categoryInfo) {
 };
 
 categorySchema.statics.getCategories = function () {
-    return this.find().populate('parent')
-        .exec(function(err, user){
-        });
+    return this.find().populate('parent');
 };
 
 categorySchema.methods.updateCategory = function (categoryInfo) {
@@ -48,15 +46,15 @@ categorySchema.methods.removeCategory = function () {
     return this.remove()
 };
 
-const Category = mongoose.model("Category", categorySchema);
+const EventCategory = mongoose.model("EventCategory", categorySchema);
 
 categorySchema.add({
     parent: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: "EventCategory",
         validate: {
             validator: (categoryId, callback) => {
-                Category.count({ _id: categoryId})
+                EventCategory.count({ _id: categoryId})
                     .then(count => {
                         return callback(count);
                     }, err => {
@@ -72,7 +70,7 @@ categorySchema.add({
 
 module.exports = {
     categorySchema: categorySchema,
-    Category: Category
+    EventCategory: EventCategory
 };
 
 

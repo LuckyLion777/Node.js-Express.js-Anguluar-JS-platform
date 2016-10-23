@@ -11,7 +11,8 @@ router.use("/businessUser", require("./businessUser"));
 router.use("/events?", require("./event"));
 router.use("/collections?", require("./collection"));
 router.use("/admin", require("./admin"));
-router.use("/category", require("./category"));
+router.use("/businessCategory", require("./businessCategory"));
+router.use("/eventCategory", require("./eventCategory"));
 router.use("/upload", require("./upload"));
 router.use("/", require("./util"));
 
