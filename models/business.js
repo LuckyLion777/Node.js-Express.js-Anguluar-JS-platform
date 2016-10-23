@@ -7,6 +7,7 @@ const optionSchema = require("./option");
 const reviewSchema = require("./review");
 const ratingSchema = require("./rating");
 const Category = require("./businessCategory").BusinessCategory;
+const Option = require("./businessOption").BusinessOption;
 const Collection = require("./collection").Collection;
 const validator = require("validator");
 
@@ -85,7 +86,22 @@ const businessSchema = new mongoose.Schema({
             message: "Category Does Not Exist"
         }
     }],
-    options: [ optionSchema ],
+    options: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BusinessOption",
+        validate: {
+            validator: (optionId, callback) => {
+                Option.count({ _id: optionId})
+                    .then(count => {
+                        return callback(count);
+                    }, err => {
+                        //TODO: log
+                        return callback(0, err);
+                    })
+            },
+            message: "Option Does Not Exist"
+        }
+    }],
     reviews: [ reviewSchema ],
     status: {
         type: String,
@@ -112,12 +128,12 @@ businessSchema.statics.createBusiness = function (businessInfo) {
 };
 
 businessSchema.statics.getBusinesses = function () {
-    return this.find().populate('reviews').populate('categories');
+    return this.find().populate('reviews').populate('categories').populate('options');
 };
 
 businessSchema.statics.getFilteredBusinesses = function (status) {
     console.log(status);
-    return this.find({ status: status }).populate('reviews').populate('categories');
+    return this.find({ status: status }).populate('reviews').populate('categories').populate('options');
 };
 
 businessSchema.statics.searchBusinesses = function (searchInfo) {

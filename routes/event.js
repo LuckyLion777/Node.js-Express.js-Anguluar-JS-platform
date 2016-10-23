@@ -155,7 +155,7 @@ router.delete("/:eventId/category/:categoryId", passport.authenticate("jwt", { s
 
 
 router.param("eventId", (req, res, next, eventId) => {
-    models.Event.findById(eventId)
+    models.Event.findById(eventId).populate('options')
         .then(event => {
             if(!event) {
                 return next(new Error("Event Does Not Exist"));

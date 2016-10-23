@@ -6,6 +6,7 @@ const ratingSchema = require("./rating");
 const commentSchema = require("./comment");
 const AbstractUser = require("./abstractUser").AbstractUser;
 const Category = require("./eventCategory").EventCategory;
+const Option = require("./eventOption").EventOption;
 const validator = require("validator");
 
 const STATUS = {
@@ -61,7 +62,6 @@ const eventSchema = new mongoose.Schema({
     },
     entranceFee: String,
     cover: imageSchema,
-    options: [ optionsSchema ],
     socialMedias: [ socialMediaSchema ],
     attendants: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -106,6 +106,22 @@ const eventSchema = new mongoose.Schema({
             message: "Category Does Not Exist"
         }
     }],
+    options: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "EventOption",
+        validate: {
+            validator: (optionId, callback) => {
+                Option.count({ _id: optionId})
+                    .then(count => {
+                        return callback(count);
+                    }, err => {
+                        //TODO: log
+                        return callback(0, err);
+                    })
+            },
+            message: "Option Does Not Exist"
+        }
+    }],
 });
 
 
@@ -122,11 +138,11 @@ eventSchema.methods.removeEvent = function () {
 };
 
 eventSchema.statics.getEvents = function () {
-    return this.find().populate('categories');;
+    return this.find().populate('categories').populate('options');
 };
 
 eventSchema.statics.getFilteredEvents = function (status) {
-    return this.find({ status: status }).populate('categories');;
+    return this.find({ status: status }).populate('categories').populate('options');
 };
 
 eventSchema.methods.addOption = function (optionInfo) {
