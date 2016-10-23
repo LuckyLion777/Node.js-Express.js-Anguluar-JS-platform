@@ -11,6 +11,15 @@ const Collection = require("./collection").Collection;
 const validator = require("validator");
 
 
+const STATUS = {
+    PUBLISHED: "PUBLISHED",
+    APPROVED: "APPROVED",
+    PROVOKED: "PROVOKED",
+    PENDING: "PENDING",
+    ONHOLD: "ONHOLD",
+    SUSPENDED: "SUSPENDED"
+};
+
 const businessSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,11 +39,11 @@ const businessSchema = new mongoose.Schema({
         }
     },
     name: {
-        arabicName: {
+        arabic: {
             type: String,
             required: true
         },
-        englishName: {
+        english: {
             type: String,
             required: true
         }
@@ -42,8 +51,8 @@ const businessSchema = new mongoose.Schema({
     logo: imageSchema,
     cover: imageSchema,
     description: {
-        arabicDescription: String,
-        englishDescription: String
+        arabic: String,
+        english: String
     },
     website: {
         type: String,
@@ -78,6 +87,11 @@ const businessSchema = new mongoose.Schema({
     }],
     options: [ optionSchema ],
     reviews: [ reviewSchema ],
+    status: {
+        type: String,
+        enum: [ STATUS.PUBLISHED, STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
+        default: STATUS.PENDING
+    },
     ratings: [ ratingSchema ],
     collections: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -99,6 +113,11 @@ businessSchema.statics.createBusiness = function (businessInfo) {
 
 businessSchema.statics.getBusinesses = function () {
     return this.find().populate('reviews');
+};
+
+businessSchema.statics.getFilteredBusinesses = function (status) {
+    console.log(status);
+    return this.find({ status: status }).populate('reviews');;
 };
 
 businessSchema.statics.searchBusinesses = function (searchInfo) {

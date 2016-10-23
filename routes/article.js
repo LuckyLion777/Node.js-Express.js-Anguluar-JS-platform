@@ -28,7 +28,10 @@ router.delete("/:articleId", passport.authenticate("jwt", { session: false }),
     return next();
 });
 
-router.get("/:articleId", (req, res, next) => res.send(req.params.article));
+router.get("/:articleId", (req, res, next) => {
+    res.locals.promise = models.Article.getArticle(req.params.articleId);
+    return next();
+});
 
 router.get("/:status?", (req, res, next) => {
     if(req.query.status) {

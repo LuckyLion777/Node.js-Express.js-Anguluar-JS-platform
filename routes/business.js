@@ -31,10 +31,17 @@ router.delete("/:businessId", passport.authenticate("jwt", { session: false }),
 
 router.get("/:businessId", (req, res, next) => res.send(req.params.business) );
 
-router.get("/", (req, res, next) => {
-    res.locals.promise = models.Business.getBusinesses();
-    return next();
+router.get("/:status?", (req, res, next) => {
+    if(req.query.status) {
+        res.locals.promise = models.Business.getFilteredBusinesses(req.query.status);
+        return next();
+    } else {
+        res.locals.promise = models.Business.getBusinesses();
+        return next();
+    }
 });
+
+
 
 router.post("/search", (req, res, next) => {
     res.locals.promise = models.Business.searchBusinesses(req.body);

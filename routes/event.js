@@ -29,10 +29,16 @@ router.delete("/:eventId", passport.authenticate("jwt", { session: false }),
 
 router.get("/:eventId", (req, res, next) => res.send(req.params.event));
 
-router.get("/", (req, res, next) => {
-    res.locals.promise = models.Event.getEvents();
-    return next();
+router.get("/:status?", (req, res, next) => {
+    if(req.query.status) {
+        res.locals.promise = models.Event.getFilteredEvents(req.query.status);
+        return next();
+    } else {
+        res.locals.promise = models.Event.getEvents();
+        return next();
+    }
 });
+
 
 
 router.post("/:eventId/option", passport.authenticate("jwt", { session: false }),

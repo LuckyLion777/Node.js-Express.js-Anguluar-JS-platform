@@ -346,6 +346,18 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "Update Category":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Delete Category":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
             case "Create Collection":
                 new Permission(req, next)
                     .isAdmin()
@@ -526,6 +538,7 @@ const activities = (activity, req, res, next) => {
                     .isActive()
                     .done();
                 break;
+
             //TODO: Add a handler if the activity does not exist
         }
     }

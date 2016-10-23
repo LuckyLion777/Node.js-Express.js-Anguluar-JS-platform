@@ -17,19 +17,38 @@ const branchSchema = new mongoose.Schema({
         }
     },
     location: {
-        type: String,
-        required: true,
-        validate: {
-            validator: location => {
-                return validator.isURL(location);
-            },
-            message: "Must Be a Valid URL"
+        latitude: {
+            type: String,
+            required: true
+        },
+        longitude: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        }
+
+    },
+
+    address: {
+        arabic: {
+            type: String
+        },
+        english: {
+            type: String
         }
     },
-    arabicAddress: String,
-    englishAddress: String,
-    arabicOpeningHours: String,
-    englishOpeningHours: String
+
+    openingHours: {
+        arabic: {
+            type: String
+        },
+        english: {
+            type: String
+        }
+    }
 });
 
 module.exports = branchSchema;

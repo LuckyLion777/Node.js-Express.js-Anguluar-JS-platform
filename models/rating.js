@@ -5,8 +5,8 @@ const ratingSchema = new mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "AbstractUser",
-        required: true,
-        validate: {
+        required: true
+/*        validate: {
             validator: (userId, done) => {
                 AbstractUser.count({ _id: userId })
                     .then(count => {
@@ -17,7 +17,7 @@ const ratingSchema = new mongoose.Schema({
                     })
             },
             message: "AbstractUser Does Not Exist"
-        }
+        }*/
     },
     rating: {
         type: Number,

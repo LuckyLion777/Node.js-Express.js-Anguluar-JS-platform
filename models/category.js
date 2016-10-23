@@ -3,11 +3,11 @@ const imageSchema = require("./image");
 
 const categorySchema = new mongoose.Schema({
     name: {
-        arabicName: {
+        arabic: {
             type: String,
             required: true
         },
-        englishName: {
+        english: {
             type: String,
             required: true
         }
@@ -38,6 +38,14 @@ categorySchema.statics.getCategories = function () {
     return this.find().populate('parent')
         .exec(function(err, user){
         });
+};
+
+categorySchema.methods.updateCategory = function (categoryInfo) {
+    return this.update(categoryInfo, { runValidators: true });
+};
+
+categorySchema.methods.removeCategory = function () {
+    return this.remove()
 };
 
 const Category = mongoose.model("Category", categorySchema);

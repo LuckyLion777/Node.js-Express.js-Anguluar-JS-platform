@@ -34,6 +34,14 @@
    npm start
 ```
 
+### Update Back-end Server
+```bash
+   cd /usr/share/nginx/wain_back-end
+   forever list
+   kill [pid]
+   git pull
+```
+
 TO DO:
     - Edit jwt to use key pair.
     - When removing non-existing item from embedded array no err is thrown.

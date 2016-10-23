@@ -7,6 +7,7 @@ const Collection = require("./collection").Collection;
 
 
 const STATUS = {
+    PUBLISHED: "PUBLISHED",
     APPROVED: "APPROVED",
     PROVOKED: "PROVOKED",
     PENDING: "PENDING",
@@ -76,7 +77,7 @@ const articleSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: [ STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
+        enum: [ STATUS.PUBLISHED, STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
         default: STATUS.PENDING
     },
     tags: [ String ],
@@ -114,8 +115,12 @@ articleSchema.statics.getArticles = function () {
     return this.find().populate('user').populate('language');
 };
 
+articleSchema.statics.getArticle = function (articleId) {
+    return this.findById(articleId).populate('user').populate('language');
+};
+
 articleSchema.statics.getFilteredArticles = function (status) {
-    return this.find({ status: status });
+    return this.find({ status: status }).populate('user').populate('language');
 };
 
 articleSchema.methods.addComment = function (commentInfo) {

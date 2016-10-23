@@ -8,23 +8,32 @@ const AbstractUser = require("./abstractUser").AbstractUser;
 const Category = require("./category").Category;
 const validator = require("validator");
 
+const STATUS = {
+    PUBLISHED: "PUBLISHED",
+    APPROVED: "APPROVED",
+    PROVOKED: "PROVOKED",
+    PENDING: "PENDING",
+    ONHOLD: "ONHOLD",
+    SUSPENDED: "SUSPENDED"
+};
+
 const eventSchema = new mongoose.Schema({
     title: {
-        arabicTitle: {
+        arabic: {
             type: String,
             required: true
         },
-        englishTitle: {
+        english: {
             type: String,
             required: true
         }
     },
     description: {
-        arabicDescription: {
+        arabic: {
             type: String,
             required: true
         },
-        englishDescription: {
+        english: {
             type: String,
             required: true
         }
@@ -74,6 +83,11 @@ const eventSchema = new mongoose.Schema({
     tags: [{
         type:String,
     }],
+    status: {
+        type: String,
+        enum: [ STATUS.PUBLISHED, STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
+        default: STATUS.PENDING,
+    },
     comments: [ commentSchema ],
     photos: [ imageSchema ],
     categories: [{
@@ -111,6 +125,9 @@ eventSchema.statics.getEvents = function () {
     return this.find();
 };
 
+eventSchema.statics.getFilteredEvents = function (status) {
+    return this.find({ status: status });
+};
 
 eventSchema.methods.addOption = function (optionInfo) {
     this.options.addToSet(optionInfo);
