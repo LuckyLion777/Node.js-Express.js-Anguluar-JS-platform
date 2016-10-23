@@ -102,47 +102,34 @@ router.delete("/:articleId/like", passport.authenticate("jwt", { session: false 
 });
 
 
-router.post("/:articleId/publish", passport.authenticate("jwt", { session: false }),
+router.put("/:articleId/publish", passport.authenticate("jwt", { session: false }),
     auth.can("Publish Article"), (req, res, next) => {
     res.locals.promise = req.params.article.publish();
     return next();
 });
 
 
-router.post("/:articleId/approve", passport.authenticate("jwt", { session: false }),
+router.put("/:articleId/approve", passport.authenticate("jwt", { session: false }),
     auth.can("Approve Article"), (req, res, next) => {
     res.locals.promise = req.params.article.approve();
     return next();
 });
 
-router.post("/:articleId/hold", passport.authenticate("jwt", { session: false }),
+router.put("/:articleId/hold", passport.authenticate("jwt", { session: false }),
     auth.can("Hold Article"), (req, res, next) => {
     res.locals.promise = req.params.article.hold();
     return next();
 });
 
-router.post("/:articleId/suspend", passport.authenticate("jwt", { session: false }),
+router.put("/:articleId/suspend", passport.authenticate("jwt", { session: false }),
     auth.can("Suspend Article"), (req, res, next) => {
     res.locals.promise = req.params.article.suspend();
     return next();
 });
 
-router.post("/:articleId/provoke", passport.authenticate("jwt", { session: false }),
+router.put("/:articleId/provoke", passport.authenticate("jwt", { session: false }),
     auth.can("Provoke Article"), (req, res, next) => {
     res.locals.promise = req.params.article.provoke();
-    return next();
-});
-
-
-router.post("/:articleId/collection", passport.authenticate("jwt", { session: false }),
-    auth.can("Add Article Collection"), (req, res, next) => {
-    res.locals.promise = req.params.article.addCollection(req.body.collection);
-    return next();
-});
-
-router.delete("/:articleId/collection/:collectionId", passport.authenticate("jwt", { session: false }),
-    auth.can("Remove Article Collection"), (req, res, next) => {
-    res.locals.promise = req.params.article.removeCollection(req.params.collectionId);
     return next();
 });
 

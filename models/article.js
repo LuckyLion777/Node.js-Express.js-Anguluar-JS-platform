@@ -3,7 +3,6 @@ const imageSchema = require("./image");
 const commentSchema = require("./comment");
 const AbstractUser = require("./abstractUser").AbstractUser;
 const Language = require("./language").Language;
-const Collection = require("./collection").Collection;
 
 
 const STATUS = {
@@ -86,20 +85,8 @@ const articleSchema = new mongoose.Schema({
         default: false
     },
     cover: imageSchema,
-    published: Boolean,
     photos: [ imageSchema ],
-    comments: [ commentSchema ],
-    collections: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Collection",
-        validate: {
-            validator: (collectionId, done) => {
-                Collection.count({ _id: collectionId })
-                    .then( count => done(count) , err => done(false, err) )
-            },
-            message: "Collection Does Not Exist"
-        }
-    }]
+    comments: [ commentSchema ]
 }, { timestamps: true });
 
 
@@ -172,7 +159,7 @@ articleSchema.methods.unlike = function (userId) {
 
 
 articleSchema.methods.publish = function () {
-    this.published = true;
+    this.status = STATUS.PUBLISHED;
     return this.save();
 };
 
@@ -195,17 +182,6 @@ articleSchema.methods.suspend = function () {
 articleSchema.methods.provoke = function () {
     this.status = STATUS.PROVOKED;
     return this.save()
-};
-
-
-articleSchema.methods.addCollection = function (collectionInfo) {
-    this.collections.addToSet(...collectionInfo);
-    return this.save();
-};
-
-articleSchema.methods.removeCollection = function (collectionId) {
-    this.collections.pull(collectionId);
-    return this.save();
 };
 
 
