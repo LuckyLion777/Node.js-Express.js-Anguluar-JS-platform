@@ -15,6 +15,7 @@ router.use("/businessCategory", require("./businessCategory"));
 router.use("/businessOption", require("./businessOption"));
 router.use("/eventCategory", require("./eventCategory"));
 router.use("/eventOption", require("./eventOption"));
+router.use("/contents?", require("./content"));
 router.use("/upload", require("./upload"));
 router.use("/", require("./util"));
 

@@ -43,18 +43,28 @@ const eventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    date: {
+    startDate: {
         type: Date,
         required: true
     },
-    duration: String,
+    endDate: {
+        type: Date,
+        required: true
+    },
     location: {
-        type: String,
-        validation: {
-            validator: location => {
-                return validator.isURL(location);
-            }
+        latitude: {
+            type: String,
+            required: true
+        },
+        longitude: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
         }
+
     },
     phone: {
         type: Number,
@@ -83,6 +93,10 @@ const eventSchema = new mongoose.Schema({
     tags: [{
         type:String,
     }],
+    editorPick: {
+        type:Boolean,
+        default: false
+    },
     status: {
         type: String,
         enum: [ STATUS.PUBLISHED, STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],

@@ -13,5 +13,6 @@ module.exports = {
     Upload: require("./upload").Upload,
     Location: require("./location").Location,
     Event: require("./event").Event,
-    Collection: require("./collection").Collection
+    Collection: require("./collection").Collection,
+    Content: require("./content").Content
 };

@@ -81,6 +81,10 @@ const articleSchema = new mongoose.Schema({
         default: STATUS.PENDING
     },
     tags: [ String ],
+    editorPick: {
+        type:Boolean,
+        default: false
+    },
     cover: imageSchema,
     published: Boolean,
     photos: [ imageSchema ],

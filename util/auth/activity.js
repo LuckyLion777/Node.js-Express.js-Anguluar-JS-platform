@@ -538,6 +538,54 @@ const activities = (activity, req, res, next) => {
                     .isActive()
                     .done();
                 break;
+            case "Create Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Update Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Remove Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Publish Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Approve Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Hold Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Suspend Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Provoke Content":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
 
             //TODO: Add a handler if the activity does not exist
         }

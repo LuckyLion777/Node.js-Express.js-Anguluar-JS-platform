@@ -3,7 +3,6 @@ const imageSchema = require("./image");
 const AbstractUser = require("./abstractUser").AbstractUser;
 const socialMediaSchema = require("./socialMedia");
 const branchSchema = require("./branch");
-const optionSchema = require("./option");
 const reviewSchema = require("./review");
 const ratingSchema = require("./rating");
 const Category = require("./businessCategory").BusinessCategory;
@@ -66,9 +65,18 @@ const businessSchema = new mongoose.Schema({
     },
     socialMedias: [ socialMediaSchema ],
     photos: [ imageSchema ],
+    ownershipDocument: [ imageSchema ],
     tags: [{
         type:String,
     }],
+    editorPick: {
+        type:Boolean,
+        default: false
+    },
+    isSponsored: {
+        type:Boolean,
+        default: false
+    },
     branches: [ branchSchema ],
     categories: [{
         type: mongoose.Schema.Types.ObjectId,
