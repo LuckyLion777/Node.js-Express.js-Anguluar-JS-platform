@@ -358,6 +358,42 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "Create Tag":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Update Tag":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Delete Tag":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Create SystemVariable":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Update SystemVariable":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Delete SystemVariable":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
             case "Create Collection":
                 new Permission(req, next)
                     .isAdmin()

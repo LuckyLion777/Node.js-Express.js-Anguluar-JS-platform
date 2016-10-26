@@ -14,5 +14,7 @@ module.exports = {
     Location: require("./location").Location,
     Event: require("./event").Event,
     Collection: require("./collection").Collection,
-    Content: require("./content").Content
+    Content: require("./content").Content,
+    Tag: require("./tag").Tag,
+    SystemVariable: require("./systemVariable").SystemVariable
 };

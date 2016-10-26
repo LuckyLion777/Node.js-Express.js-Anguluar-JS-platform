@@ -124,7 +124,6 @@ articleSchema.methods.removeComment = function (commentId) {
     return this.save();
 };
 
-
 articleSchema.methods.addPhoto = function (photosInfo) {
     this.photos.addToSet(...photosInfo);
     return this.save();
@@ -145,7 +144,6 @@ articleSchema.methods.removeTag = function (tag) {
     this.tags.pull(tag);
     return this.save();
 };
-
 
 articleSchema.methods.like = function (userId) {
     this.likes.addToSet(userId);

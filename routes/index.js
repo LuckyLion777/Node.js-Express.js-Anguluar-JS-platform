@@ -18,6 +18,7 @@ router.use("/eventOption", require("./eventOption"));
 router.use("/contents?", require("./content"));
 router.use("/upload", require("./upload"));
 router.use("/", require("./util"));
-
+router.use("/tags?", require("./tag"));
+router.use("/systemVariables?", require("./systemVariable"));
 
 module.exports = router;
