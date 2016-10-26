@@ -394,6 +394,12 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "GET Admin":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
             case "Create Collection":
                 new Permission(req, next)
                     .isAdmin()

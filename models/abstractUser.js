@@ -65,7 +65,11 @@ abstractUserSchema.methods.removeUser = function () {
 };
 
 abstractUserSchema.statics.getUsers = function () {
-    return this.find().populate('bookmarks').populate('avatar').populate('language');
+    return this.find().where("__t").ne("Admin").populate('bookmarks').populate('avatar').populate('language');
+};
+
+abstractUserSchema.statics.getAdmins = function () {
+    return this.find().where("__t").equals("Admin");
 };
 
 abstractUserSchema.statics.getUser = function (userId) {
