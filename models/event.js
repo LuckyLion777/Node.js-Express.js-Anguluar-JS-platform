@@ -4,7 +4,7 @@ const optionsSchema = require("./option");
 const socialMediaSchema = require("./socialMedia");
 const ratingSchema = require("./rating");
 const commentSchema = require("./comment");
-const AbstractUser = require("./abstractUser").AbstractUser;
+const User = require("./user").User;
 const Category = require("./eventCategory").EventCategory;
 const Option = require("./eventOption").EventOption;
 const validator = require("validator");
@@ -75,10 +75,10 @@ const eventSchema = new mongoose.Schema({
     socialMedias: [ socialMediaSchema ],
     attendants: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "AbstractUser",
+        ref: "User",
         validate: {
             validator: (userId, done) => {
-                AbstractUser.count({ _id: userId })
+                User.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {
@@ -86,7 +86,7 @@ const eventSchema = new mongoose.Schema({
                         return done(false, err)
                     })
             },
-            message: "AbstractUser Does Not Exist"
+            message: "User Does Not Exist"
         }
     }],
     ratings: [ ratingSchema ],

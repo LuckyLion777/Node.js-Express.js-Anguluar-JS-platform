@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const AbstractUser = require("./abstractUser").AbstractUser;
+const User = require("./user").User;
 const Language = require("./language").Language;
 
 
@@ -15,11 +15,11 @@ const STATUS = {
 const contentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "AbstractUser",
+        ref: "User",
         required: true,
         validate: {
             validator: (userId, done) => {
-                AbstractUser.count({ _id: userId })
+                User.count({ _id: userId })
                     .then(count => {
                         return done(count)
                     }, err => {
@@ -27,7 +27,7 @@ const contentSchema = new mongoose.Schema({
                         return done(false, err)
                     })
             },
-            message: "AbstractUser Does Not Exist"
+            message: "User Does Not Exist"
         }
     },
     language: {

@@ -9,7 +9,7 @@ const Permission  = function(req, next) {
 
 Permission.prototype.isAdmin = function () {
     this.result = this.result &&
-        (this.req.user.__t == "Admin");
+        (this.req.user.userType == "Admin");
     return this;
 };
 
@@ -33,7 +33,7 @@ Permission.prototype.isNotArticleOwner = function () {
 
 Permission.prototype.isBusinessUser = function () {
     this.result = this.result &&
-        this.req.user.__t == "BusinessUser";
+        this.req.user.userType == "BusinessUser";
     return this;
 };
 
