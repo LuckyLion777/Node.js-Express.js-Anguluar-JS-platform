@@ -2,7 +2,7 @@ const Permission = require("./permission");
 
 
 const activities = (activity, req, res, next) => {
-    if(req.user.__t == "Admin") {
+    if(req.user.userType == "Admin") {
         return next();
     } else {
         switch(activity) {
@@ -538,8 +538,14 @@ const activities = (activity, req, res, next) => {
                     .isAdmin()
                     .done();
                 break;
+			
+			case "Update User":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
 
-            case "Remove Users":
+            case "Remove User":
                 new Permission(req, next)
                     .isAdmin()
                     .done();

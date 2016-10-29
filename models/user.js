@@ -17,7 +17,7 @@ const STATUS = {
 
 const USER = {
     ADMIN: "Admin",
-    BUSINESSUSER: "BusinessUser",
+    BUSINESSUSER: "Business User",
     USER: "User"
 };
 

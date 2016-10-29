@@ -6,49 +6,41 @@ const upload = require("../config/multer");
 const auth = require("../util/auth/index");
 
 
-router.route("/")
-    .put(passport.authenticate("jwt", {session: false}), (req, res, next) => {
+    
 
-		    res.locals.promise = req.user.updateUser(req.body);
-			return next();
-    })
+router.post("/", passport.authenticate("jwt", { session: false }),
+    (req, res, next) => {
 
-    .post((req, res, next) => {
-
-        models.User.createUser(req.body, (err, user) => {
-            if(err) {
-                return next(err);
-            } else {
-                res.locals.promise = user;
-                return next();
-            }
-        })
-    })
-
-
-    .get(passport.authenticate("jwt", {session: false}), (req, res, next) => {
-        return res.send(req.user);
-    })
-
-    .delete(passport.authenticate("jwt", {session: false}), (req, res, next) => {
-        res.locals.promise = req.user.removeUser();
-        return next();
-    });
-
-
-router.get("/:userId", passport.authenticate("jwt", {session: false}), (req, res, next) => {
-    res.locals.promise = models.User.getUser(req.params.userId);
+    res.locals.promise = models.User.createUser(req.body);
     return next();
 });
 
-router.put("/:userId", passport.authenticate("jwt", {session: false}), auth.can("Remove User"),(req, res, next) => {
-    res.locals.promise = req.params.user.updateUser(req.body);
+router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    return res.send(req.user);
+});
+
+router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    res.locals.promise = req.user.updateUser(req.body);
+	return next();
+});
+
+router.put("/:userId", passport.authenticate("jwt", { session: false }),
+    auth.can("Update User"), (req, res, next) => {
+	res.locals.promise = req.params.user.updateUser(req.body);
     return next();
 });
 
+router.delete("/:userId", passport.authenticate("jwt", { session: false }),
+    auth.can("Remove User"), (req, res, next) => {
+	res.locals.promise = req.params.user.removeUser();
+    return next();
+});
 
-router.delete("/:userId", passport.authenticate("jwt", {session: false}), auth.can("Remove User"), (req, res, next) => {
-    res.locals.promise = req.params.user.removeUser();
+router.get("/:userId", passport.authenticate("jwt", { session: false }),
+    auth.can("List Users"), (req, res, next) => {
+
+	res.locals.promise = models.User.getUser(req.params.userId);
+
     return next();
 });
 

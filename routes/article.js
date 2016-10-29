@@ -6,17 +6,15 @@ const upload = require("../config/multer");
 
 
 router.post("/", passport.authenticate("jwt", { session: false }),
-    auth.can("Create Article"), upload.single("cover"), (req, res, next) => {
+    auth.can("Create Article"), (req, res, next) => {
     req.body.user = req.user;
-    if(req.file) req.body.cover = { filename: req.file.filename };
 
     res.locals.promise = models.Article.createArticle(req.body);
     return next();
 });
 
 router.put("/:articleId", passport.authenticate("jwt", { session: false }),
-    auth.can("Update Article"), upload.single("cover"), (req, res, next) => {
-    if(req.file) req.body.cover = { filename: req.file.filename };
+    auth.can("Update Article"), (req, res, next) => {
 
     res.locals.promise = req.params.article.updateArticle(req.body);
     return next();
