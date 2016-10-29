@@ -109,6 +109,7 @@ userSchema.statics.createUser = function (userInfo, callback)  {
         if(err) {
             return callback(err, null);
         } else {
+
             return callback(null, this.create(userInfo))
         }
     })
@@ -119,7 +120,8 @@ userSchema.methods.updateUser = function (userInfo, callback) {
         if(err) {
             return callback(err, null);
         } else {
-            return callback(null, this.update(userInfo, { runValidators: true }))
+            //console.log(this.update(userInfo));
+            return callback(null, this.update(userInfo))
         }
     })
 };
