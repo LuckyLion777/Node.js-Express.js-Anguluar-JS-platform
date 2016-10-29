@@ -8,8 +8,7 @@ const auth = require("../util/auth/index");
 
     
 
-router.post("/", passport.authenticate("jwt", { session: false }),
-    (req, res, next) => {
+router.post("/", (req, res, next) => {
 
     res.locals.promise = models.User.createUser(req.body);
     return next();
