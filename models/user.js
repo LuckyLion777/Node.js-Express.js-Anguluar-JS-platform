@@ -129,7 +129,7 @@ userSchema.methods.removeUser = function () {
 };
 
 userSchema.statics.getUsers = function () {
-    return this.find().where("userType").ne("Admin").populate('bookmarks').populate('avatar').populate('language');
+    return this.find().where("userType").ne("Admin").populate('bookmarks').populate('language');
 };
 
 userSchema.statics.getAdmins = function () {
@@ -137,7 +137,7 @@ userSchema.statics.getAdmins = function () {
 };
 
 userSchema.statics.getUser = function (userId) {
-    return this.findById(userId).populate('bookmarks').populate('language').populate('avatar');
+    return this.findById(userId).populate('bookmarks').populate('language');
 };
 
 userSchema.statics.checkEmail = function (email) {
