@@ -7,17 +7,10 @@ const auth = require("../util/auth/index");
 
 
 router.route("/")
-    .put(passport.authenticate("jwt", {session: false}), upload.single("avatar"), (req, res, next) => {
-        if (req.file) req.body.avatar = {filename: req.file.filename};
+    .put(passport.authenticate("jwt", {session: false}), (req, res, next) => {
 
-        req.user.updateUser(req.body, (err, user) => {
-            if (err) {
-                return next(err);
-            } else {
-                res.locals.promise = user;
-                return next();
-            }
-        })
+		    res.locals.promise = req.user.updateUser(req.body);
+			return next();
     })
 
     .post((req, res, next) => {
@@ -48,7 +41,10 @@ router.get("/:userId", passport.authenticate("jwt", {session: false}), (req, res
     return next();
 });
 
-
+router.put("/:userId", passport.authenticate("jwt", {session: false}), auth.can("Remove User"),(req, res, next) => {
+    res.locals.promise = req.params.user.updateUser(req.body);
+    return next();
+});
 
 
 router.delete("/:userId", passport.authenticate("jwt", {session: false}), auth.can("Remove User"), (req, res, next) => {
