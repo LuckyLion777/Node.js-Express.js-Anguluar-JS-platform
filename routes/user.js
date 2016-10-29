@@ -10,7 +10,14 @@ const auth = require("../util/auth/index");
 
 router.post("/", (req, res, next) => {
 
-    res.locals.promise = models.User.createUser(req.body);
+    res.locals.promise = models.User.createUser(req.body, (err, user) => {
+            if (err) {
+                return next(err);
+            } else {
+                res.locals.promise = user;
+                return next();
+            }
+    });
     return next();
 });
 
@@ -19,7 +26,15 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
 });
 
 router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-    res.locals.promise = req.user.updateUser(req.body);
+
+    res.locals.promise = req.user.updateUser(req.body, (err, user) => {
+            if (err) {
+                return next(err);
+            } else {
+                res.locals.promise = user;
+                return next();
+            }
+    });
 	return next();
 });
 
