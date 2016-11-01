@@ -14,7 +14,7 @@ server.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 server.use([
-    express.static(path.join(__dirname, "./public")),
+    express.static(path.join(__dirname, "./admin/public")),
     logger("dev", {
         skip: () => {
             return process.env.NODE_ENV == "test"
