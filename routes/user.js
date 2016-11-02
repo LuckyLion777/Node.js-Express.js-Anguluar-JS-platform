@@ -5,9 +5,6 @@ const jwtGenerator = require("../util/jwtGenerator");
 const upload = require("../config/multer");
 const auth = require("../util/auth/index");
 
-
-    
-
 router.post("/", (req, res, next) => {
 
     models.User.createUser(req.body, (err, user) => {
@@ -39,6 +36,13 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res, nex
 router.put("/:userId", passport.authenticate("jwt", { session: false }),
     auth.can("Update User"), (req, res, next) => {
 	res.locals.promise = req.params.user.updateUser(req.body);
+    return next();
+});
+
+router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
+    auth.can("Password Reset"), (req, res, next) => {
+    console.log("1111111111111");
+    res.locals.promise = req.params.user.resetUserPass();
     return next();
 });
 

@@ -17,5 +17,6 @@ router.use("/upload", require("./upload"));
 router.use("/", require("./util"));
 router.use("/tags?", require("./tag"));
 router.use("/systemVariables?", require("./systemVariable"));
+router.use("/admin", require("./admin"));
 
 module.exports = router;

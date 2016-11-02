@@ -545,6 +545,12 @@ const activities = (activity, req, res, next) => {
                     .done();
                 break;
 
+            case "Password Reset":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;                
+
             case "Remove User":
                 new Permission(req, next)
                     .isAdmin()

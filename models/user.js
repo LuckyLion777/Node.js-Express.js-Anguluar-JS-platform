@@ -110,7 +110,7 @@ userSchema.statics.createUser = function (userInfo, callback)  {
             return callback(err, null);
         } else {
 
-            return callback(null, this.create(userInfo))
+            return callback(null, this.create(userInfo));
         }
     })
 };
@@ -121,9 +121,22 @@ userSchema.methods.updateUser = function (userInfo, callback) {
             return callback(err, null);
         } else {
             //console.log(this.update(userInfo));
-            return callback(null, this.update(userInfo))
+            return callback(null, this.update(userInfo));
         }
     })
+};
+
+userSchema.methods.resetUserPass = function () {
+    password = "123456789";
+    console.log(password);
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if(err) {
+            return err;
+        } else {
+            password = hashedPassword;
+            return this.update({password : password});
+        }
+    });
 };
 
 userSchema.methods.removeUser = function () {
