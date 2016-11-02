@@ -21,9 +21,10 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
     return res.send(req.user);
 });
 
-router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-
-    req.user.updateUser(req.body, (err, user) => {
+router.put("/:userId", passport.authenticate("jwt", { session: false }),
+    auth.can("Update User"), (req, res, next) => {
+    req.body._id = req.params.userId;
+    req.user.updateUser(req.body, (err, user) => {        
         if(err) {
             return next(err);
         } else {
@@ -33,18 +34,29 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res, nex
     })
 });
 
-router.put("/:userId", passport.authenticate("jwt", { session: false }),
-    auth.can("Update User"), (req, res, next) => {
-	res.locals.promise = req.params.user.updateUser(req.body);
-    return next();
-});
-
 router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
     auth.can("Password Reset"), (req, res, next) => {
-    console.log("1111111111111");
-    res.locals.promise = req.params.user.resetUserPass();
-    return next();
+    req.params.user.resetUserPass(models.User.getUser(req.params.userId), (err, user) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.locals.promise = user;
+            return next();
+        }
+    })
 });
+
+// router.put("/:userId", passport.authenticate("jwt", { session: false }),
+//     auth.can("Update User"), (req, res, next) => {
+//     req.params.user.updateUser(models.User.getUser(req.params.userId), (err, user) => {
+//         if(err) {
+//             return next(err);
+//         } else {
+//             res.locals.promise = user;
+//             return next();
+//         }
+//     })
+// });
 
 router.delete("/:userId", passport.authenticate("jwt", { session: false }),
     auth.can("Remove User"), (req, res, next) => {

@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
         select: false
     },
     username: {
@@ -120,27 +120,24 @@ userSchema.methods.updateUser = function (userInfo, callback) {
         if(err) {
             return callback(err, null);
         } else {
-            //console.log(this.update(userInfo));
             return callback(null, this.update(userInfo));
         }
     })
 };
 
-userSchema.methods.resetUserPass = function () {
-    password = "123456789";
-    console.log(password);
-    bcrypt.hash(password, 10, (err, hashedPassword) => {
+userSchema.methods.resetUserPass = function (userInfo, callback) {
+    userInfo.password = "12345";
+    hashPassword(userInfo, (err) => {
         if(err) {
-            return err;
+            return callback(err, null);
         } else {
-            password = hashedPassword;
-            return this.update({password : password});
+            return callback(null, this.update(userInfo));
         }
-    });
+    })
 };
 
 userSchema.methods.removeUser = function () {
-    return this.remove()
+    return this.remove();
 };
 
 userSchema.statics.getUsers = function () {
