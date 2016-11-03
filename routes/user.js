@@ -21,9 +21,8 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
     return res.send(req.user);
 });
 
-router.put("/:userId", passport.authenticate("jwt", { session: false }),
+router.put("/", passport.authenticate("jwt", { session: false }),
     auth.can("Update User"), (req, res, next) => {
-    req.body._id = req.params.userId;
     req.user.updateUser(req.body, (err, user) => {        
         if(err) {
             return next(err);
@@ -45,18 +44,6 @@ router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
         }
     })
 });
-
-// router.put("/:userId", passport.authenticate("jwt", { session: false }),
-//     auth.can("Update User"), (req, res, next) => {
-//     req.params.user.updateUser(models.User.getUser(req.params.userId), (err, user) => {
-//         if(err) {
-//             return next(err);
-//         } else {
-//             res.locals.promise = user;
-//             return next();
-//         }
-//     })
-// });
 
 router.delete("/:userId", passport.authenticate("jwt", { session: false }),
     auth.can("Remove User"), (req, res, next) => {
