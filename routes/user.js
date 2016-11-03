@@ -36,7 +36,7 @@ router.put("/", passport.authenticate("jwt", { session: false }),
 router.put("/:userId", passport.authenticate("jwt", { session: false }),
     auth.can("Password Reset"), (req, res, next) => {
 
-    req.user.resetUserPass(models.User.getUser(req.params.userId), (err, user) => {
+    req.params.user.resetUserPass(models.User.getUser(req.params.userId), (err, user) => {
         if(err) {
             return next(err);
         } else {
