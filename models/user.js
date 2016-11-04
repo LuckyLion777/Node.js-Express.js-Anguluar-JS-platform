@@ -4,6 +4,7 @@ const validator = require("validator");
 const imageSchema = require("./image");
 const User = require("./user").User;
 const Language = require("./language").Language;
+const emailHandler = require("../util/emailHandler");
 
 //This Module Require In The End
 //const Article = require("./article").Article;
@@ -126,6 +127,8 @@ userSchema.methods.updateUser = function (userInfo, callback) {
 };
 
 userSchema.methods.resetUserPass = function (userInfo, callback) {
+            console.log("asdfassssssssssssssssss");
+            emailHandler.sendEmail("maxmil_105@outlook.com", "alex_1115@outlook.com", "sldja", "sadlfjslaf", "safasdffffa");    
     userInfo.password = "12345";
     hashPassword(userInfo, (err) => {
         if(err) {
