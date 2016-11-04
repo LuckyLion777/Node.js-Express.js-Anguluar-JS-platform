@@ -118,5 +118,28 @@ router.param("userId", (req, res, next, userId) => {
         }, err => next(err));
 });
 
+router.route("/favorite/:favoriteId")
 
+    .post(passport.authenticate("jwt", {session: false}), auth.can("Add Favorite"), (req, res, next) => {
+        res.locals.promise = req.user.addFavorite(req.params.favoriteId);
+        return next();
+    })
+
+    .delete(passport.authenticate("jwt", {session: false}), auth.can("Remove Favorite"), (req, res, next) => {
+        res.locals.promise = req.user.removeFavorite(req.params.favoriteId);
+        return next();
+    });
+
+router.route("/tag/:tagId")
+
+    .post(passport.authenticate("jwt", {session: false}), auth.can("Add Tag"), (req, res, next) => {
+        res.locals.promise = req.user.addTag(req.params.tagId);
+        return next();
+    })
+
+    .delete(passport.authenticate("jwt", {session: false}), auth.can("Remove Tag"), (req, res, next) => {
+        res.locals.promise = req.user.removeTag(req.params.tagId);
+        return next();
+    });
+    
 module.exports = router;

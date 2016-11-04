@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 const imageSchema = require("./image");
 const User = require("./user").User;
 const Language = require("./language").Language;
 const emailHandler = require("../util/emailHandler");
+const serverEmails = require("../res/serverEmails");
+const emailResetTemplate = require("../res/emailTemplates").emailResetTemplate;
 
 //This Module Require In The End
 //const Article = require("./article").Article;
@@ -127,13 +131,13 @@ userSchema.methods.updateUser = function (userInfo, callback) {
 };
 
 userSchema.methods.resetUserPass = function (userInfo, callback) {
-            console.log("asdfassssssssssssssssss");
-            emailHandler.sendEmail("maxmil_105@outlook.com", "alex_1115@outlook.com", "sldja", "sadlfjslaf", "safasdffffa");    
-    userInfo.password = "12345";
+    userInfo.password = Math.floor((Math.random() * 100000));
+    var content = "Your password was reset to " + userInfo.password; 
     hashPassword(userInfo, (err) => {
         if(err) {
             return callback(err, null);
         } else {
+            emailHandler.sendEmail(serverEmails.khaleel, userInfo.email, emailResetTemplate.title, content, emailResetTemplate.id);                
             return callback(null, this.update(userInfo));
         }
     })
@@ -148,7 +152,7 @@ userSchema.statics.getUsers = function () {
 };
 
 userSchema.statics.getAdmins = function () {
-    return this.find().where("userType").equals("Admin");
+    return this.find().where("userType").equals("Admin").populate('bookmarks').populate('language');
 };
 
 userSchema.statics.getUser = function (userId) {
@@ -157,8 +161,25 @@ userSchema.statics.getUser = function (userId) {
 
 userSchema.statics.checkEmail = function (email) {
     //todo return custom message
-    return this.findOne({email:email});
-
+    passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
+    this.findOne({ email: email }).select("+password")
+        .then( (user) => {
+            if (!user) {
+                return done(null, false);
+            } else {
+                bcrypt.compare(password, user.password, (err, res) => {
+                    if (err) { return done(err); }
+                    if(res) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false);
+                    }
+                });
+            }
+        }, (err) => {
+            return done(err);
+        });
+}));
 
 };
 
