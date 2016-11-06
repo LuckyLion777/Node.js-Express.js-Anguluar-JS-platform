@@ -211,6 +211,35 @@ userSchema.methods.removeBookmark = function (articleId) {
     return this.save();
 };
 
+userSchema.methods.addTag = function (tagId) {
+    this.tags.addToSet(tagId);
+    return this.save();
+};
+
+userSchema.methods.removeTag = function (tagId) {
+    this.tags.pull(tagId);
+    return this.save();
+};
+
+userSchema.methods.addFavorite = function (favoriteId) {
+    this.favorites.addToSet(favoriteId);
+    return this.save();
+};
+
+userSchema.methods.removeFavorite = function (favoriteId) {
+    this.favorites.pull(favoriteId);
+    return this.save();
+};
+
+userSchema.methods.addAttend = function (attendId) {
+    this.attends.addToSet(attendId);
+    return this.save();
+};
+
+userSchema.methods.removeAttend = function (attendId) {
+    this.attends.pull(attendId);
+    return this.save();
+};
 
 const hashPassword = (userInfo, callback) => {
     if(!userInfo.password) {
@@ -246,6 +275,54 @@ userSchema.add({
                     .then(count => done(count), err => done(false, err));
             },
             message: "Article Does Not Exist"
+        }
+    }]
+});
+
+const Business = require("./business").Business;
+userSchema.add({
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Business",
+        validate: {
+            validator: (businessId, done) => {
+                Business.count({ _id: businessId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Business Does Not Exist"
+        }
+    }]
+});
+
+const Tag = require("./tag").Tag;
+userSchema.add({
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        validate: {
+            validator: (tagId, done) => {
+                Tag.count({ _id: tagId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Tag Does Not Exist"
+        }
+    }]
+});
+
+const Attend = require("./event").Event;
+userSchema.add({
+    attends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Attend",
+        validate: {
+            validator: (attendId, done) => {
+                Attend.count({ _id: attendId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Attend Does Not Exist"
         }
     }]
 });
