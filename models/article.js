@@ -18,7 +18,7 @@ const articleSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
+        required: false,
         validate: {
             validator: (userId, done) => {
                 User.count({ _id: userId })
@@ -51,7 +51,7 @@ const articleSchema = new mongoose.Schema({
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        required: false,
         unique: true,
         validate: {
             validator: (userId, done) => {
@@ -68,11 +68,11 @@ const articleSchema = new mongoose.Schema({
     }],
     title: {
         type: String,
-        required: true
+        required: false
     },
     body: {
         type: String,
-        required: true
+        required: false
     },
     status: {
         type: String,
@@ -99,6 +99,7 @@ articleSchema.methods.updateArticle = function (articleInfo) {
 };
 
 articleSchema.methods.removeArticle = function () {
+
     return this.remove();
 };
 
