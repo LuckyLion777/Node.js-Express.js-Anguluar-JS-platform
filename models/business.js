@@ -24,7 +24,7 @@ const businessSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
+        required: false,
         validate: {
             validator: (userId, done) => {
                 User.count({ _id: userId })
@@ -41,11 +41,11 @@ const businessSchema = new mongoose.Schema({
     name: {
         arabic: {
             type: String,
-            required: true
+            required: false
         },
         english: {
             type: String,
-            required: true
+            required: false
         }
     },
     logo: imageSchema,
@@ -170,7 +170,7 @@ businessSchema.statics.searchBusinesses = function (searchInfo) {
 };
 
 businessSchema.methods.updateBusiness = function (businessInfo) {
-    return this.update(businessInfo, { runValidators: true });
+    return this.update(businessInfo, { runValidators: false });
 };
 
 businessSchema.methods.removeBusiness = function () {

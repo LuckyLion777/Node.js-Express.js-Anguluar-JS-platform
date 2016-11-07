@@ -22,47 +22,47 @@ const eventSchema = new mongoose.Schema({
     title: {
         arabic: {
             type: String,
-            required: true
+            required: false
         },
         english: {
             type: String,
-            required: true
+            required: false
         }
     },
     description: {
         arabic: {
             type: String,
-            required: true
+            required: false
         },
         english: {
             type: String,
-            required: true
+            required: false
         }
     },
     host: {
         type: String,
-        required: true
+        required: false
     },
     startDate: {
         type: Date,
-        required: true
+        required: false
     },
     endDate: {
         type: Date,
-        required: true
+        required: false
     },
     location: {
         latitude: {
             type: String,
-            required: true
+            required: false
         },
         longitude: {
             type: String,
-            required: true
+            required: false
         },
         city: {
             type: String,
-            required: true
+            required: false
         }
 
     },
@@ -144,7 +144,7 @@ eventSchema.statics.createEvent = function (eventInfo) {
 };
 
 eventSchema.methods.updateEvent = function (eventInfo) {
-    return this.update(eventInfo, { runValidators: true });
+    return this.update(eventInfo, { runValidators: false });
 };
 
 eventSchema.methods.removeEvent = function () {
