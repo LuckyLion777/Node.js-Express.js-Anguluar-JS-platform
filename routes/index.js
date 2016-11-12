@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 
 router.use("/user", require("./user"));
+router.use("/signup", require("./signup"));
 router.use("/articles?", require("./article"));
 router.use("/business(es)?", require("./business"));
 router.use("/locations?", require("./location"));

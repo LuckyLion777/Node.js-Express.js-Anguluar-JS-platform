@@ -4,6 +4,10 @@ const auth = require("../util/auth/index");
 const passport = require("passport");
 const upload = require("../config/multer");
 
+router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    res.locals.promise = models.Article.getArticles();
+    return next();
+});
 
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Article"), (req, res, next) => {
@@ -142,6 +146,17 @@ router.param("articleId", (req, res, next, articleId) => {
                 return next();
             }
         }, err => next(err) );
+});
+
+router.delete("/:articleId", passport.authenticate("jwt", { session: false }),
+    auth.can("Remove Article"), (req, res, next) => {
+    res.locals.promise = models.Article.findByIdAndRemove(req.params.articleId, function(err, article) {
+    if (err) throw err;
+
+        console.log('Article successfully deleted!');
+    });
+    return next();
+  
 });
 
 

@@ -4,6 +4,10 @@ const auth = require("../util/auth/index");
 const passport = require("passport");
 const upload = require("../config/multer");
 
+router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    res.locals.promise = models.Event.getEvents();
+    return next();
+});
 
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Event"), upload.single("cover"), (req, res, next) => {

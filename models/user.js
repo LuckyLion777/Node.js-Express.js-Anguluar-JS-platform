@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 const imageSchema = require("./image");
 const User = require("./user").User;
 const Language = require("./language").Language;
+const emailHandler = require("../util/emailHandler");
+const serverEmails = require("../res/serverEmails");
+const emailResetTemplate = require("../res/emailTemplates").emailResetTemplate;
 
 //This Module Require In The End
 //const Article = require("./article").Article;
@@ -45,7 +50,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
         select: false
     },
     username: {
@@ -109,7 +114,8 @@ userSchema.statics.createUser = function (userInfo, callback)  {
         if(err) {
             return callback(err, null);
         } else {
-            return callback(null, this.create(userInfo))
+
+            return callback(null, this.create(userInfo));
         }
     })
 };
@@ -119,13 +125,26 @@ userSchema.methods.updateUser = function (userInfo, callback) {
         if(err) {
             return callback(err, null);
         } else {
-            return callback(null, this.update(userInfo, { runValidators: true }))
+            return callback(null, this.update(userInfo));
+        }
+    })
+};
+
+userSchema.methods.resetUserPass = function (userInfo, callback) {
+    userInfo.password = Math.floor((Math.random() * 100000));
+    var content = "Your password was reset to " + userInfo.password; 
+    hashPassword(userInfo, (err) => {
+        if(err) {
+            return callback(err, null);
+        } else {
+            emailHandler.sendEmail(serverEmails.khaleel, userInfo.email, emailResetTemplate.title, content, emailResetTemplate.id);                
+            return callback(null, this.update(userInfo));
         }
     })
 };
 
 userSchema.methods.removeUser = function () {
-    return this.remove()
+    return this.remove();
 };
 
 userSchema.statics.getUsers = function () {
@@ -133,7 +152,7 @@ userSchema.statics.getUsers = function () {
 };
 
 userSchema.statics.getAdmins = function () {
-    return this.find().where("userType").equals("Admin");
+    return this.find().where("userType").equals("Admin").populate('bookmarks').populate('language');
 };
 
 userSchema.statics.getUser = function (userId) {
@@ -142,8 +161,25 @@ userSchema.statics.getUser = function (userId) {
 
 userSchema.statics.checkEmail = function (email) {
     //todo return custom message
-    return this.findOne({email:email});
-
+    passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
+    this.findOne({ email: email }).select("+password")
+        .then( (user) => {
+            if (!user) {
+                return done(null, false);
+            } else {
+                bcrypt.compare(password, user.password, (err, res) => {
+                    if (err) { return done(err); }
+                    if(res) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false);
+                    }
+                });
+            }
+        }, (err) => {
+            return done(err);
+        });
+}));
 
 };
 
@@ -175,6 +211,35 @@ userSchema.methods.removeBookmark = function (articleId) {
     return this.save();
 };
 
+userSchema.methods.addTag = function (tagId) {
+    this.tags.addToSet(tagId);
+    return this.save();
+};
+
+userSchema.methods.removeTag = function (tagId) {
+    this.tags.pull(tagId);
+    return this.save();
+};
+
+userSchema.methods.addFavorite = function (favoriteId) {
+    this.favorites.addToSet(favoriteId);
+    return this.save();
+};
+
+userSchema.methods.removeFavorite = function (favoriteId) {
+    this.favorites.pull(favoriteId);
+    return this.save();
+};
+
+userSchema.methods.addAttend = function (attendId) {
+    this.attends.addToSet(attendId);
+    return this.save();
+};
+
+userSchema.methods.removeAttend = function (attendId) {
+    this.attends.pull(attendId);
+    return this.save();
+};
 
 const hashPassword = (userInfo, callback) => {
     if(!userInfo.password) {
@@ -210,6 +275,54 @@ userSchema.add({
                     .then(count => done(count), err => done(false, err));
             },
             message: "Article Does Not Exist"
+        }
+    }]
+});
+
+const Business = require("./business").Business;
+userSchema.add({
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Business",
+        validate: {
+            validator: (businessId, done) => {
+                Business.count({ _id: businessId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Business Does Not Exist"
+        }
+    }]
+});
+
+const Tag = require("./tag").Tag;
+userSchema.add({
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        validate: {
+            validator: (tagId, done) => {
+                Tag.count({ _id: tagId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Tag Does Not Exist"
+        }
+    }]
+});
+
+const Attend = require("./event").Event;
+userSchema.add({
+    attends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Attend",
+        validate: {
+            validator: (attendId, done) => {
+                Attend.count({ _id: attendId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Attend Does Not Exist"
         }
     }]
 });

@@ -5,20 +5,16 @@ const jwtGenerator = require("../util/jwtGenerator");
 const upload = require("../config/multer");
 const auth = require("../util/auth/index");
 
-
-    
-
 router.post("/", (req, res, next) => {
 
-    res.locals.promise = models.User.createUser(req.body, (err, user) => {
-            if (err) {
-                return next(err);
-            } else {
-                res.locals.promise = user;
-                return next();
-            }
-    });
-    return next();
+    models.User.createUser(req.body, (err, user) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.locals.promise = user;
+            return next();
+        }
+    })
 });
 
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
@@ -26,22 +22,39 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
 });
 
 router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-
-    res.locals.promise = req.user.updateUser(req.body, (err, user) => {
-            if (err) {
-                return next(err);
-            } else {
-                res.locals.promise = user;
-                return next();
-            }
-    });
-	return next();
+    req.user.updateUser(req.body, (err, user) => {        
+        if(err) {
+            return next(err);
+        } else {
+            res.locals.promise = user;
+            return next();
+        }
+    })
 });
 
 router.put("/:userId", passport.authenticate("jwt", { session: false }),
     auth.can("Update User"), (req, res, next) => {
-	res.locals.promise = req.params.user.updateUser(req.body);
-    return next();
+    req.params.user.updateUser(req.body, (err, user) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.locals.promise = user;
+            return next();
+        }
+    })
+});
+
+router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
+    auth.can("Password Reset"), (req, res, next) => {
+
+    req.params.user.resetUserPass(models.User.getUser(req.params.userId), (err, user) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.locals.promise = user;
+            return next();
+        }
+    })
 });
 
 router.delete("/:userId", passport.authenticate("jwt", { session: false }),
@@ -105,5 +118,28 @@ router.param("userId", (req, res, next, userId) => {
         }, err => next(err));
 });
 
+router.route("/favorite/:favoriteId")
 
+    .post(passport.authenticate("jwt", {session: false}), auth.can("Add Favorite"), (req, res, next) => {
+        res.locals.promise = req.user.addFavorite(req.params.favoriteId);
+        return next();
+    })
+
+    .delete(passport.authenticate("jwt", {session: false}), auth.can("Remove Favorite"), (req, res, next) => {
+        res.locals.promise = req.user.removeFavorite(req.params.favoriteId);
+        return next();
+    });
+
+router.route("/tag/:tagId")
+
+    .post(passport.authenticate("jwt", {session: false}), auth.can("Add Tag"), (req, res, next) => {
+        res.locals.promise = req.user.addTag(req.params.tagId);
+        return next();
+    })
+
+    .delete(passport.authenticate("jwt", {session: false}), auth.can("Remove Tag"), (req, res, next) => {
+        res.locals.promise = req.user.removeTag(req.params.tagId);
+        return next();
+    });
+    
 module.exports = router;
