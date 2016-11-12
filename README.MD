@@ -6,7 +6,7 @@
 ```bash
    git clone https://bitbucket.org/khaleel/wain_back-end
 ```
-* Front-End
+* Front-End (Optional)
 ```bash
    cd /wain_back-end
    git clone https://bitbucket.org/khaleel/wain_front-end
@@ -18,9 +18,6 @@
 * After the instalation of Vagrant and Virtualbox
 ```bash
    vagrant up
-   npm install webpack -g
-   rename wain_front-end public
-   cd /public
    npm install
 ```
 
@@ -29,20 +26,24 @@
    cd /public
    webpack --watch
 ```
-### Run
+### Run (locally)
 ```bash
    vagrant ssh
    cd /vagrant
    npm i --no-bin-links
    npm start
 ```
-
-### Update Back-end Server
+### Run wain013.com Server
 ```bash
-   cd /usr/share/nginx/wain_back-end
+   forever start -c "npm start" ./
+```
+
+### Update wain013.com Server
+```bash
+   cd /usr/share/nginx/wain_back-end/admin/public
+   git pull
    forever list
    kill [pid]
-   git pull
 ```
 
 TO DO:
@@ -51,6 +52,3 @@ TO DO:
     - Secure admin CRUD.
     - Make sure user can not change its status manually.
     - Implement the security checks.
-    - Make parent of a category a list.
-    - Add delete user for admin.
-    - What to do with collection that depend on removed collections.
