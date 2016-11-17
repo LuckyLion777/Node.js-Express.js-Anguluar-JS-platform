@@ -43,7 +43,7 @@ router.put("/:templateId/reset", passport.authenticate("jwt", { session: false }
 });
 
 router.param("templateId", (req, res, next, templateId) => {
-    models.EmailTemplate.findOne(templateId)
+    models.EmailTemplate.findById(templateId)
         .then(template => {
             if(!template) {
                 return next(new Error("Template Does Not Exist"))

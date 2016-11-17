@@ -23,19 +23,22 @@ const systemVariableSchema = new mongoose.Schema({
     },
     order: {
         type: Number,
-        required: true
+        required: false,
+        default: 0
     },
     group: {
-        type: Number,
+        type: String,
         required: true
     },
     isSerializable: {
         type: Boolean,
-        required: true
+        required: false,
+        default: false
     },
     isHidden: {
         type: Boolean,
-        required: true
+        required: false,
+        default: false
     },
     type: {
         type: String,

@@ -15,7 +15,7 @@ const contactSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: false
+        required: true
     },
     person: {
         name: String,
