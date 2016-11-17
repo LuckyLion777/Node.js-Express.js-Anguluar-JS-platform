@@ -5,10 +5,11 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const imageSchema = require("./image");
 const User = require("./user").User;
+const EmailTemplate = require("./emailTemplate");
 const Language = require("./language").Language;
 const emailHandler = require("../util/emailHandler");
-const serverEmails = require("../res/serverEmails");
-const emailResetTemplate = require("../res/emailTemplates").emailResetTemplate;
+
+
 
 //This Module Require In The End
 //const Article = require("./article").Article;
@@ -110,12 +111,20 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.statics.createUser = function (userInfo, callback)  {
+
     hashPassword(userInfo, (err) => {
         if(err) {
             return callback(err, null);
         } else {
+            return callback(null, this.create(userInfo).then(newUser => {
+                if(!newUser) {
 
-            return callback(null, this.create(userInfo));
+                    new Error("new user Does Not Exist");
+
+                } else {
+                    emailHandler.sendEmail(userInfo.email, userInfo, EmailTemplate.type.REGISTER, userInfo.language.name);
+                }
+            }));
         }
     })
 };
@@ -132,13 +141,20 @@ userSchema.methods.updateUser = function (userInfo, callback) {
 
 userSchema.methods.resetUserPass = function (userInfo, callback) {
     userInfo.password = Math.floor((Math.random() * 100000));
-    var content = "Your password was reset to " + userInfo.password; 
+
+    var message_content = {
+        "NEW_PASSWORD":userInfo.password
+    };
+
     hashPassword(userInfo, (err) => {
         if(err) {
             return callback(err, null);
         } else {
-            emailHandler.sendEmail(serverEmails.khaleel, userInfo.email, emailResetTemplate.title, content, emailResetTemplate.id);                
+            emailHandler.sendEmail(userInfo.email, message_content,EmailTemplate.type.RESET, userInfo.language.name);
+
             return callback(null, this.update(userInfo));
+
+
         }
     })
 };

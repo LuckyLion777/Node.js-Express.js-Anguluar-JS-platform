@@ -13,5 +13,7 @@ module.exports = {
     Collection: require("./collection").Collection,
     Content: require("./content").Content,
     Tag: require("./tag").Tag,
-    SystemVariable: require("./systemVariable").SystemVariable
+    SystemVariable: require("./systemVariable").SystemVariable,
+    EmailTemplate: require("./emailTemplate").EmailTemplate,
+    Contact: require("./contact").Contact
 };

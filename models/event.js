@@ -136,7 +136,7 @@ const eventSchema = new mongoose.Schema({
             message: "Option Does Not Exist"
         }
     }],
-});
+}, { timestamps: true });
 
 
 eventSchema.statics.createEvent = function (eventInfo) {

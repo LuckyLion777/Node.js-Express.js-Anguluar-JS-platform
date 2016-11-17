@@ -18,5 +18,7 @@ router.use("/upload", require("./upload"));
 router.use("/", require("./util"));
 router.use("/tags?", require("./tag"));
 router.use("/systemVariables?", require("./systemVariable"));
+router.use("/templates?", require("./template"));
+router.use("/contacts?", require("./contact"));
 
 module.exports = router;

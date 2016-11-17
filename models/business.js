@@ -128,7 +128,7 @@ const businessSchema = new mongoose.Schema({
             message: "Collection Does Not Exist"
         }
     }]
-});
+}, { timestamps: true });
 
 
 businessSchema.statics.createBusiness = function (businessInfo) {

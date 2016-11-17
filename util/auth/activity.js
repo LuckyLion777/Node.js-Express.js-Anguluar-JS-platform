@@ -639,8 +639,57 @@ const activities = (activity, req, res, next) => {
                     .isAdmin()
                     .done();
                 break;
+            case "Create Template":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
 
+            case "Update Template":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
 
+            case "Remove Template":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Reset Template":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+            case "Get Contacts":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+            case "Update Contact":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Remove Contact":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "get Contact":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+
+            case "Reply Contact":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
             //TODO: Add a handler if the activity does not exist
         }
     }

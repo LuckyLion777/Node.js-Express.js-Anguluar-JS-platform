@@ -5,4 +5,4 @@ test.js
 doc/
 node_modules/
 uploads
-public/
+public/"sendgrid.env" 
