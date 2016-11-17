@@ -4,14 +4,14 @@ const defaultTemplates = require("../res/emailTemplate").defaultTemplate;
 
 
 const TYPE = {
-    REGISTER: "REGISTER",
-    LOGIN: "LOGIN",
-    RESET: "RESET",
-    FORGET: "FORGET",
+    REGISTER: "NEWUSER",
+    LOGIN: "BUSINESSACCOUNT",
+    RESET: "RESETPASSWORD",
+    FORGET: "FORGETPASSWORD",
     ADDCONTENT: "ADDCONTENT",
-    MODIFYCONTENT: "MODIFYCONTENT",
+    MODIFYCONTENT: "APPROVECONTENT",
     DELETECONTENT: "DELETECONTENT",
-    APPROVECONTENT: "APPROVECONTENT"
+    APPROVECONTENT: "CONTACTUS"
 };
 
 const emailTemplateSchema = new mongoose.Schema({

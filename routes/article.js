@@ -137,7 +137,7 @@ router.put("/:articleId/provoke", passport.authenticate("jwt", { session: false 
 
 router.param("articleId", (req, res, next, articleId) => {
     console.log(articleId);
-    models.Article.findOne(articleId).populate('user').populate('language')
+    models.Article.findById(articleId).populate('user').populate('language')
         .then(article => {
             if(!article) {
                 return next(new Error("Article Does Not Exist"))

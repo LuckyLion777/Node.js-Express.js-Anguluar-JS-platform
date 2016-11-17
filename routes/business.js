@@ -4,7 +4,7 @@ const auth = require("../util/auth/index");
 const passport = require("passport");
 const upload = require("../config/multer");
 
-router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+router.get("/", (req, res, next) => {
     res.locals.promise = models.Business.getBusinesses();
     return next();
 });

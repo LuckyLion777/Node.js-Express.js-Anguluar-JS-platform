@@ -108,7 +108,7 @@ articleSchema.statics.getArticles = function () {
 };
 
 articleSchema.statics.getArticle = function (articleId) {
-    return this.findOne(articleId).populate('user').populate('language');
+    return this.findById(articleId).populate('user').populate('language');
 };
 
 articleSchema.statics.getFilteredArticles = function (status) {
