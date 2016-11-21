@@ -96,7 +96,7 @@ emailTemplateSchema.statics.getTemplates = function () {
 };
 
 emailTemplateSchema.statics.getTemplate = function (templateId) {
-    return this.findOne(templateId);
+    return this.findById(templateId);
 };
 
 emailTemplateSchema.statics.getTemplateByType = function (templateType) {
