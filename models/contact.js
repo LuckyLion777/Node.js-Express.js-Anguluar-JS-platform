@@ -73,7 +73,7 @@ contactSchema.statics.getContacts = function () {
 };
 
 contactSchema.statics.getContact = function (contactId) {
-    return this.findOne(contactId);
+    return this.findById(contactId);
 };
 
 contactSchema.methods.reply = function (replyInfo) {
