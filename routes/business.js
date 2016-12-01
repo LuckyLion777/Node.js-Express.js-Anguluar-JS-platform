@@ -39,7 +39,10 @@ router.get("/:status?", (req, res, next) => {
     if(req.query.status) {
         res.locals.promise = models.Business.getFilteredBusinesses(req.query.status);
         return next();
-    } else {
+    } else if(req.query.category) {
+        res.locals.promise = models.Business.getBusinessesByCategory(req.query.category);
+        return next();
+    }else {
         res.locals.promise = models.Business.getBusinesses();
         return next();
     }
@@ -138,7 +141,7 @@ router.delete("/:businessId/option/:optionId", passport.authenticate("jwt", { se
 router.post("/:businessId/review", passport.authenticate("jwt", { session: false }),
     auth.can("Add Business Review"), (req, res, next) => {
     req.body.user = req.user;
-
+    //console.log(req.body);
     res.locals.promise = req.params.business.addReview(req.body);
     return next();
 });
@@ -201,7 +204,7 @@ router.delete("/:businessId/collection/:collectionId", passport.authenticate("jw
 
 
 router.param("businessId", (req, res, next, bossinessId) => {
-    models.Business.findById(bossinessId).populate('categories').populate('options')
+    models.Business.findById(bossinessId).populate('reviews.user').populate('owner').populate('categories').populate('options').populate('comments.language').populate('comments.user')
         .then(business => {
             if(!business) {
                 return next(new Error("Business Does Not Exist"));

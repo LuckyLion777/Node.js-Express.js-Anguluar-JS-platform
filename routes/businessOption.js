@@ -15,6 +15,8 @@ router.get("/", (req, res, next) => {
     return next();
 });
 
+router.get("/:OptionId", (req, res, next) => res.send(req.params.Option) );
+
 router.put("/:OptionId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Option"), (req, res, next) => {
         res.locals.promise = req.params.Option.updateOption(req.body);

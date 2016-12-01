@@ -25,6 +25,6 @@ const ratingSchema = new mongoose.Schema({
         max: [5, "The Rating Must Not Exceeds 5"],
         required: true
     }
-});
+}, { timestamps: true });
 
 module.exports = ratingSchema;

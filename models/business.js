@@ -136,12 +136,15 @@ businessSchema.statics.createBusiness = function (businessInfo) {
 };
 
 businessSchema.statics.getBusinesses = function () {
-    return this.find().populate('reviews').populate('categories').populate('options');
+    return this.find().populate('reviews.user').populate('owner').populate('categories').populate('options').populate('comments.language').populate('comments.user');
 };
 
 businessSchema.statics.getFilteredBusinesses = function (status) {
-    console.log(status);
-    return this.find({ status: status }).populate('reviews').populate('categories').populate('options');
+    return this.find({ status: status }).populate('reviews.user').populate('owner').populate('reviews').populate('categories').populate('options').populate('comments.language').populate('comments.user');
+};
+
+businessSchema.statics.getBusinessesByCategory = function (category) {
+    return this.find({ categories: category }).populate('reviews.user').populate('owner').populate('reviews').populate('categories').populate('options').populate('comments.language').populate('comments.user');
 };
 
 businessSchema.statics.searchBusinesses = function (searchInfo) {

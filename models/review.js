@@ -43,7 +43,7 @@ const reviewSchema = new mongoose.Schema({
         }
     },
     comments: [ commentSchema ]
-});
+}, { timestamps: true });
 
 reviewSchema.methods.addComment = function (commentInfo) {
     this.comments.addToSet(commentInfo);
@@ -54,4 +54,4 @@ reviewSchema.methods.removeComment = function (commentId) {
 };
 
 
-module.exports.reviewSchema = reviewSchema;
+module.exports = reviewSchema;

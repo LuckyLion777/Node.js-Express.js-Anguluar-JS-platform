@@ -71,6 +71,7 @@ const eventSchema = new mongoose.Schema({
         //TODO: validate
     },
     entranceFee: String,
+    logo: imageSchema,
     cover: imageSchema,
     socialMedias: [ socialMediaSchema ],
     attendants: [{
@@ -152,11 +153,11 @@ eventSchema.methods.removeEvent = function () {
 };
 
 eventSchema.statics.getEvents = function () {
-    return this.find().populate('categories').populate('options');
+    return this.find().populate('categories').populate('options').populate('comments.language').populate('comments.user');
 };
 
 eventSchema.statics.getFilteredEvents = function (status) {
-    return this.find({ status: status }).populate('categories').populate('options');
+    return this.find({ status: status }).populate('categories').populate('options').populate('comments.language').populate('comments.user');
 };
 
 eventSchema.methods.addOption = function (optionInfo) {

@@ -42,7 +42,7 @@ const commentSchema = new mongoose.Schema({
             message: "Language Does Not Exist"
         }
     }
-});
+}, { timestamps: true });
 
 
 module.exports = commentSchema;

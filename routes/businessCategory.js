@@ -15,6 +15,8 @@ router.get("/", (req, res, next) => {
     return next();
 });
 
+router.get("/:categoryId", (req, res, next) => res.send(req.params.category) );
+
 router.put("/:categoryId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Category"), (req, res, next) => {
         res.locals.promise = req.params.category.updateCategory(req.body);
