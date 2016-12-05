@@ -104,15 +104,15 @@ articleSchema.methods.removeArticle = function () {
 };
 
 articleSchema.statics.getArticles = function () {
-    return this.find().populate('user').populate('language').populate('comments.language');
+    return this.find().populate('user').populate('language').populate('comments.language').populate('comments.user').populate('user.language');
 };
 
 articleSchema.statics.getArticle = function (articleId) {
-    return this.findById(articleId).populate('user').populate('language').populate('comments.language');
+    return this.findById(articleId).populate('user').populate('language').populate('comments.language').populate('comments.user').populate('user.language');
 };
 
 articleSchema.statics.getFilteredArticles = function (status) {
-    return this.find({ status: status }).populate('user').populate('language').populate('comments.language');
+    return this.find({ status: status }).populate('user').populate('language').populate('comments.language').populate('comments.user').populate('user.language');
 };
 
 articleSchema.methods.addComment = function (commentInfo) {
