@@ -9,8 +9,7 @@ router.get("/", (req, res, next) => {
     return next();
 });
 
-router.post("/", passport.authenticate("jwt", { session: false }),
-    auth.can("Create Business"), upload.single("logo"), (req, res, next) => {
+router.post("/", (req, res, next) => {
     req.body.owner = req.user;
     if(req.file) req.body.logo = { filename: req.file.filename };
     //if(req.cover) req.body.cover = { filename: req.cover.filename };
@@ -18,6 +17,16 @@ router.post("/", passport.authenticate("jwt", { session: false }),
     res.locals.promise = models.Business.createBusiness(req.body);
     return next();
 });
+
+//router.post("/", passport.authenticate("jwt", { session: false }),
+//    auth.can("Create Business"), upload.single("logo"), (req, res, next) => {
+//    req.body.owner = req.user;
+//    if(req.file) req.body.logo = { filename: req.file.filename };
+//    //if(req.cover) req.body.cover = { filename: req.cover.filename };
+//
+//    res.locals.promise = models.Business.createBusiness(req.body);
+//    return next();
+//});
 
 router.put("/:businessId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Business"), upload.single("logo"), (req, res, next) => {
@@ -125,11 +134,16 @@ router.delete("/:businessId/category/:categoryId", passport.authenticate("jwt", 
 });
 
 
-router.post("/:businessId/option", passport.authenticate("jwt", { session: false }),
-    auth.can("Add Business Option"), (req, res, next) => {
+router.post("/:businessId/option", (req, res, next) => {
     res.locals.promise = req.params.business.addOption(req.body);
     return next();
 });
+
+//router.post("/:businessId/option", passport.authenticate("jwt", { session: false }),
+//    auth.can("Add Business Option"), (req, res, next) => {
+//    res.locals.promise = req.params.business.addOption(req.body);
+//    return next();
+//});
 
 router.delete("/:businessId/option/:optionId", passport.authenticate("jwt", { session: false }),
     auth.can("Delete Business Option"), (req, res, next) => {
