@@ -176,36 +176,6 @@ userSchema.statics.getUser = function (userId) {
 };
 
 /**
- * Authenticate user by email, password with password.LocalStrategy()
- * @param string email
- * @param string password
- */
-userSchema.statics.authByEmail = function (email, password) {
-    
-    //todo return custom message
-    passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
-    this.findOne({ email: email }).select("+password")
-        .then( (user) => {
-            if (!user) {
-                return done(null, false);
-            } else {
-                bcrypt.compare(password, user.password, (err, res) => {
-                    if (err) { return done(err); }
-                    if(res) {
-                        return done(null, user);
-                    } else {
-                        return done(null, false);
-                    }
-                });
-            }
-        }, (err) => {
-            return done(err);
-        });
-    }));
-    
-};
-
-/**
  * Find user by given email
  * @param string email
  * @returns null if not exists or user object
