@@ -175,13 +175,7 @@ userSchema.statics.getUser = function (userId) {
     return this.findById(userId).populate('bookmarks').populate('language');
 };
 
-/**
- * Authenticate user by email, password with password.LocalStrategy()
- * @param string email
- * @param string password
- */
-userSchema.statics.authByEmail = function (email, password) {
-    
+userSchema.statics.checkEmail = function (email) {
     //todo return custom message
     passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
     this.findOne({ email: email }).select("+password")
@@ -201,18 +195,8 @@ userSchema.statics.authByEmail = function (email, password) {
         }, (err) => {
             return done(err);
         });
-    }));
-    
-};
+}));
 
-/**
- * Find user by given email
- * @param string email
- * @returns null if not exists or user object
- */
-userSchema.statics.checkEmail = function (email) {
-
-    return this.findOne({ email: email });
 };
 
 userSchema.statics.checkUsername = function (username) {
