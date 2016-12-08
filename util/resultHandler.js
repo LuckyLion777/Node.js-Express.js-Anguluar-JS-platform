@@ -47,7 +47,7 @@ const failureHandler = (err, req, res, next) => {
         ret = {
             status: STATUS_FAILED,
             message: err.toString(),
-            data: null //TODO
+            data: {} //TODO - what can be here?
         };
         
     }
@@ -97,7 +97,7 @@ const processRequest = (req, res, next) => {
                 
                 ret = {
                     status: STATUS_SUCCESS,
-                    message: null, //TODO
+                    message: '', //TODO
                     data: data
                 };
                 
