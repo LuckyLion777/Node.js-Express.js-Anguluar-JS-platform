@@ -72,7 +72,7 @@ const userSchema = new mongoose.Schema({
                     }, err => {
                         //TODO: log
                         return done(false, err);
-                    })
+                    });
             },
             message: "Language Does Not Exist"
         }
@@ -96,7 +96,7 @@ const userSchema = new mongoose.Schema({
             validator: (locationId, done) => {
                 Location.count({ _id: locationId })
                 //TODO: Log
-                    .then(count => done(count), err => done(false, err) )
+                    .then(count => done(count), err => done(false, err) );
             }
         }
     },
@@ -126,7 +126,7 @@ userSchema.statics.createUser = function (userInfo, callback)  {
                 }
             }));
         }
-    })
+    });
 };
 
 userSchema.methods.updateUser = function (userInfo, callback) {
@@ -136,7 +136,7 @@ userSchema.methods.updateUser = function (userInfo, callback) {
         } else {
             return callback(null, this.update(userInfo));
         }
-    })
+    });
 };
 
 userSchema.methods.resetUserPass = function (userInfo, callback) {
@@ -156,7 +156,7 @@ userSchema.methods.resetUserPass = function (userInfo, callback) {
 
 
         }
-    })
+    });
 };
 
 userSchema.methods.removeUser = function () {
@@ -192,15 +192,15 @@ userSchema.statics.checkUsername = function (username) {
 };
 
 userSchema.methods.activate = function () {
-    return this.update({ status: STATUS.ACTIVE })
+    return this.update({ status: STATUS.ACTIVE });
 };
 
 userSchema.methods.hold = function () {
-    return this.update({ status: STATUS.PENDING })
+    return this.update({ status: STATUS.PENDING });
 };
 
 userSchema.methods.block = function () {
-    return this.update({ status: STATUS.BLOCKED })
+    return this.update({ status: STATUS.BLOCKED });
 };
 
 userSchema.methods.addBookmark = function (articleId) {
@@ -252,7 +252,7 @@ const hashPassword = (userInfo, callback) => {
                 return callback(err);
             } else {
                 userInfo.password = hashedPassword;
-                return callback()
+                return callback();
             }
         });
     }
