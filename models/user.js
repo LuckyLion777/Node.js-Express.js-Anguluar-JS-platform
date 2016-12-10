@@ -109,6 +109,71 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+const Article = require("./article").Article;
+
+userSchema.add({
+    bookmarks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Article",
+        validate: {
+            validator: (articleId, done) => {
+                Article.count({ _id: articleId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Article Does Not Exist"
+        }
+    }]
+});
+
+const Business = require("./business").Business;
+userSchema.add({
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Business",
+        validate: {
+            validator: (businessId, done) => {
+                Business.count({ _id: businessId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Business Does Not Exist"
+        }
+    }]
+});
+
+const Tag = require("./tag").Tag;
+userSchema.add({
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        validate: {
+            validator: (tagId, done) => {
+                
+                Tag.count({ _id: tagId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Tag Does Not Exist"
+        }
+    }]
+});
+
+const Attend = require("./event").Event;
+userSchema.add({
+    attends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Attend",
+        validate: {
+            validator: (attendId, done) => {
+                Attend.count({ _id: attendId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Attend Does Not Exist"
+        }
+    }]
+});
 
 userSchema.statics.createUser = function (userInfo, callback)  {
 
@@ -213,8 +278,13 @@ userSchema.methods.removeBookmark = function (articleId) {
     return this.save();
 };
 
-userSchema.methods.addTag = function (tagId) {
-    this.tags.addToSet(tagId);
+/**
+ *@param iterableObj tags
+ */
+userSchema.methods.addTag = function (tags) {
+
+    this.tags.addToSet(...tags);
+    
     return this.save();
 };
 
@@ -263,68 +333,3 @@ module.exports = {
     userSchema: userSchema,
     User: mongoose.model("User", userSchema)
 };
-
-const Article = require("./article").Article;
-
-userSchema.add({
-    bookmarks: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Article",
-        validate: {
-            validator: (articleId, done) => {
-                Article.count({ _id: articleId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Article Does Not Exist"
-        }
-    }]
-});
-
-const Business = require("./business").Business;
-userSchema.add({
-    favorites: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Business",
-        validate: {
-            validator: (businessId, done) => {
-                Business.count({ _id: businessId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Business Does Not Exist"
-        }
-    }]
-});
-
-const Tag = require("./tag").Tag;
-userSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});
-
-const Attend = require("./event").Event;
-userSchema.add({
-    attends: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Attend",
-        validate: {
-            validator: (attendId, done) => {
-                Attend.count({ _id: attendId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Attend Does Not Exist"
-        }
-    }]
-});

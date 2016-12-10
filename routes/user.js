@@ -14,7 +14,7 @@ router.post("/", (req, res, next) => {
             res.locals.promise = user;
             return next();
         }
-    })
+    });
 });
 
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
@@ -29,7 +29,7 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res, nex
             res.locals.promise = user;
             return next();
         }
-    })
+    });
 });
 
 router.put("/:userId", passport.authenticate("jwt", { session: false }),
@@ -41,7 +41,7 @@ router.put("/:userId", passport.authenticate("jwt", { session: false }),
             res.locals.promise = user;
             return next();
         }
-    })
+    });
 });
 
 router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
@@ -54,7 +54,7 @@ router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
             res.locals.promise = user;
             return next();
         }
-    })
+    });
 });
 
 router.delete("/:userId", passport.authenticate("jwt", { session: false }),
@@ -130,16 +130,21 @@ router.route("/favorite/:favoriteId")
         return next();
     });
 
-router.route("/tag/:tagId")
-
-    .post(passport.authenticate("jwt", {session: false}), auth.can("Add Tag"), (req, res, next) => {
-        res.locals.promise = req.user.addTag(req.params.tagId);
+/** Add tags to current user
+ * @param JSON tags - tag ids
+ */
+router.post("/tag", passport.authenticate("jwt", { session: false }),
+    auth.can("Add Tag"), (req, res, next) => {
+        res.locals.promise = req.user.addTag(req.body);
         return next();
-    })
+});
 
-    .delete(passport.authenticate("jwt", {session: false}), auth.can("Remove Tag"), (req, res, next) => {
+router.delete("/tag/:tagId", passport.authenticate("jwt", { session: false }),
+    
+    auth.can("Remove Tag"), (req, res, next) => {
         res.locals.promise = req.user.removeTag(req.params.tagId);
         return next();
     });
+
     
 module.exports = router;
