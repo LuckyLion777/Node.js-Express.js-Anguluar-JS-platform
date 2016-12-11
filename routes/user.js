@@ -41,7 +41,10 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res, nex
 });
 
 
-router.get("/tag", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+/* --------------------
+ * Tags
+ */
+router.get("/tags", passport.authenticate("jwt", { session: false }), (req, res, next) => {
     return res.send(req.user.tags);
 });
 
@@ -64,7 +67,10 @@ router.delete("/tag/:tagId", passport.authenticate("jwt", { session: false }),
     });
 
 
-router.get("/favorite", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+/* --------------------
+ * Favorites
+ */
+router.get("/favorites", passport.authenticate("jwt", { session: false }), (req, res, next) => {
     return res.send(req.user.favorites);
 });
 
@@ -87,7 +93,10 @@ router.delete("/favorite/:favoriteId", passport.authenticate("jwt", {session: fa
 });
     
 
-router.get("/bookmark", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+/* --------------------
+ * Bookmarks
+ */
+router.get("/bookmarks", passport.authenticate("jwt", { session: false }), (req, res, next) => {
     return res.send(req.user.bookmarks);
 });
 
@@ -105,6 +114,31 @@ router.delete("/bookmark/:articleId", passport.authenticate("jwt", {session: fal
     //auth.can("Remove Bookmark"), //TODO: do we need permissions check here?
     (req, res, next) => {
         res.locals.promise = req.user.removeBookmark(req.params.articleId);
+        return next();
+});
+
+
+/* --------------------
+ * Events
+ */
+router.get("/attends", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    return res.send(req.user.attends);
+});
+
+/** Add bookmarks to current user
+ * @param JSON event ids
+ */
+router.post("/attend", passport.authenticate("jwt", { session: false }),
+    //auth.can("Attend Event"), //TODO: do we need permissions check here?
+    (req, res, next) => {
+        res.locals.promise = req.user.addAttend(req.body);
+        return next();
+});
+
+router.delete("/attend/:eventId", passport.authenticate("jwt", {session: false}),
+    //auth.can("Remove Attend"), //TODO: do we need permissions check here?
+    (req, res, next) => {
+        res.locals.promise = req.user.removeAttend(req.params.articleId);
         return next();
 });
 

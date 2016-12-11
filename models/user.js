@@ -258,13 +258,16 @@ userSchema.methods.removeFavorite = function (businessId) {
     return this.save();
 };
 
-userSchema.methods.addAttend = function (attendId) {
-    this.attends.addToSet(attendId);
+/** Add one or few events to attends collection
+ * @param iterableObj eventIds
+ */
+userSchema.methods.addAttend = function (eventIds) {
+    this.attends.addToSet(...eventIds);
     return this.save();
 };
 
-userSchema.methods.removeAttend = function (attendId) {
-    this.attends.pull(attendId);
+userSchema.methods.removeAttend = function (eventId) {
+    this.attends.pull(eventId);
     return this.save();
 };
 
