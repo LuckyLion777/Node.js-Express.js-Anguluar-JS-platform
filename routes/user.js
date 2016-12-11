@@ -41,11 +41,15 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res, nex
 });
 
 
+router.get("/tag", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    return res.send(req.user.tags);
+});
+
 /** Add tags to current user
  * @param JSON tags - tag ids
  */
 router.post("/tag", passport.authenticate("jwt", { session: false }),
-    //auth.can("Add Tag"),
+    //auth.can("Add Tag"),  //TODO: do we need permissions check here?
     (req, res, next) => {
         res.locals.promise = req.user.addTag(req.body);
         return next();
@@ -53,7 +57,7 @@ router.post("/tag", passport.authenticate("jwt", { session: false }),
 
 router.delete("/tag/:tagId", passport.authenticate("jwt", { session: false }),
     
-    //auth.can("Remove Tag"),
+    //auth.can("Remove Tag"),  //TODO: do we need permissions check here?
     (req, res, next) => {
         res.locals.promise = req.user.removeTag(req.params.tagId);
         return next();
@@ -71,14 +75,15 @@ router.get("/favorite", passport.authenticate("jwt", { session: false }), (req, 
 router.post("/favorite", passport.authenticate("jwt", { session: false }),
     //auth.can("Add Favorite"), //TODO: do we need permissions check here?
     (req, res, next) => {
-
         res.locals.promise = req.user.addFavorite(req.body);
         return next();
 });
 
-router.delete("/favorite/:favoriteId", passport.authenticate("jwt", {session: false}), auth.can("Remove Favorite"), (req, res, next) => {
-    res.locals.promise = req.user.removeFavorite(req.params.favoriteId);
-    return next();
+router.delete("/favorite/:favoriteId", passport.authenticate("jwt", {session: false}),
+    //auth.can("Remove Favorite"), //TODO: do we need permissions check here?
+    (req, res, next) => {
+        res.locals.promise = req.user.removeFavorite(req.params.favoriteId);
+        return next();
 });
     
 
@@ -92,15 +97,15 @@ router.get("/bookmark", passport.authenticate("jwt", { session: false }), (req, 
 router.post("/bookmark", passport.authenticate("jwt", { session: false }),
     //auth.can("Add Bookmark"), //TODO: do we need permissions check here?
     (req, res, next) => {
-
         res.locals.promise = req.user.addBookmark(req.body);
         return next();
 });
 
-router.delete("/bookmark/:articleId", passport.authenticate("jwt", {session: false}), auth.can("Remove Favorite"), (req, res, next) => {
+router.delete("/bookmark/:articleId", passport.authenticate("jwt", {session: false}),
     //auth.can("Remove Bookmark"), //TODO: do we need permissions check here?
-    res.locals.promise = req.user.removeBookmark(req.params.favoriteId);
-    return next();
+    (req, res, next) => {
+        res.locals.promise = req.user.removeBookmark(req.params.articleId);
+        return next();
 });
 
 
