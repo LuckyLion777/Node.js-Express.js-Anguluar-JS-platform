@@ -690,7 +690,10 @@ const activities = (activity, req, res, next) => {
                     .isAdmin()
                     .done();
                 break;
-            //TODO: Add a handler if the activity does not exist
+        
+            
+            default:
+                throw ("activity.js: activity '" + activity + "' not supported!");
         }
     }
 };
