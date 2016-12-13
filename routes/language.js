@@ -2,6 +2,7 @@ const models = require("../models");
 const auth = require("../util/auth/index");
 const passport = require("passport");
 const router = require("express").Router();
+const ObjectID = require('mongodb').ObjectID;
 
 
 router.post("/", passport.authenticate("jwt", { session: false }),
@@ -31,15 +32,29 @@ router.get("/", (req, res, next) => {
 
 
 router.param("languageId", (req, res, next, languageId) => {
-    models.Language.findById(languageId)
+    
+    var _finder;
+    
+    if( ObjectID.isValid(languageId) ) {
+        
+        _finder = models.Language.findById(languageId);
+    }
+    else {
+        
+        _finder = models.Language.findOne({ 'name': languageId });
+    }
+    
+
+    _finder
         .then(language => {
             if(!language) {
                 return next(new Error("Language Does Not Exist"));
             } else {
                 req.params.language = language;
-                return next()
+                return next();
             }
-        }, err => next(err))
+        }, err => next(err));
+
 });
 
 
