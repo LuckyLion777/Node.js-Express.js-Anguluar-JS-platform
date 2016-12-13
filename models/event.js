@@ -71,7 +71,10 @@ const eventSchema = new mongoose.Schema({
         //TODO: validate
     },
     entranceFee: String,
-    logo: imageSchema,
+    logo: {
+        type: imageSchema,
+        default: null
+    },
     cover: imageSchema,
     socialMedias: [ socialMediaSchema ],
     attendants: [{
@@ -246,7 +249,6 @@ eventSchema.methods.removeCategory = function (categoryId) {
     this.categories.pull(categoryId);
     return this.save();
 };
-
 
 module.exports = {
     eventSchema: eventSchema,
