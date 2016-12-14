@@ -5,6 +5,7 @@ const emailTemplate = require("../models/emailTemplate");
 
 module.exports = {
     sendEmail: (receiver, content, template_key, language_name) => {
+        
         const senderEmail = new mail.Email(eConfig.sender);
         const receiverEmail = new mail.Email(receiver);
         //content
@@ -13,29 +14,36 @@ module.exports = {
         var body = "Greetings from Wain013.com";
         var emailContent;
 
-        emailTemplate.EmailTemplate.getTemplateByType(template_key).then(template => {
-            if(!template) {
+        emailTemplate.EmailTemplate.getTemplateByType(template_key)
+            .then(template => {
 
-                return next(new Error("template Does Not Exist"));
-
-            } else {
+                if(!template) {
+    
+                    throw { message: "template '"+ template_key +"' does not exist" };
+                }
+    
                 title = template.template.arabic.title;
                 body = template.template.arabic.body;
 
-                switch(language_name) {
-                    case "Arabic":
+                switch( language_name.toLowerCase() ) {
+                    case "arabic":
                         title = template.template.arabic.title;
                         body = template.template.arabic.body;
                         break;
 
-                    case "English":
+                    case "english":
                         title = template.template.english.title;
                         body = template.template.english.body;
                         break;
+                    
+                    default:
+                        
+                        throw {message: "EmailHandler::senderEmail : language '" + language_name +  "' not supported"};
+                        break;
 
                 }
-
-
+    
+    
                 keys = Object.keys(content);
 
                 for(var i = 0; i < keys.length; i++){
@@ -45,25 +53,33 @@ module.exports = {
                     body = body.replace(re, content[keys[i]]);
                     title = title.replace(re, content[keys[i]]);
                 }
-
+    
                 emailContent = new mail.Content("text/html", body);
 
                 const email = new mail.Mail(senderEmail, title, receiverEmail, emailContent);
+                
                 email.setTemplateId(eConfig.mainTemplate.id);
                 const request = sendGrid.emptyRequest({
                     method: "POST",
                     path: "/v3/mail/send",
                     body: email.toJSON()
                 });
+                
                 return sendGrid.API(request, function(error, response) {
-/*                    console.log(response.statusCode)
-                    console.log(response.body)
-                    console.log(response.headers)*/
+                    
+                    if (error) { throw(error); }
+
+                    //console.log(response.statusCode)
+                    //console.log(response.body)
+                    //console.log(response.headers)
+                        
                 });
-
-            }
-        }, err => next(err) );
-
-
+    
+            })
+            .catch(err => {
+                
+                console.log('Sendmail error: ', err);
+                throw(err); //TODO: what actions should be taken here??
+            });
     }
 };
