@@ -8,6 +8,7 @@ const TYPE = {
     LOGIN: "BUSINESSACCOUNT",
     RESET: "RESETPASSWORD",
     FORGET: "FORGETPASSWORD",
+    PASSWORDCHANGED: "PASSWORDCHANGED",
     ADDCONTENT: "ADDCONTENT",
     MODIFYCONTENT: "APPROVECONTENT",
     DELETECONTENT: "DELETECONTENT",
@@ -17,7 +18,11 @@ const TYPE = {
 const emailTemplateSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: [ TYPE.REGISTER, TYPE.LOGIN, TYPE.RESET, TYPE.FORGET, TYPE.ADDCONTENT, TYPE.MODIFYCONTENT, TYPE.DELETECONTENT, TYPE.APPROVECONTENT ],
+        enum: [
+                TYPE.REGISTER, TYPE.LOGIN, TYPE.RESET,
+                TYPE.FORGET, TYPE.ADDCONTENT, TYPE.MODIFYCONTENT, TYPE.DELETECONTENT, TYPE.APPROVECONTENT,
+                TYPE.PASSWORDCHANGED
+            ],
     },
     template: {
         arabic: {
@@ -67,11 +72,11 @@ const emailTemplateSchema = new mongoose.Schema({
 });
 
 emailTemplateSchema.statics.createTemplate = function (templateInfo) {
-    return this.create(templateInfo)
+    return this.create(templateInfo);
 };
 
 emailTemplateSchema.statics.createTemplate = function (templateInfo) {
-    return this.create(templateInfo)
+    return this.create(templateInfo);
 };
 
 emailTemplateSchema.statics.resetAll = function () {

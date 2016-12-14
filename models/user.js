@@ -8,8 +8,12 @@ const imageSchema = require("./image");
 const EmailTemplate = require("./emailTemplate");
 const Language = require("./language").Language;
 const emailHandler = require("../util/emailHandler");
+const _promise = require('bluebird');
 
+const compare = _promise.promisify(bcrypt.compare);
+const hash = _promise.promisify(bcrypt.hash);
 
+const HASH_SALT_ROUNDS = 10;
 
 //This Module Require In The End
 //const Article = require("./article").Article;
@@ -149,6 +153,49 @@ userSchema.methods.updateUser = function (userInfo, callback) {
     });
 };
 
+
+/** Change password for given user
+ * @param mongoose.model User
+ * @param object params - request body {oldpassword, newpassword}
+ * @param function callback
+ * @returns promise
+ */
+userSchema.methods.changeUserPass = function (userInfo, params, callback) {
+
+    var message_content = {
+        "PASSWORD_CHANGED":  '' //TODO: should we send new password in the mail?
+    };
+
+    //check if filled 'old' match with old password
+    compare(params.oldpassword, userInfo.password)
+        .then(result => {
+            
+            if (! result ) {
+                
+                throw { message: 'Incorrect old password.' };
+            }
+            
+            return hash(params.newpassword, HASH_SALT_ROUNDS); //return promise
+        })
+        .then(hashedPassword => {
+            
+            return this.update({password: hashedPassword}).exec();
+        })
+        .then(result => {
+            
+            
+            emailHandler.sendEmail(userInfo.email, message_content,EmailTemplate.type.PASSWORDCHANGED, userInfo.language.name);
+
+            return callback(null, 'password changed:');
+        })
+        .catch(err => {
+            
+            return callback(err.message, null);
+        })
+        ;
+    
+};
+
 userSchema.methods.resetUserPass = function (userInfo, callback) {
     userInfo.password = Math.floor((Math.random() * 100000));
 
@@ -275,7 +322,7 @@ const hashPassword = (userInfo, callback) => {
     if(!userInfo.password) {
         return callback();
     } else {
-        bcrypt.hash(userInfo.password, 10, (err, hashedPassword) => {
+        bcrypt.hash(userInfo.password, HASH_SALT_ROUNDS, (err, hashedPassword) => {
             if(err) {
                 return callback(err);
             } else {

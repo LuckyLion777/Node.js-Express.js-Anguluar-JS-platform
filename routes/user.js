@@ -2,9 +2,17 @@ const models = require("../models");
 const router = require("express").Router();
 const passport = require("passport");
 const jwtGenerator = require("../util/jwtGenerator");
+//const resultHandler = require("../util/resultHandler");
 const upload = require("../config/multer");
 const auth = require("../util/auth/index");
+const _ = require("lodash");
 
+//TODO import from resultHandler
+const STATUS_SUCCESS =  true;
+const STATUS_FAILED  =  false;
+
+
+/** Create user ***/
 router.post("/", (req, res, next) => {
 
     models.User.createUser(req.body, (err, user) => {
@@ -154,6 +162,38 @@ router.put("/:userId", passport.authenticate("jwt", { session: false }),
             return next();
         }
     });
+});
+
+router.post("/:userId/changepassword", passport.authenticate("jwt", { session: false }),
+    auth.can("Password Change"),
+    (req, res, next) => {
+
+        models.User.findById(req.params.userId)
+        .select("+password")
+        .then(user => {
+        
+            if (!user) {
+                throw { message: "User Does Not Exist" };
+            }
+            
+            req.params.user.changeUserPass(user, req.body, (err, success) => {
+                    
+                if(err) { return next(err); }
+
+                return res.send({
+                    status: STATUS_SUCCESS,
+                    message: success,
+                    data: _.omit(user.toObject(), "password")
+                    
+                });
+            });
+            
+        })
+        .catch(err => {
+
+            next(err);
+        });
+
 });
 
 router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
