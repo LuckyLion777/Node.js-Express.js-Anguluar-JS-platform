@@ -124,23 +124,38 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+/**
+ * Create new user
+ * @param Object userInfo
+ * @param function callback
+ */
 userSchema.statics.createUser = function (userInfo, callback)  {
+    
+    hash(userInfo.password, HASH_SALT_ROUNDS)
+        .then(hashedPassword => {
+            
+            userInfo.password = hashedPassword;
+            return this.create(userInfo);
+        })
+        .then(newUser => {
+            
+            if(!newUser) { throw ("Error creating user"); }
 
-    hashPassword(userInfo, (err) => {
-        if(err) {
-            return callback(err, null);
-        } else {
-            return callback(null, this.create(userInfo).then(newUser => {
-                if(!newUser) {
+            return this.findById(newUser._id)
+                .populate('language')
+                ;
+        })
+        .then(user => {
+            
+            emailHandler.sendEmail(user.email, user, EmailTemplate.type.REGISTER, user.language.name);
+            
+            return callback(null, user);
+        })
+        .catch(err => {
 
-                    new Error("new user Does Not Exist");
-
-                } else {
-                    emailHandler.sendEmail(userInfo.email, userInfo, EmailTemplate.type.REGISTER, userInfo.language.name);
-                }
-            }));
-        }
-    });
+            return callback(err.message, null);
+        })
+        ;
 };
 
 userSchema.methods.updateUser = function (userInfo, callback) {

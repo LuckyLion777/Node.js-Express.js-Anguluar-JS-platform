@@ -16,11 +16,17 @@ const STATUS_FAILED  =  false;
 router.post("/", (req, res, next) => {
 
     models.User.createUser(req.body, (err, user) => {
+        
         if(err) {
             return next(err);
         } else {
-            res.locals.promise = user;
-            return next();
+            
+            return res.send({
+                status: STATUS_SUCCESS,
+                message: 'User created',
+                data: _.omit(user.toObject(), "password")
+                
+            });
         }
     });
 });
