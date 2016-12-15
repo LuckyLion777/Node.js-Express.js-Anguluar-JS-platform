@@ -54,6 +54,26 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res, nex
     });
 });
 
+/** Add / update avatar to current user
+ * @param JSON tags - tag ids
+ */
+router.post("/avatar",
+    upload.single("avatar"),
+    passport.authenticate("jwt", { session: false }),
+
+    (req, res, next) => {
+        
+        if( ! req.file)  {
+            
+            return next(new Error("Avatar file is required"));
+        }
+            
+        req.body.avatar = { filename: req.file.filename };
+        
+        res.locals.promise = req.user.addAvatar(req.body);
+        return next();
+});
+
 
 /* --------------------
  * Tags

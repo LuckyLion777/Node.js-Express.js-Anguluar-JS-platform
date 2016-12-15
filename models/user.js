@@ -10,6 +10,10 @@ const Language = require("./language").Language;
 const emailHandler = require("../util/emailHandler");
 const _promise = require('bluebird');
 
+const uploadpath = require("../config/uploadpath");
+const path = require("path");
+const fs = require('fs');
+
 const compare = _promise.promisify(bcrypt.compare);
 const hash = _promise.promisify(bcrypt.hash);
 
@@ -168,6 +172,19 @@ userSchema.methods.updateUser = function (userInfo, callback) {
     });
 };
 
+
+userSchema.methods.addAvatar= function (uploadInfo) {
+
+    //remove old avatar if present
+    if (this.avatar && fs.existsSync(path.join(uploadpath, this.avatar.filename)) ) {
+
+        //console.log('remove old avatar:', uploadpath, this.avatar.filename);
+        
+        fs.unlinkSync(path.join(uploadpath, this.avatar.filename) );
+    }
+    
+    return this.update(uploadInfo, { runValidators: false });
+};
 
 /** Change password for given user
  * @param mongoose.model User
