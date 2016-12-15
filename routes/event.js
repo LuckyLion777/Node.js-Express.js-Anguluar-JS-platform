@@ -1,5 +1,6 @@
 const models = require("../models");
 const router = require("express").Router();
+
 const auth = require("../util/auth/index");
 const passport = require("passport");
 const upload = require("../config/multer");
@@ -43,6 +44,15 @@ router.get("/:status?", (req, res, next) => {
     }
 });
 
+
+router.get("/category/:categoryId", (req, res, next) => {
+    
+    res.locals.promise = models.Event.getEvents()
+        .where('categories')
+        .eq( req.params.categoryId)
+        ;
+    return next();
+});
 
 
 router.post("/:eventId/option", passport.authenticate("jwt", { session: false }),
