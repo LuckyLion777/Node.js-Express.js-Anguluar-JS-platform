@@ -1,3 +1,6 @@
+const USERSTATUS = require("../../models/user").STATUS;
+const USERTYPE = require("../../models/user").USERTYPE;
+
 
 const Permission  = function(req, next) {
     this.req = req;
@@ -9,13 +12,13 @@ const Permission  = function(req, next) {
 
 Permission.prototype.isAdmin = function () {
     this.result = this.result &&
-        (this.req.user.userType == "Admin");
+        (this.req.user.userType ==  USERTYPE.ADMIN);
     return this;
 };
 
 Permission.prototype.isActive = function () {
     this.result = this.result &&
-        this.req.user.status == "ACTIVE";
+        this.req.user.status == USERSTATUS.ACTIVE;
     return this;
 };
 
@@ -32,8 +35,9 @@ Permission.prototype.isNotArticleOwner = function () {
 };
 
 Permission.prototype.isBusinessUser = function () {
+    
     this.result = this.result &&
-        this.req.user.userType == "BusinessUser";
+        this.req.user.userType == USERTYPE.BUSINESSUSER;
     return this;
 };
 

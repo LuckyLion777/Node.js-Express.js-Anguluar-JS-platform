@@ -368,7 +368,9 @@ const hashPassword = (userInfo, callback) => {
 
 module.exports = {
     userSchema: userSchema,
-    User: mongoose.model("User", userSchema)
+    User: mongoose.model("User", userSchema),
+    STATUS: STATUS,
+    USERTYPE: USER
 };
 
 
