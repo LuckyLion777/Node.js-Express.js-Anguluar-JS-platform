@@ -156,11 +156,21 @@ eventSchema.methods.removeEvent = function () {
 };
 
 eventSchema.statics.getEvents = function () {
-    return this.find().populate('categories').populate('options').populate('comments.language').populate('comments.user');
+    return this.find()
+        .sort({'startDate': 'asc'})
+        .populate('categories')
+        .populate('options')
+        .populate('comments.language')
+        .populate('comments.user')
+        ;
 };
 
 eventSchema.statics.getFilteredEvents = function (status) {
-    return this.find({ status: status }).populate('categories').populate('options').populate('comments.language').populate('comments.user');
+    
+    return this.getEvents()
+        .where('status')
+        .eq( status )
+        ;
 };
 
 eventSchema.methods.addOption = function (optionInfo) {
