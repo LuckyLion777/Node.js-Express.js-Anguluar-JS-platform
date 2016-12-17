@@ -29,11 +29,11 @@ const businessSchema = new mongoose.Schema({
             validator: (userId, done) => {
                 User.count({ _id: userId })
                     .then(count => {
-                        return done(count)
+                        return done(count);
                     }, err => {
                         //TODO: log
-                        return done(false, err)
-                    })
+                        return done(false, err);
+                    });
             },
             message: "User Does Not Exist"
         }
@@ -89,7 +89,7 @@ const businessSchema = new mongoose.Schema({
                     }, err => {
                         //TODO: log
                         return callback(0, err);
-                    })
+                    });
             },
             message: "Category Does Not Exist"
         }
@@ -105,7 +105,7 @@ const businessSchema = new mongoose.Schema({
                     }, err => {
                         //TODO: log
                         return callback(0, err);
-                    })
+                    });
             },
             message: "Option Does Not Exist"
         }
@@ -123,7 +123,7 @@ const businessSchema = new mongoose.Schema({
         validate: {
             validator: (collectionId, done) => {
                 Collection.count({ _id: collectionId })
-                    .then( count => done(count) , err => done(false, err) )
+                    .then( count => done(count) , err => done(false, err) );
             },
             message: "Collection Does Not Exist"
         }
@@ -145,6 +145,61 @@ businessSchema.statics.getFilteredBusinesses = function (status) {
 
 businessSchema.statics.getBusinessesByCategory = function (category) {
     return this.find({ categories: category }).populate('reviews.user').populate('owner').populate('reviews').populate('categories').populate('options').populate('comments.language').populate('comments.user');
+};
+
+
+//get top 10 bushiness based high rating
+businessSchema.statics.getTopratedBusinesses = function (limit) {
+
+        return this
+        .aggregate(
+            [
+                { "$match": { "ratings": {$ne: [] } } },
+                { "$project":
+                    {
+                        "avgrating": {$avg: "$ratings.rating" },
+                        owner: 1,
+                        name: 1,
+                        logo: 1,
+                        cover: 1,
+                        description: 1,
+                        website: 1,
+                        socialMedias:  1,
+                        photos:  1,
+                        ownershipDocument:  1,
+                        tags: 1,
+                        editorPick: 1,
+                        isSponsored: 1,
+                        branches:  1,
+                        categories: 1,
+                        options: 1,
+                        reviews:  1,
+                        status: 1,
+                        ratings:  1,
+                        comments:  1,
+                        collections: 1
+                    }
+                },
+                { "$sort": { "avgrating": -1 } }, //1 is asc, -1 is desc
+                { "$limit": limit }
+            ]
+        )
+        .then(result =>  {
+            
+            return mongoose.model("_Business", businessSchema)
+                .populate(result, [
+                    {path: 'reviews.user'},
+                    {path:'owner'},
+                    {path:'categories'},
+                    {path:'options'},
+                    {path:'comments.language'},
+                    {path:'comments.user'},
+                ])
+                ;
+            
+        })
+        ;
+
 };
 
 businessSchema.statics.searchBusinesses = function (searchInfo) {
@@ -177,7 +232,7 @@ businessSchema.methods.updateBusiness = function (businessInfo) {
 };
 
 businessSchema.methods.removeBusiness = function () {
-    return this.remove()
+    return this.remove();
 };
 
 

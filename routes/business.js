@@ -9,6 +9,20 @@ router.get("/", (req, res, next) => {
     return next();
 });
 
+//get top 10 bushiness based high rating
+router.get("/toprated", (req, res, next) => {
+
+    models.Business.getTopratedBusinesses(10)
+    .then(result =>  {
+        return res.send(result);
+    })
+    .catch(err => {
+        //TODO: log
+        throw(err);
+    });
+        
+});
+
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Business"),
     upload.single("logo"),
@@ -101,7 +115,7 @@ router.post("/:businessId/photo", upload.array("photo"), passport.authenticate("
         res.locals.promise = req.params.business.addPhoto(req.files.map(photo => ({ filename: photo.filename }) ));
         return next();
     } catch(err) {
-        return next(new Error("You Should Use Form-Data Encoding Only With This End Point"))
+        return next(new Error("You Should Use Form-Data Encoding Only With This End Point"));
     }
 });
 
@@ -183,7 +197,7 @@ router.post("/:businessId/review/:reviewId/comment", passport.authenticate("jwt"
     req.body.user = req.user;
 
     try {
-        res.locals.promise = req.params.business.addCommentToReview(req.params.reviewId, req.body)
+        res.locals.promise = req.params.business.addCommentToReview(req.params.reviewId, req.body);
         return next();
     } catch(err) {
         return next(new Error("Review Does Not Exist"));
@@ -193,7 +207,7 @@ router.post("/:businessId/review/:reviewId/comment", passport.authenticate("jwt"
 router.delete("/:businessId/review/:reviewId/comment/:commentId", passport.authenticate("jwt", { session: false }),
     auth.can("Remove Comment On Business Review"), (req, res, next) => {
     try {
-        res.locals.promise = req.params.business.removeCommentFromReview(req.params.reviewId, req.params.commentId)
+        res.locals.promise = req.params.business.removeCommentFromReview(req.params.reviewId, req.params.commentId);
         return next();
     } catch(err) {
         return next(new Error("Review Does Not Exist"));
@@ -230,7 +244,13 @@ router.delete("/:businessId/collection/:collectionId", passport.authenticate("jw
 
 
 router.param("businessId", (req, res, next, bossinessId) => {
-    models.Business.findById(bossinessId).populate('reviews.user').populate('owner').populate('categories').populate('options').populate('comments.language').populate('comments.user')
+    models.Business.findById(bossinessId) //TODO: rewrite it
+        .populate('reviews.user')
+        .populate('owner')
+        .populate('categories')
+        .populate('options')
+        .populate('comments.language')
+        .populate('comments.user')
         .then(business => {
             if(!business) {
                 return next(new Error("Business Does Not Exist"));
@@ -238,7 +258,7 @@ router.param("businessId", (req, res, next, bossinessId) => {
                 req.params.business = business;
                 return next();
             }
-        }, err => next(err) )
+        }, err => next(err) );
 });
 
 
