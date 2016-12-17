@@ -207,6 +207,14 @@ eventSchema.methods.removeAttendant = function (attendantId) {
 
 
 eventSchema.methods.addRating = function (ratingInfo) {
+    
+    var rated = _.find(this.ratings, ['_id', ratingInfo._id._id]);
+    
+    if (rated) {
+        
+        throw "This user already rated this event";
+    }
+    
     this.ratings.addToSet(ratingInfo);
     return this.save();
 };

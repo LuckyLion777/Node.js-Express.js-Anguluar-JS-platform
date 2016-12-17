@@ -9,6 +9,7 @@ const Category = require("./businessCategory").BusinessCategory;
 const Option = require("./businessOption").BusinessOption;
 const Collection = require("./collection").Collection;
 const validator = require("validator");
+const _ = require("lodash");
 
 
 const STATUS = {
@@ -324,6 +325,15 @@ businessSchema.methods.removeCommentFromReview = function (reviewId, commentId) 
 
 
 businessSchema.methods.addRating = function (ratingInfo) {
+    
+
+    var rated = _.find(this.ratings, ['_id', ratingInfo._id._id]);
+    
+    if (rated) {
+        
+        throw "This user already rated this business";
+    }
+        
     this.ratings.addToSet(ratingInfo);
     return this.save();
 };
