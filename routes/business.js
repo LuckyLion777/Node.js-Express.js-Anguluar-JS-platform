@@ -4,6 +4,8 @@ const auth = require("../util/auth/index");
 const passport = require("passport");
 const upload = require("../config/multer");
 
+const resultHandler    = require("../util/resultHandler")[0]; //hack - we want to process returned data with resultHandler
+
 router.get("/", (req, res, next) => {
     res.locals.promise = models.Business.getBusinesses();
     return next();
@@ -12,15 +14,11 @@ router.get("/", (req, res, next) => {
 //get top 10 bushiness based high rating
 router.get("/toprated", (req, res, next) => {
 
-    models.Business.getTopratedBusinesses(10)
-    .then(result =>  {
-        return res.send(result);
-    })
-    .catch(err => {
-        //TODO: log
-        throw(err);
-    });
-        
+    var limit = 10;
+    
+    res.locals.promise = models.Business.getTopratedBusinesses(limit);
+
+    return resultHandler(req, res, next);
 });
 
 router.post("/", passport.authenticate("jwt", { session: false }),
