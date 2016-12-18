@@ -21,6 +21,14 @@ router.get("/toprated", (req, res, next) => {
     return resultHandler(req, res, next);
 });
 
+//get businesses all featured bushiness (sponsored or editor choice)
+router.get("/featured", (req, res, next) => {
+
+    res.locals.promise = models.Business.getFeaturedBusinesses();
+
+    return resultHandler(req, res, next);
+});
+
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Business"),
     upload.single("logo"),

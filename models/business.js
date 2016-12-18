@@ -136,18 +136,45 @@ businessSchema.statics.createBusiness = function (businessInfo) {
     return this.create(businessInfo);
 };
 
-businessSchema.statics.getBusinesses = function () {
-    return this.find().populate('reviews.user').populate('owner').populate('categories').populate('options').populate('comments.language').populate('comments.user');
+businessSchema.statics.getBusinesses = function () { //TODO: there is different populate() set with getFilteredBusinesses(). Is it a bug?
+    return this.find()
+        .populate('reviews.user')
+        .populate('owner')
+        .populate('categories')
+        .populate('options')
+        .populate('comments.language')
+        .populate('comments.user');
 };
 
 businessSchema.statics.getFilteredBusinesses = function (status) {
-    return this.find({ status: status }).populate('reviews.user').populate('owner').populate('reviews').populate('categories').populate('options').populate('comments.language').populate('comments.user');
+    return this.find({ status: status })
+        .populate('reviews.user')
+        .populate('owner')
+        .populate('reviews')
+        .populate('categories')
+        .populate('options')
+        .populate('comments.language')
+        .populate('comments.user');
 };
 
 businessSchema.statics.getBusinessesByCategory = function (category) {
-    return this.find({ categories: category }).populate('reviews.user').populate('owner').populate('reviews').populate('categories').populate('options').populate('comments.language').populate('comments.user');
+    return this.find({ categories: category })
+        .populate('reviews.user')
+        .populate('owner')
+        .populate('reviews')
+        .populate('categories')
+        .populate('options')
+        .populate('comments.language')
+        .populate('comments.user');
 };
 
+
+businessSchema.statics.getFeaturedBusinesses = function () {
+    
+    return this.getBusinesses()
+        .or([{ editorPick: true }, { isSponsored: true }])
+        ;
+};
 
 //get top 10 bushiness based high rating
 businessSchema.statics.getTopratedBusinesses = function (limit) {
