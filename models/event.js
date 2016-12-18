@@ -84,11 +84,11 @@ const eventSchema = new mongoose.Schema({
             validator: (userId, done) => {
                 User.count({ _id: userId })
                     .then(count => {
-                        return done(count)
+                        return done(count);
                     }, err => {
                         //TODO: log
-                        return done(false, err)
-                    })
+                        return done(false, err);
+                    });
             },
             message: "User Does Not Exist"
         }
@@ -119,7 +119,7 @@ const eventSchema = new mongoose.Schema({
                     }, err => {
                         //TODO: log
                         return callback(0, err);
-                    })
+                    });
             },
             message: "Category Does Not Exist"
         }
@@ -135,7 +135,7 @@ const eventSchema = new mongoose.Schema({
                     }, err => {
                         //TODO: log
                         return callback(0, err);
-                    })
+                    });
             },
             message: "Option Does Not Exist"
         }
@@ -156,13 +156,47 @@ eventSchema.methods.removeEvent = function () {
 };
 
 eventSchema.statics.getEvents = function () {
-    return this.find()
+
+    var query = this.find()
         .sort({'startDate': 'asc'})
-        .populate('categories')
+        .populate('categories') //TODO: rewrite it - move populate to separate method
         .populate('options')
         .populate('comments.language')
         .populate('comments.user')
         ;
+                
+    return query;
+};
+
+/**
+ * @param int limit
+ * @param date startDate,
+ * @param date endDate
+ */
+eventSchema.statics.getUpcomingEvents = function (limit, startDate, endDate) {
+
+    var query = this.getEvents();
+    
+    startDate = startDate || new Date();
+
+    if (typeof endDate !== 'undefined') {
+        
+        query.where('startDate').lte(endDate);
+    }
+    
+    if (limit) {
+        
+        query.limit(limit);
+    }
+    
+    console.log('dates:', startDate, endDate);
+    
+    query = query
+        .where('startDate').gte(startDate)
+        ;
+    
+    return query;
+
 };
 
 eventSchema.statics.getFilteredEvents = function (status) {
@@ -197,7 +231,7 @@ eventSchema.methods.removeSocialMedia = function (socialMediaId) {
 
 eventSchema.methods.addAttendant = function (attendantId) {
     this.attendants.addToSet(attendantId);
-    return this.save()
+    return this.save();
 };
 
 eventSchema.methods.removeAttendant = function (attendantId) {

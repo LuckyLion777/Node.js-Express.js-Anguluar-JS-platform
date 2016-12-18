@@ -1,14 +1,12 @@
-const models = require("../models");
-const router = require("express").Router();
+const models    = require("../models");
+const router    = require("express").Router();
 
-const auth = require("../util/auth/index");
-const passport = require("passport");
-const upload = require("../config/multer");
+const auth      = require("../util/auth/index");
+const passport  = require("passport");
+const upload    = require("../config/multer");
 
-router.get("/", (req, res, next) => {
-    res.locals.promise = models.Event.getEvents();
-    return next();
-});
+
+/** Process requests for single event **/
 
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Event"), upload.single("cover"), (req, res, next) => {
@@ -32,26 +30,9 @@ router.delete("/:eventId", passport.authenticate("jwt", { session: false }),
         return next();
     });
 
-router.get("/:eventId", (req, res, next) => res.send(req.params.event));
-
-router.get("/:status?", (req, res, next) => {
-    if(req.query.status) {
-        res.locals.promise = models.Event.getFilteredEvents(req.query.status);
-        return next();
-    } else {
-        res.locals.promise = models.Event.getEvents();
-        return next();
-    }
-});
-
-
-router.get("/category/:categoryId", (req, res, next) => {
-    
-    res.locals.promise = models.Event.getEvents()
-        .where('categories')
-        .eq( req.params.categoryId)
-        ;
-    return next();
+router.get("/:eventId", (req, res, next) => {
+        
+    return res.send(req.params.event);
 });
 
 
@@ -169,6 +150,7 @@ router.delete("/:eventId/category/:categoryId", passport.authenticate("jwt", { s
 
 
 router.param("eventId", (req, res, next, eventId) => {
+        
     models.Event.findById(eventId).populate('options')
         .then(event => {
             if(!event) {
@@ -177,7 +159,8 @@ router.param("eventId", (req, res, next, eventId) => {
                 req.params.event = event;
                 return next();
             }
-        }, err => next(err) )
+        }, err => next(err) );
+
 });
 
 

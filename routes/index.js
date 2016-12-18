@@ -7,7 +7,9 @@ router.use("/articles?", require("./article"));
 router.use("/business(es)?", require("./business"));
 router.use("/locations?", require("./location"));
 router.use("/languages?", require("./language"));
-router.use("/events?", require("./event"));
+router.use("/event", require("./event"));       //single event
+router.use("/events", require("./events"));      //multiple events
+
 router.use("/collections?", require("./collection"));
 router.use("/businessCategory", require("./businessCategory"));
 router.use("/businessOption", require("./businessOption"));
