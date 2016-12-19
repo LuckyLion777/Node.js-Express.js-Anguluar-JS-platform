@@ -34,30 +34,33 @@ module.exports = multer({
     },
     fileFilter: (req, file, cb) => {
         
-        switch (file.mimetype) {
-            
-            case 'image/jpeg':
-            case 'image/pjpeg':
-            case 'image/x-portable-bitmap':
-            case 'image/x-pict':
-            case 'image/pict':
-            case 'image/x-pcx':
-            case 'image/tiff':
-            case 'image/x-tiff':
-            case 'image/x-icon':
-            case 'image/xpm':
-            case 'image/png':
-            case 'image/bmp':
-            case 'image/gif':
-            case 'image/x-windows-bmp':
-
-                cb(null, true); //accept image
-                break;
-            
-            default:
-                cb(new Error('Restricted file type'));
-
-        }
+        cb(null, true); //accept image
+        //TODO: fix issue with determine image type
+        
+        //switch (file.mimetype) {
+        //    
+        //    case 'image/jpeg':
+        //    case 'image/pjpeg':
+        //    case 'image/x-portable-bitmap':
+        //    case 'image/x-pict':
+        //    case 'image/pict':
+        //    case 'image/x-pcx':
+        //    case 'image/tiff':
+        //    case 'image/x-tiff':
+        //    case 'image/x-icon':
+        //    case 'image/xpm':
+        //    case 'image/png':
+        //    case 'image/bmp':
+        //    case 'image/gif':
+        //    case 'image/x-windows-bmp':
+        //
+        //        cb(null, true); //accept image
+        //        break;
+        //    
+        //    default:
+        //        cb(new Error('Restricted file type'));
+        //
+        //}
 
     }
 
