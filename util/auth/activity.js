@@ -690,7 +690,13 @@ const activities = (activity, req, res, next) => {
                     .isAdmin()
                     .done();
                 break;
-        
+
+            case "Password Change":
+                new Permission(req, next)
+                    .isAdmin()
+                    .done();
+                break;
+                
             
             default:
                 throw ("activity.js: activity '" + activity + "' not supported!");
