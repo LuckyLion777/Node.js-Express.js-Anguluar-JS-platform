@@ -136,7 +136,9 @@ businessSchema.statics.createBusiness = function (businessInfo) {
     return this.create(businessInfo);
 };
 
-businessSchema.statics.getBusinesses = function () { //TODO: there is different populate() set with getFilteredBusinesses(). Is it a bug?
+
+businessSchema.statics.getAll = function () {
+    
     return this.find()
         .populate('reviews.user')
         .populate('owner')
@@ -144,6 +146,11 @@ businessSchema.statics.getBusinesses = function () { //TODO: there is different 
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');
+};
+
+businessSchema.statics.getBusinesses = function () { //TODO: there is different populate() set with getFilteredBusinesses(). Is it a bug?
+
+    return this.getAll();
 };
 
 businessSchema.statics.getFilteredBusinesses = function (status) {
@@ -167,7 +174,6 @@ businessSchema.statics.getBusinessesByCategory = function (category) {
         .populate('comments.language')
         .populate('comments.user');
 };
-
 
 businessSchema.statics.getFeaturedBusinesses = function () {
     

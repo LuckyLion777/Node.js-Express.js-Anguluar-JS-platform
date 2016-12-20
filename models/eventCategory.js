@@ -19,7 +19,7 @@ const categorySchema = new mongoose.Schema({
             validator: (categoryId, done) => {
                 EventCategory.count({ _id: categoryId })
                 //TODO: Log
-                    .then(count => done(count), err => done(false, err) )
+                    .then(count => done(count), err => done(false, err) );
             }
         }
     },
@@ -34,8 +34,13 @@ categorySchema.statics.createCategory = function(categoryInfo) {
     return this.create(categoryInfo);
 };
 
-categorySchema.statics.getCategories = function () {
+categorySchema.statics.getAll = function () {
     return this.find().populate('parent');
+};
+
+categorySchema.statics.getCategories = function () {
+    
+    return this.getAll();
 };
 
 categorySchema.methods.updateCategory = function (categoryInfo) {
@@ -43,7 +48,7 @@ categorySchema.methods.updateCategory = function (categoryInfo) {
 };
 
 categorySchema.methods.removeCategory = function () {
-    return this.remove()
+    return this.remove();
 };
 
 const EventCategory = mongoose.model("EventCategory", categorySchema);
@@ -60,7 +65,7 @@ categorySchema.add({
                     }, err => {
                         //TODO: log
                         return callback(0, err);
-                    })
+                    });
             }
         }
     }

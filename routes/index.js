@@ -1,5 +1,6 @@
 const router = require("express").Router();
 
+router.use("/", require("./common"));
 
 router.use("/user", require("./user"));
 router.use("/signup", require("./signup"));

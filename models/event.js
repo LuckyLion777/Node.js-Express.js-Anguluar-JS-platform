@@ -155,8 +155,8 @@ eventSchema.methods.removeEvent = function () {
     return this.remove();
 };
 
-eventSchema.statics.getEvents = function () {
-
+eventSchema.statics.getAll = function () {
+    
     var query = this.find()
         .sort({'startDate': 'asc'})
         .populate('categories') //TODO: rewrite it - move populate to separate method
@@ -168,6 +168,12 @@ eventSchema.statics.getEvents = function () {
     return query;
 };
 
+eventSchema.statics.getEvents = function () {
+
+    return this.getAll();
+};
+
+
 /**
  * @param int limit
  * @param date startDate,
@@ -175,7 +181,7 @@ eventSchema.statics.getEvents = function () {
  */
 eventSchema.statics.getUpcomingEvents = function (limit, startDate, endDate) {
 
-    var query = this.getEvents();
+    var query = this.getAll();
     
     startDate = startDate || new Date();
 
@@ -199,7 +205,7 @@ eventSchema.statics.getUpcomingEvents = function (limit, startDate, endDate) {
 
 eventSchema.statics.getFilteredEvents = function (status) {
     
-    return this.getEvents()
+    return this.getAll()
         .where('status')
         .eq( status )
         ;

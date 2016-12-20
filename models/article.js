@@ -104,6 +104,11 @@ articleSchema.methods.removeArticle = function () {
 };
 
 articleSchema.statics.getArticles = function () {
+    
+    return this.getAll();
+};
+
+articleSchema.statics.getAll = function () {
     return this.find()
         .populate('user')
         .populate('language')
@@ -123,7 +128,7 @@ articleSchema.statics.getArticle = function (articleId) {
 
 articleSchema.statics.getFilteredArticles = function (status) {
     
-    return this.getArticles()
+    return this.getAll()
         .where('status').eq(status);
     
 };
