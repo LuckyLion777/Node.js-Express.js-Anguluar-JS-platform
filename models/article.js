@@ -23,11 +23,11 @@ const articleSchema = new mongoose.Schema({
             validator: (userId, done) => {
                 User.count({ _id: userId })
                     .then(count => {
-                        return done(count)
+                        return done(count);
                     }, err => {
                         //TODO: log
-                        return done(false, err)
-                    })
+                        return done(false, err);
+                    });
             },
             message: "User Does Not Exist"
         }
@@ -44,7 +44,7 @@ const articleSchema = new mongoose.Schema({
                     }, err => {
                         //TODO: log
                         return done(false, err);
-                    })
+                    });
             },
             message: "Language Does Not Exist"
         }
@@ -57,11 +57,11 @@ const articleSchema = new mongoose.Schema({
             validator: (userId, done) => {
                 User.count({ _id: userId })
                     .then(count => {
-                        return done(count)
+                        return done(count);
                     }, err => {
                         //TODO: log
-                        return done(false, err)
-                    })
+                        return done(false, err);
+                    });
             },
             message: "User Does Not Exist"
         }
@@ -91,7 +91,7 @@ const articleSchema = new mongoose.Schema({
 
 
 articleSchema.statics.createArticle = function (articleInfo) {
-    return this.create(articleInfo)
+    return this.create(articleInfo);
 };
 
 articleSchema.methods.updateArticle = function (articleInfo) {
@@ -104,15 +104,28 @@ articleSchema.methods.removeArticle = function () {
 };
 
 articleSchema.statics.getArticles = function () {
-    return this.find().populate('user').populate('language').populate('comments.language').populate('comments.user').populate('user.language');
+    return this.find()
+        .populate('user')
+        .populate('language')
+        .populate('comments.language')
+        .populate('comments.user')
+        .populate('user.language');
 };
 
 articleSchema.statics.getArticle = function (articleId) {
-    return this.findById(articleId).populate('user').populate('language').populate('comments.language').populate('comments.user').populate('user.language');
+    return this.findById(articleId)
+        .populate('user')
+        .populate('language')
+        .populate('comments.language')
+        .populate('comments.user')
+        .populate('user.language');
 };
 
 articleSchema.statics.getFilteredArticles = function (status) {
-    return this.find({ status: status }).populate('user').populate('language').populate('comments.language').populate('comments.user').populate('user.language');
+    
+    return this.getArticles()
+        .where('status').eq(status);
+    
 };
 
 articleSchema.methods.addComment = function (commentInfo) {
@@ -180,7 +193,7 @@ articleSchema.methods.suspend = function () {
 
 articleSchema.methods.provoke = function () {
     this.status = STATUS.PROVOKED;
-    return this.save()
+    return this.save();
 };
 
 
