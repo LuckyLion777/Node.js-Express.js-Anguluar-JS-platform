@@ -189,8 +189,6 @@ eventSchema.statics.getUpcomingEvents = function (limit, startDate, endDate) {
         query.limit(limit);
     }
     
-    console.log('dates:', startDate, endDate);
-    
     query = query
         .where('startDate').gte(startDate)
         ;
