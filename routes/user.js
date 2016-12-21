@@ -39,19 +39,55 @@ router.post("/login", passport.authenticate("local", {session: false}), (req, re
 });
 
 
+//change password for current user
+router.post("/changepassword", passport.authenticate("jwt", { session: false }),
+    (req, res, next) => {
+
+        models.User.findById(req.user._id)
+        .select("+password")
+        .then(user => {
+        
+            if (!user) {
+                throw { message: "User Does Not Exist" };
+            }
+            
+            req.user.changeUserPass(user, req.body, (err, success) => {
+                    
+                if(err) { return next(err); }
+
+                return res.send({
+                    status: STATUS_SUCCESS,
+                    message: success,
+                    data: _.omit(user.toObject(), "password")
+                    
+                });
+            });
+            
+        })
+        .catch(err => {
+
+            next(err);
+        });
+
+});
+
+
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
     return res.send(req.user);
 });
 
 router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-    req.user.updateUser(req.body, (err, user) => {        
-        if(err) {
-            return next(err);
-        } else {
-            res.locals.promise = user;
-            return next();
-        }
-    });
+    
+    
+    //password will not be updated using this method
+    
+    var userdata = (_.omit(req.body, "password"));
+    console.log('body:', userdata);
+    
+    res.locals.promise = req.user.updateUser(userdata);
+    
+    return next();
+    
 });
 
 /** Add / update avatar to current user

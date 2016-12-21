@@ -162,14 +162,13 @@ userSchema.statics.createUser = function (userInfo, callback)  {
         ;
 };
 
-userSchema.methods.updateUser = function (userInfo, callback) {
-    hashPassword(userInfo, (err) => {
-        if(err) {
-            return callback(err, null);
-        } else {
-            return callback(null, this.update(userInfo));
-        }
-    });
+/**
+ * @param object userInfo
+ * @returns promise
+ */
+userSchema.methods.updateUser = function (userInfo) {
+    
+    return this.update(userInfo);
 };
 
 

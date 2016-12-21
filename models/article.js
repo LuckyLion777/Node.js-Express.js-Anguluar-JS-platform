@@ -79,7 +79,9 @@ const articleSchema = new mongoose.Schema({
         enum: [ STATUS.PUBLISHED, STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
         default: STATUS.PENDING
     },
-    tags: [ String ],
+    tags: [{
+        type:String,
+    }],
     editorPick: {
         type:Boolean,
         default: false
