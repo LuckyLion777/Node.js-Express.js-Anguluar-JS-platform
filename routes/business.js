@@ -24,7 +24,7 @@ router.get("/toprated", (req, res, next) => {
 //get businesses all featured bushiness (sponsored or editor choice)
 router.get("/featured", (req, res, next) => {
 
-    res.locals.promise = models.Business.getFeaturedBusinesses();
+    res.locals.promise = models.Business.getFeatured();
 
     return resultHandler(req, res, next);
 });

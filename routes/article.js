@@ -4,12 +4,6 @@ const auth = require("../util/auth/index");
 const passport = require("passport");
 const upload = require("../config/multer");
 
-router.get("/", (req, res, next) => {
-    //, passport.authenticate("jwt", { session: false }
-    res.locals.promise = models.Article.getArticles();
-    return next();
-});
-
 router.post("/", passport.authenticate("jwt", { session: false }),
     auth.can("Create Article"), (req, res, next) => {
     req.body.user = req.user;
@@ -34,23 +28,12 @@ router.delete("/:articleId", passport.authenticate("jwt", { session: false }),
 
 router.get("/:articleId", (req, res, next) => res.send(req.params.article) );
 
-router.get("/:status?", (req, res, next) => {
-    if(req.query.status) {
-        res.locals.promise = models.Article.getFilteredArticles(req.query.status);
-        return next();
-    } else {
-        res.locals.promise = models.Article.getArticles();
-        return next();
-    }
-});
-
-
 router.post("/:articleId/comment", passport.authenticate("jwt", { session: false }),
     auth.can("Add Article Comment"), (req, res, next) => {
     req.body.user = req.user;
 
     res.locals.promise = req.params.article.addComment(req.body);
-    return next()
+    return next();
 });
 
 router.delete("/:articleId/comment/:commentId", passport.authenticate("jwt", { session: false }),
@@ -140,7 +123,7 @@ router.param("articleId", (req, res, next, articleId) => {
     models.Article.findById(articleId).populate('user').populate('language')
         .then(article => {
             if(!article) {
-                return next(new Error("Article Does Not Exist"))
+                return next(new Error("Article Does Not Exist"));
             } else {
                 req.params.article = article;
                 return next();

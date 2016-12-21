@@ -175,7 +175,7 @@ businessSchema.statics.getBusinessesByCategory = function (category) {
         .populate('comments.user');
 };
 
-businessSchema.statics.getFeaturedBusinesses = function () {
+businessSchema.statics.getFeatured = function () {
     
     return this.getBusinesses()
         .or([{ editorPick: true }, { isSponsored: true }])

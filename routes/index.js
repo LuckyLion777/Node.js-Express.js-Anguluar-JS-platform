@@ -4,10 +4,14 @@ router.use("/", require("./common"));
 
 router.use("/user", require("./user"));
 router.use("/signup", require("./signup"));
-router.use("/articles?", require("./article"));
+
+router.use("/article", require("./article"));
+router.use("/articles", require("./articles"));
+
 router.use("/business(es)?", require("./business"));
 router.use("/locations?", require("./location"));
 router.use("/languages?", require("./language"));
+
 router.use("/event", require("./event"));       //single event
 router.use("/events", require("./events"));      //multiple events
 

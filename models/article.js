@@ -108,6 +108,13 @@ articleSchema.statics.getArticles = function () {
     return this.getAll();
 };
 
+articleSchema.statics.getFeatured = function () {
+    
+    return this.getAll()
+        .where(editorPick).eq(true)
+        ;
+};
+
 articleSchema.statics.getAll = function () {
     return this.find()
         .populate('user')
