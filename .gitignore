@@ -6,3 +6,4 @@ doc/
 node_modules/
 uploads
 public/"sendgrid.env" 
+dump
