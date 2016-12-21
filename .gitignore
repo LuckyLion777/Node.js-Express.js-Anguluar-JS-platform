@@ -7,3 +7,6 @@ node_modules/
 uploads
 public/"sendgrid.env" 
 dump
+npm-debug.log
+.docker/
+.env
