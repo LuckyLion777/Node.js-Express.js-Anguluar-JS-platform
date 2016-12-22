@@ -2,22 +2,22 @@ const mongoose = require("mongoose");
 const User = require("./user").User;
 
 const ratingSchema = new mongoose.Schema({
-    _id: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
-/*        validate: {
+        required: false,
+        validate: {
             validator: (userId, done) => {
                 User.count({ _id: userId })
                     .then(count => {
-                        return done(count)
+                        return done(count);
                     }, err => {
                         //TODO: log
-                        return done(false, err)
-                    })
+                        return done(false, err);
+                    });
             },
             message: "User Does Not Exist"
-        }*/
+        }
     },
     rating: {
         type: Number,

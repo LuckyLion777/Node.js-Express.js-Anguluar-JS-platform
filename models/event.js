@@ -8,6 +8,7 @@ const User = require("./user").User;
 const Category = require("./eventCategory").EventCategory;
 const Option = require("./eventOption").EventOption;
 const validator = require("validator");
+const _ = require("lodash");
 
 const STATUS = {
     PUBLISHED: "PUBLISHED",
@@ -16,6 +17,15 @@ const STATUS = {
     PENDING: "PENDING",
     ONHOLD: "ONHOLD",
     SUSPENDED: "SUSPENDED"
+};
+
+const DAYS = {
+    SU: "SU",
+    MO: "MO",
+    TU: "TU",
+    TH: "TH",
+    FR: "FR",
+    SA: "SA"
 };
 
 const eventSchema = new mongoose.Schema({
@@ -140,6 +150,10 @@ const eventSchema = new mongoose.Schema({
             message: "Option Does Not Exist"
         }
     }],
+    recurrence: [{
+       repeat: [DAYS.SU, DAYS.MO, DAYS.TU, DAYS.TH, DAYS.FR, DAYS.SA],
+       frequent: String
+    }],
 }, { timestamps: true });
 
 
@@ -245,8 +259,8 @@ eventSchema.methods.removeAttendant = function (attendantId) {
 
 
 eventSchema.methods.addRating = function (ratingInfo) {
-    
-    var rated = _.find(this.ratings, ['_id', ratingInfo._id._id]);
+
+    var rated = _.find(this.ratings, ['_id', ratingInfo.user._id]);
     
     if (rated) {
         
