@@ -81,24 +81,11 @@ const processRequest = (req, res, next) => {
     res.locals.promise
         .then(result =>  {
             try {
-                
-                //console.log('result:', result);
-                
-                var data;
-                
-                if (typeof result.toObject !== 'undefined') {
-                    
-                    data = _.omit(result.toObject(), "password");
-                }
-                else {
-                    
-                    data = _.omit(result, "password");
-                }
-                
+
                 ret = {
                     status: STATUS_SUCCESS,
                     message: '', //TODO
-                    data: data
+                    data: result
                 };
                 
             } catch(err) {
