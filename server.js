@@ -8,13 +8,14 @@ mongoose.connect(require("./config/database"));
 mongoose.Promise = require("bluebird");
 const logger = require("morgan");
 const cors = require("cors");
+const db_init = require("./db_init");
 
 
 server.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 server.use([
-    express.static(path.join(__dirname, "./admin/public")),
+    express.static(path.join(__dirname, ".admin/public")),
     logger("dev", {
         skip: () => {
             return process.env.NODE_ENV == "test"
@@ -29,10 +30,11 @@ server.use([
 server.use("/api", require("./routes"));
 server.use("/api", require("./util/resultHandler"));
 
-
-
-
 const port = 3000;
 server.listen(port, () => {
+    db_init();
+    
     console.log("Listening on port", port);
 });
+
+

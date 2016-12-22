@@ -10,3 +10,4 @@ dump
 npm-debug.log
 .docker/
 .env
+public/
