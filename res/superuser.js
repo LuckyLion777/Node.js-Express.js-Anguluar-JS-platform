@@ -6,6 +6,6 @@ module.exports = {
    "username":"mutawaa",
    "lastName":"mutawaa",
    "password":"123456789",
-   "email":"mohammed@indielabs.sa",
+   "email":"Mohammed@indielabs.sa",
    "birthDate":"12/07/2016"
 };
