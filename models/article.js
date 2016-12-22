@@ -119,20 +119,38 @@ articleSchema.statics.getFeatured = function () {
 
 articleSchema.statics.getAll = function () {
     return this.find()
-        .populate('user')
+        .populate({
+            path: 'user',
+            populate: {
+                path: 'language'
+            }
+        })
         .populate('language')
         .populate('comments.language')
-        .populate('comments.user')
-        .populate('user.language');
+        .populate({
+            path: 'comments.user',
+            populate: {
+                path: 'language'
+            }
+        });
 };
 
 articleSchema.statics.getArticle = function (articleId) {
     return this.findById(articleId)
-        .populate('user')
+        .populate({
+            path: 'user',
+            populate: {
+                path: 'language'
+            }
+        })
         .populate('language')
         .populate('comments.language')
-        .populate('comments.user')
-        .populate('user.language');
+        .populate({
+            path: 'comments.user',
+            populate: {
+                path: 'language'
+            }
+        });
 };
 
 articleSchema.statics.getFilteredArticles = function (status) {
