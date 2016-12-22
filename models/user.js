@@ -264,6 +264,7 @@ userSchema.statics.getUser = function (userId) {
         .populate('bookmarks')
         .populate('language')
         .populate('favorites')
+        .populate('tags')
         ;
 };
 
@@ -312,7 +313,10 @@ userSchema.methods.removeBookmark = function (articleId) {
  *@param iterableObj tags
  */
 userSchema.methods.addTag = function (tags) {
-
+    //console.log(tags);
+    //var myObjectId = mongoose.Types.ObjectId(tags.tag);
+    //console.log(myObjectId);
+    
     this.tags.addToSet(...tags);
     
     return this.save();
