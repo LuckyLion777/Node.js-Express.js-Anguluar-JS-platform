@@ -119,7 +119,6 @@ router.put("/:articleId/provoke", passport.authenticate("jwt", { session: false 
 
 
 router.param("articleId", (req, res, next, articleId) => {
-    console.log(articleId);
     models.Article.findById(articleId).populate('user').populate('language')
         .then(article => {
             if(!article) {
