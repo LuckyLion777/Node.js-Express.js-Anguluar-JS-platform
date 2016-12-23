@@ -43,6 +43,7 @@ router.post("/:model/list", (req, res, next) => {
 /**
  * get items with given tags
  * model _populate function must be present
+ * TODO: not finished, complete it!
  * @param string model
  */
 router.post("/:model/tags", (req, res, next) => {
