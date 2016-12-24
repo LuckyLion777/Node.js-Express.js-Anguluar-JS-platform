@@ -142,7 +142,6 @@ businessSchema.statics.getAll = function () {
     return this.find()
         .populate('reviews.user')
         .populate('owner')
-        .populate('categories')
         .populate({
             path: 'categories',
             populate: {
