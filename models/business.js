@@ -139,7 +139,12 @@ businessSchema.statics.getAll = function () {
     
     return this.find()
         .populate('reviews.user')
-        .populate('owner')
+        .populate({
+            path: 'owner',
+            populate: {
+                path: 'language'
+            }
+        })
         .populate({
             path: 'categories',
             populate: {
@@ -159,9 +164,13 @@ businessSchema.statics.getBusinesses = function () { //TODO: there is different 
 businessSchema.statics.getFilteredBusinesses = function (status) {
     return this.find({ status: status })
         .populate('reviews.user')
-        .populate('owner')
+        .populate({
+            path: 'owner',
+            populate: {
+                path: 'language'
+            }
+        })
         .populate('reviews')
-        .populate('categories')
         .populate({
             path: 'categories',
             populate: {
@@ -176,9 +185,13 @@ businessSchema.statics.getFilteredBusinesses = function (status) {
 businessSchema.statics.getBusinessesByCategory = function (category) {
     return this.find({ categories: category })
         .populate('reviews.user')
-        .populate('owner')
+        .populate({
+            path: 'owner',
+            populate: {
+                path: 'language'
+            }
+        })
         .populate('reviews')
-        .populate('categories')
         .populate({
             path: 'categories',
             populate: {
