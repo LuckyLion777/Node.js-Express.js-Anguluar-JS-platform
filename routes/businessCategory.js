@@ -30,7 +30,12 @@ router.delete("/:categoryId", passport.authenticate("jwt", { session: false }),
     });
 
 router.param("categoryId", (req, res, next, categoryId) => {
-    models.BusinessCategory.findById(categoryId).populate('categories')
+    models.BusinessCategory.findById(categoryId).populate({
+            path: 'parent',
+            populate: {
+                path: 'parent'
+            }
+        })
         .then(category => {
             if(!category) {
                 return next(new Error("Category Does Not Exist"));
