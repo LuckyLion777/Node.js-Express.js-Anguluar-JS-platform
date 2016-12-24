@@ -24,6 +24,7 @@ const categorySchema = new mongoose.Schema({
         }
     },
     icon: imageSchema,
+    background: imageSchema,
     color: {
         type: String,
         required: true

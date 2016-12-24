@@ -253,7 +253,12 @@ router.param("businessId", (req, res, next, bossinessId) => {
     models.Business.findById(bossinessId) //TODO: rewrite it
         .populate('reviews.user')
         .populate('owner')
-        .populate('categories')
+        .populate({
+            path: 'categories',
+            populate: {
+                path: 'parent'
+            }
+        })
         .populate('options')
         .populate('comments.language')
         .populate('comments.user')
