@@ -177,7 +177,7 @@ eventSchema.statics.getAll = function () {
         .populate('options')
         .populate('comments.language')
         .populate({
-            path: 'comments.use',
+            path: 'comments.user',
             populate: {
                 path: 'language'
             }

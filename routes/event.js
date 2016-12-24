@@ -162,7 +162,7 @@ router.param("eventId", (req, res, next, eventId) => {
         .populate('categories') //TODO: rewrite it - move populate to separate method
         .populate('comments.language')
         .populate({
-            path: 'comments.use',
+            path: 'comments.user',
             populate: {
                 path: 'language'
             }
