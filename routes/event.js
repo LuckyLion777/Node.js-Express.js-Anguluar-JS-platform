@@ -159,6 +159,14 @@ router.param("eventId", (req, res, next, eventId) => {
             }
         })
         .populate('ratings')
+        .populate('categories') //TODO: rewrite it - move populate to separate method
+        .populate('comments.language')
+        .populate({
+            path: 'comments.use',
+            populate: {
+                path: 'language'
+            }
+        })
         .then(event => {
             if(!event) {
                 return next(new Error("Event Does Not Exist"));

@@ -176,8 +176,18 @@ eventSchema.statics.getAll = function () {
         .populate('categories') //TODO: rewrite it - move populate to separate method
         .populate('options')
         .populate('comments.language')
-        .populate('comments.user')
-        ;
+        .populate({
+            path: 'comments.use',
+            populate: {
+                path: 'language'
+            }
+        }).populate({
+            path: 'ratings.user',
+            populate: {
+                path: 'language'
+            }
+        })
+        .populate('ratings');
                 
     return query;
 };
