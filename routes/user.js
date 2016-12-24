@@ -74,7 +74,16 @@ router.post("/changepassword", passport.authenticate("jwt", { session: false }),
 
 
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-    return res.send(req.user);
+        models.User.findById(req.user._id).populate('language')
+        .then(user => {
+            if (!user) {
+                return next(new Error("User Does Not Exist"));
+            } else {
+                return res.send(user)
+            }
+        }, err => next(err));
+    
+    //;
 });
 
 router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
