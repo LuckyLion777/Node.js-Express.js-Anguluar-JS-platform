@@ -104,9 +104,7 @@ const eventSchema = new mongoose.Schema({
         }
     }],
     ratings: [ ratingSchema ],
-    tags: [{
-        type:String,
-    }],
+    tags: [],
     editorPick: {
         type:Boolean,
         default: false
@@ -287,10 +285,16 @@ eventSchema.methods.removeRating = function (ratingId) {
 };
 
 
-eventSchema.methods.addTag = function (tagInfo) {
-    this.tags.addToSet(...tagInfo.tags);
+/**
+ *@param iterableObj tags
+ */
+eventSchema.methods.addTag = function (tags) {
+
+    this.tags.addToSet(...tags);
+    
     return this.save();
 };
+
 
 eventSchema.methods.removeTag = function (tag) {
     this.tags.pull(tag);
@@ -335,3 +339,19 @@ module.exports = {
     Event: mongoose.model("Event", eventSchema)
 };
 
+
+const Tag = require("./tag").Tag;
+eventSchema.add({
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+        validate: {
+            validator: (tagId, done) => {
+                Tag.count({ _id: tagId })
+                //TODO: log
+                    .then(count => done(count), err => done(false, err));
+            },
+            message: "Tag Does Not Exist"
+        }
+    }]
+});
