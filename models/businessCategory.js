@@ -24,6 +24,7 @@ const categorySchema = new mongoose.Schema({
         }
     },
     icon: imageSchema,
+    background: imageSchema,
     color: {
         type: String,
         required: true
@@ -35,7 +36,12 @@ categorySchema.statics.createCategory = function(categoryInfo) {
 };
 
 categorySchema.statics.getAll = function () {
-    return this.find().populate('parent');
+    return this.find().populate({
+            path: 'parent',
+            populate: {
+                path: 'parent'
+            }
+        });
 };
 
 categorySchema.statics.getCategories = function () {

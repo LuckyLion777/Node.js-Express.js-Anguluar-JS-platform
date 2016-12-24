@@ -39,7 +39,7 @@ router.put("/:contactId/reply", passport.authenticate("jwt", { session: false })
     });
 
 router.param("contactId", (req, res, next, contactId) => {
-    models.Contact.findOne(contactId)
+    models.Contact.findById(contactId).populate('replies.user')
         .then(contact => {
             if(!contact) {
                 return next(new Error("Contact Does Not Exist"))

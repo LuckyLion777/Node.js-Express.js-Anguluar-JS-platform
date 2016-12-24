@@ -77,7 +77,7 @@ router.delete("/:eventId/attendant/:attendantId", passport.authenticate("jwt", {
 
 router.post("/:eventId/rating", passport.authenticate("jwt", { session: false }),
     auth.can("Add Event Rating"), (req, res, next) => {
-        req.body._id = req.user;
+        req.body.user = req.user;
 
         res.locals.promise = req.params.event.addRating(req.body);
         return next();
@@ -152,6 +152,21 @@ router.delete("/:eventId/category/:categoryId", passport.authenticate("jwt", { s
 router.param("eventId", (req, res, next, eventId) => {
         
     models.Event.findById(eventId).populate('options')
+        .populate({
+            path: 'ratings.user',
+            populate: {
+                path: 'language'
+            }
+        })
+        .populate('ratings')
+        .populate('categories') //TODO: rewrite it - move populate to separate method
+        .populate('comments.language')
+        .populate({
+            path: 'comments.user',
+            populate: {
+                path: 'language'
+            }
+        })
         .then(event => {
             if(!event) {
                 return next(new Error("Event Does Not Exist"));

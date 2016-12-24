@@ -140,7 +140,12 @@ businessSchema.statics.getAll = function () {
     return this.find()
         .populate('reviews.user')
         .populate('owner')
-        .populate('categories')
+        .populate({
+            path: 'categories',
+            populate: {
+                path: 'parent'
+            }
+        })
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');
@@ -157,6 +162,12 @@ businessSchema.statics.getFilteredBusinesses = function (status) {
         .populate('owner')
         .populate('reviews')
         .populate('categories')
+        .populate({
+            path: 'categories',
+            populate: {
+                path: 'parent'
+            }
+        })
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');
@@ -168,6 +179,13 @@ businessSchema.statics.getBusinessesByCategory = function (category) {
         .populate('owner')
         .populate('reviews')
         .populate('categories')
+        .populate({
+            path: 'categories',
+            populate: {
+                path: 'parent'
+            }
+        })
+        .populate('language')
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');

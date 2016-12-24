@@ -5,11 +5,12 @@ const router = require("express").Router();
 const ObjectID = require('mongodb').ObjectID;
 
 
-router.post("/", passport.authenticate("jwt", { session: false }),
-    auth.can("Create Language"), (req, res, next) => {
+router.post("/", /*passport.authenticate("jwt", { session: false }),*/
+    /*auth.can("Create Language"),*/ (req, res, next) => {
     res.locals.promise = models.Language.create(req.body);
     return next();
-});
+    } 
+);
 
 router.put("/:languageId", passport.authenticate("jwt", { session: false }),
     auth.can("Update Language"), (req, res, next) => {

@@ -1,72 +1,189 @@
 module.exports = {
     defaultTemplate: [
-        {
-            "type": "REGISTER",
-            "original_template": {
-                "english": {
-                    "title": "En[[email]]title",
-                    "body": "En[[email]]body"
-                },
-                "arabic": {
-                    "title": "ar[[email]]title",
-                    "body": "ar[[email]]body"
-                }
-            },
-            "template": {
-                "english": {
-                    "title": "En[[email]]title",
-                    "body": "En[[email]]body"
-                },
-                "arabic": {
-                    "title": "ar[[email]]title",
-                    "body": "ar[[email]]body"
-                }
-            },
-        },  {
-            "type": "LOGIN",
-            "original_template": {
-                "english": {
-                    "title": "English",
-                    "body": "Arabic"
-                },
-                "arabic": {
-                    "title": "English",
-                    "body": "Arabic"
-                }
-            },
-            "template": {
-                "english": {
-                    "title": "english title",
-                    "body": "english body"
-                },
-                "arabic": {
-                    "title": "arabic title",
-                    "body": "arabic body"
-                }
-            }
-        },  {
-            "type": "ADDCONTENT",
-            "original_template": {
-                "english": {
-                    "title": "English",
-                    "body": "Arabic"
-                },
-                "arabic": {
-                    "title": "English",
-                    "body": "Arabic"
-                }
-            },
-            "template": {
-                "english": {
-                    "title": "english title",
-                    "body": "english body"
-                },
-                "arabic": {
-                    "title": "arabic title",
-                    "body": "arabic body"
-                }
-            }
-        }
-
-    ]
+ 
+  {
+    "type": "NEWUSER",
+    "original_template": {
+      "english": {
+        "body": "Hello &amp; wellcome to [[firstname]]wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello &amp; wellcome to [[firstname]]wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  },
+  {
+    "type": "BUSINESSACCOUNT",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  },
+  {
+    "type": "RESETPASSWORD",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين s"
+      }
+    }
+  },
+  {
+    "type": "FORGETPASSWORD",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  },
+  {
+    "type": "ADDCONTENT",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  },
+  {
+    "type": "APPROVECONTENT",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  },
+  {
+    "type": "DELETECONTENT",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  },
+  {
+    "type": "CONTACTUS",
+    "original_template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    },
+    "template": {
+      "english": {
+        "body": "Hello & wellcome to wain013.com",
+        "title": "wellcome to wain013.com"
+      },
+      "arabic": {
+        "body": "مرحبا واهلين في وين ",
+        "title": "هلابك في وين"
+      }
+    }
+  }
+]
 };

@@ -61,6 +61,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        lowercase: true,
         validate: {
             validator: (email) => {
                 return validator.isEmail(email);
@@ -137,7 +138,7 @@ userSchema.statics.createUser = function (userInfo, callback)  {
     
     hash(userInfo.password, HASH_SALT_ROUNDS)
         .then(hashedPassword => {
-            
+        
             userInfo.password = hashedPassword;
             return this.create(userInfo);
         })
@@ -156,7 +157,6 @@ userSchema.statics.createUser = function (userInfo, callback)  {
             return callback(null, user);
         })
         .catch(err => {
-
             return callback(err.message, null);
         })
         ;
@@ -252,7 +252,8 @@ userSchema.methods.removeUser = function () {
 };
 
 userSchema.statics.getUsers = function () {
-    return this.find().where("userType").ne("Admin").populate('bookmarks').populate('language');
+    //return this.find().where("userType").ne("Admin").populate('bookmarks').populate('language');
+    //return userSchema.getAll();
 };
 
 userSchema.statics.getAdmins = function () {
@@ -264,6 +265,7 @@ userSchema.statics.getUser = function (userId) {
         .populate('bookmarks')
         .populate('language')
         .populate('favorites')
+        .populate('tags')
         ;
 };
 
@@ -312,7 +314,10 @@ userSchema.methods.removeBookmark = function (articleId) {
  *@param iterableObj tags
  */
 userSchema.methods.addTag = function (tags) {
-
+    //console.log(tags);
+    //var myObjectId = mongoose.Types.ObjectId(tags.tag);
+    //console.log(myObjectId);
+    
     this.tags.addToSet(...tags);
     
     return this.save();
@@ -437,3 +442,4 @@ userSchema.add({
         }
     }]
 });
+
