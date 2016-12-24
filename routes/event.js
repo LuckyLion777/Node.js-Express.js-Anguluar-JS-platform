@@ -151,22 +151,8 @@ router.delete("/:eventId/category/:categoryId", passport.authenticate("jwt", { s
 
 router.param("eventId", (req, res, next, eventId) => {
         
-    models.Event.findById(eventId).populate('options')
-        .populate({
-            path: 'ratings.user',
-            populate: {
-                path: 'language'
-            }
-        })
-        .populate('ratings')
-        .populate('categories') //TODO: rewrite it - move populate to separate method
-        .populate('comments.language')
-        .populate({
-            path: 'comments.user',
-            populate: {
-                path: 'language'
-            }
-        })
+    
+    models.Event.getModel(eventId)
         .then(event => {
             if(!event) {
                 return next(new Error("Event Does Not Exist"));
@@ -174,8 +160,8 @@ router.param("eventId", (req, res, next, eventId) => {
                 req.params.event = event;
                 return next();
             }
-        }, err => next(err) );
-
+        }, err => next(err) )
+        ;
 });
 
 

@@ -167,6 +167,28 @@ eventSchema.methods.removeEvent = function () {
     return this.remove();
 };
 
+eventSchema.statics.getModel = function (id) {
+    
+    return this.findById(id)
+        .populate('options')
+        .populate({
+            path: 'ratings.user',
+            populate: {
+                path: 'language'
+            }
+        })
+        .populate('ratings')
+        .populate('categories') //TODO: rewrite it - move populate to separate method
+        .populate('comments.language')
+        .populate({
+            path: 'comments.user',
+            populate: {
+                path: 'language'
+            }
+        })
+        ;
+};
+
 eventSchema.statics.getAll = function () {
     
     var query = this.find()
@@ -303,8 +325,18 @@ eventSchema.methods.removeTag = function (tag) {
 
 
 eventSchema.methods.addComment = function (commentInfo) {
+    
     this.comments.addToSet(commentInfo);
-    return this.save();
+    
+    return this.save()
+        .then(result => {
+
+            //reload document
+            //TODO: WARNING!! UGLY CODE!! rewrite & optimize it!
+            var _event = require("./event").Event;
+            
+            return _event.getModel(result._id);
+        });
 };
 
 eventSchema.methods.removeComment = function (commentId) {
