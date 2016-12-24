@@ -298,7 +298,16 @@ eventSchema.methods.addRating = function (ratingInfo) {
     }
     
     this.ratings.addToSet(ratingInfo);
-    return this.save();
+    
+    return this.save()
+        .then(result => {
+
+            //reload document
+            //TODO: WARNING!! UGLY CODE!! rewrite & optimize it!
+            var _model = require("./event").Event;
+            
+            return _model.getModel(result._id);
+        });
 };
 
 eventSchema.methods.removeRating = function (ratingId) {
@@ -333,9 +342,9 @@ eventSchema.methods.addComment = function (commentInfo) {
 
             //reload document
             //TODO: WARNING!! UGLY CODE!! rewrite & optimize it!
-            var _event = require("./event").Event;
+            var _model = require("./event").Event;
             
-            return _event.getModel(result._id);
+            return _model.getModel(result._id);
         });
 };
 

@@ -133,8 +133,9 @@ articleSchema.statics.getAll = function () {
         });
 };
 
-articleSchema.statics.getArticle = function (articleId) {
-    return this.findById(articleId)
+articleSchema.statics.getModel = function (id) {
+
+    return this.findById(id)
         .populate({
             path: 'user',
             populate: {
@@ -160,7 +161,16 @@ articleSchema.statics.getFilteredArticles = function (status) {
 
 articleSchema.methods.addComment = function (commentInfo) {
     this.comments.addToSet(commentInfo);
-    return this.save();
+    
+    return this.save()
+        .then(result => {
+
+            //reload document
+            //TODO: WARNING!! UGLY CODE!! rewrite & optimize it!
+            var _model = require("./article").Article;
+            
+            return _model.getModel(result._id);
+        });    
 };
 
 articleSchema.methods.removeComment = function (commentId) {
