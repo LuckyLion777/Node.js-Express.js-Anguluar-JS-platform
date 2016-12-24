@@ -304,7 +304,7 @@ router.patch("/:userId/block", passport.authenticate("jwt", {session: false}), a
 
 
 router.param("userId", (req, res, next, userId) => {
-    models.User.findById(userId)
+    models.User.findById(userId).populate('language')
         .then(user => {
             if (!user) {
                 return next(new Error("User Does Not Exist"));
