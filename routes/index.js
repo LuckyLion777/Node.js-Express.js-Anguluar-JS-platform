@@ -5,6 +5,8 @@ router.use("/", require("./common"));
 router.use("/user", require("./user"));
 router.use("/signup", require("./signup"));
 
+router.use("/analysis", require("./analysis"));
+
 router.use("/article", require("./article"));
 router.use("/articles", require("./articles"));
 
