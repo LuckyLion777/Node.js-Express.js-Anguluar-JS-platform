@@ -139,6 +139,13 @@ businessSchema.statics.getAll = function () {
     
     return this.find()
         .populate('reviews.user')
+        .populate('reviews.language')
+        .populate({
+            path: 'reviews.user',
+            populate: {
+                path: 'language'
+            }
+        })
         .populate({
             path: 'owner',
             populate: {
@@ -164,8 +171,9 @@ businessSchema.statics.getBusinesses = function () { //TODO: there is different 
 businessSchema.statics.getFilteredBusinesses = function (status) {
     return this.find({ status: status })
         .populate('reviews.user')
+        .populate('reviews.language')
         .populate({
-            path: 'owner',
+            path: 'reviews.user',
             populate: {
                 path: 'language'
             }
