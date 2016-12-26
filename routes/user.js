@@ -39,6 +39,17 @@ router.post("/login", passport.authenticate("local", {session: false}), (req, re
     jwtGenerator.generateJwt(req.user.id, (err, jwt) => err ? next(err) : res.send(jwt));
 });
 
+router.post("/jwt", (req, res, next) => {
+    jwtGenerator.verifyJwt(req.body.jwt, (err, user) => {
+        if(err) {
+            res.sendStatus(400)
+        }
+        else {
+            res.send(user);
+        }
+    });
+});
+
 
 //change password for current user
 router.post("/changepassword", passport.authenticate("jwt", { session: false }),

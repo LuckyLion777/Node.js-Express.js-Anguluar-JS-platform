@@ -12,12 +12,12 @@ module.exports.generateJwt = (userId, callback) => {
     }
 };
 
-module.exports.verifyJwt = (jwt, callback) => {
+module.exports.verifyJwt = (jwtreq, callback) => {
     if(!process.env.SERVER_KEY) {
         return callback(new Error("Internal Error"), null);
     } else {
-        jwt.verify(jwt, process.env.SERVER_KEY, (err, credentials) => {
-            return callback(err, credentials.userId)
+        jwt.verify(jwtreq, process.env.SERVER_KEY, (err, user) => {
+            return callback(err, user)
         })
     }
 };
