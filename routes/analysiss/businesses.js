@@ -33,7 +33,7 @@ router.get("/pending", (req, res, next) => {
 //  GET: Number of of businesses (today, this week, this month, this year) 
 // $gte: moment().startOf('day').toDate()
 
-router.get("/date/today", (req, res, next) => {
+router.get("/date", (req, res, next) => {
     
     var promise = {};
     
