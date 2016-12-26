@@ -34,55 +34,55 @@ router.get("/pending", (req, res, next) => {
 // $gte: moment().startOf('day').toDate()
 
 router.get("/date/today", (req, res, next) => {
-    var promise = models.Business.find(
+    
+    var promise = {};
+    
+    // today
+    models.Business.find(
         {createdAt: {
                 $gte: moment().startOf('day').toDate()
             }
-        }            
-    ).count(function(err, count){
-	    res.send({count: count});
-	});
+        })
+        .count(function(err, count){
+            promise.today = count;
+        });
     
-    //res.locals.promise = promise;
-    
-    //return next();
-});
-
-router.get("/date/week", (req, res, next) => {
+    // week
     models.Business.find(
         {
             createdAt: {
                 $gte: moment().weekday(-7).toDate(),
-                $lt: moment().startOf('day').toDate()
+                $lt: moment().endOf('day').toDate()
             }
-        }            
-        ).count(function(err, count){
-	       res.send({count: count});
+        }).count(function(err, count){
+            promise.week = count;
 	    });
-});
-
-router.get("/date/month", (req, res, next) => {
+    
+    // month
     models.Business.find(
         {createdAt: {
                 $gte: moment().weekday(-31).toDate(),
-                $lt: moment().startOf('day').toDate()
+                $lt: moment().endOf('day').toDate()
             }
-        }            
-        ).count(function(err, count){
-	    res.send({count: count});
-	});
-});
-
-router.get("/date/year", (req, res, next) => {
+        })
+        .count(function(err, count){
+	       promise.month = count;
+        });
+    
+    // year
     models.Business.find(
         {createdAt: {
                 $gte: moment().weekday(-365).toDate(),
-                $lt: moment().startOf('day').toDate()
+                $lt: moment().endOf('day').toDate()
             }
-        }            
-        ).count(function(err, count){
-	    res.send({count: count});
-	});
+        })
+        .count(function(err, count){
+            promise.year = count;
+        })
+        .then(function () {
+            res.send(promise);
+        });
+
 });
 
 module.exports = router;
