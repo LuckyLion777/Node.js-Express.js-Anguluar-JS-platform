@@ -3,74 +3,6 @@ const models = require("../models");
 const router = require("express").Router();
 const _ = require("lodash");
 
-var modelname = 'article';
-
-    ////find corresponding tags
-    //models.Tag.find(
-    //    { $or: [
-    //            {'tag.english': {$in: [ "red", "tag" ] } },
-    //            {'tag.arabic': {$in: [ "red", "tag" ] } }
-    //        ]
-    //    })
-    //    .then(result =>  {
-    //        
-    //        if ( _.isEmpty(result) ) {
-    //
-    //            
-    //            return next(new Error("tag(s) not found"));
-    //        }
-    //    
-    //        var model = getModel(modelname),
-    //            ids = _.map(result, function(obj){ return obj._id.toString(); })
-    //            ;
-    //            
-    //        //find models contained found tags
-    //        return model.aggregate([
-    //        
-    //            { "$match":
-    //                { tags:
-    //                    {
-    //                        $elemMatch: {$in: ids }
-    //                    }
-    //                }
-    //            }
-    //            //,{ "$unwind": "$tags" }
-    //            ,{
-    //                "$lookup": {
-    //                    "from": "tags",
-    //                    "localField": "tag",
-    //                    "foreignField": "id",
-    //                    "as": "tags"
-    //                }
-    //            }
-    //            //,{ "$group": {
-    //            //    "_id": "$_id",
-    //            //    "tags": { "$push": "$$ROOT" },
-    //            //}}
-    //
-    //        ])
-    //        ;
-    //        
-    //    })
-    //    .then(result =>  {
-    //
-    //        console.log('result1:', result );
-    //
-    //        //return models.Tag.find();
-    //    })
-        //.then(result =>  {
-        //
-        //    //console.log('tags:',  );
-        //    console.log('result:', result );
-        //
-        //})
-        //.catch(err => {
-        //    
-        //    return next(new Error(err));
-        //});
-        ;
-
-
 function getModel(modelname) {
     
     //search for requested model
@@ -124,8 +56,6 @@ router.post("/:model/tags", (req, res, next) => {
         throw "Requested model does not exist";
     }
 
-    console.log('find for:', req.body);
-    
     //find corresponding tags
     res.locals.promise =  models.Tag.find(
         { $or: [
@@ -145,42 +75,11 @@ router.post("/:model/tags", (req, res, next) => {
                 ids = _.map(result, function(obj){ return obj._id.toString(); })
                 ;
 
-    console.log('found tag ids:', ids);
                 
-                
-            //find models contained found tags
-            return model.aggregate([
-            
-                { "$match":
-                    { tags:
-                        {
-                            $elemMatch: {$in: ids }
-                        }
-                    }
-                }
-                //,{ "$unwind": "$tags" }
-                //,{
-                //    "$lookup": {
-                //        "from": "tags",
-                //        "localField": "tag",
-                //        "foreignField": "id",
-                //        "as": "tags"
-                //    }
-                //}
-                //,{ "$group": {
-                //    "_id": "$_id",
-                //    "tags": { "$push": "$$ROOT" },
-                //}}
-    
-            ])
-            ;
-            
+            return model.getAll()
+                .where({ 'tags': {$in: ids } });
             
         })
-        //.catch(err => {
-        //    
-        //    return next(new Error(err));
-        //});
         ;
         
     return next();

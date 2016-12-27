@@ -158,6 +158,7 @@ businessSchema.statics.getAll = function () {
                 path: 'parent'
             }
         })
+        .populate('tags')
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');

@@ -124,6 +124,7 @@ articleSchema.statics.getAll = function () {
             }
         })
         .populate('language')
+        .populate('tags')
         .populate('comments.language')
         .populate({
             path: 'comments.user',
@@ -143,6 +144,7 @@ articleSchema.statics.getModel = function (id) {
             }
         })
         .populate('language')
+        .populate('tags')
         .populate('comments.language')
         .populate({
             path: 'comments.user',
