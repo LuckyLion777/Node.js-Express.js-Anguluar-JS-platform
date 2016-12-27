@@ -79,7 +79,10 @@ const articleSchema = new mongoose.Schema({
         enum: [ STATUS.PUBLISHED, STATUS.APPROVED, STATUS.PROVOKED, STATUS.PENDING, STATUS.ONHOLD , STATUS.SUSPENDED ],
         default: STATUS.PENDING
     },
-    tags: [],
+    tags: [{
+        type: String,
+        required: false
+    }],
     editorPick: {
         type:Boolean,
         default: false
@@ -249,18 +252,18 @@ module.exports = {
     Article: mongoose.model("Article", articleSchema)
 };
 
-const Tag = require("./tag").Tag;
+/*const Tag = require("./tag").Tag;
 articleSchema.add({
     tags: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tag"
-        /*validate: {
+        validate: {
             validator: (tagId, done) => {
                 Tag.count({ _id: tagId })
                 //TODO: log
                     .then(count => done(count), err => done(false, err));
             },
             message: "Tag Does Not Exist"
-        }*/
+        }
     }]
-});
+});*/

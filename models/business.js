@@ -67,7 +67,10 @@ const businessSchema = new mongoose.Schema({
     socialMedias: [ socialMediaSchema ],
     photos: [ imageSchema ],
     ownershipDocument: [ imageSchema ],
-    tags: [],
+    tags: [{
+        type: String,
+        required: false
+    }],
     editorPick: {
         type:Boolean,
         default: false
@@ -438,7 +441,7 @@ module.exports = {
     Business: mongoose.model("Business", businessSchema)
 };
 
-const Tag = require("./tag").Tag;
+/*const Tag = require("./tag").Tag;
 businessSchema.add({
     tags: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -452,4 +455,4 @@ businessSchema.add({
             message: "Tag Does Not Exist"
         }
     }]
-});
+});*/

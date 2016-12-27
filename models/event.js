@@ -104,7 +104,10 @@ const eventSchema = new mongoose.Schema({
         }
     }],
     ratings: [ ratingSchema ],
-    tags: [],
+    tags: [{
+        type: String,
+        required: false
+    }],
     editorPick: {
         type:Boolean,
         default: false
@@ -382,7 +385,7 @@ module.exports = {
 };
 
 
-const Tag = require("./tag").Tag;
+/*const Tag = require("./tag").Tag;
 eventSchema.add({
     tags: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -396,4 +399,4 @@ eventSchema.add({
             message: "Tag Does Not Exist"
         }
     }]
-});
+});*/
