@@ -253,14 +253,14 @@ const Tag = require("./tag").Tag;
 articleSchema.add({
     tags: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-        validate: {
+        ref: "Tag"
+        /*validate: {
             validator: (tagId, done) => {
                 Tag.count({ _id: tagId })
                 //TODO: log
                     .then(count => done(count), err => done(false, err));
             },
             message: "Tag Does Not Exist"
-        }
+        }*/
     }]
 });
