@@ -223,13 +223,13 @@ router.post("/attend", passport.authenticate("jwt", { session: false }),
     //auth.can("Attend Event"), //TODO: do we need permissions check here?
     (req, res, next) => {
         res.locals.promise = req.user.addAttend(req.body);
-        return next();
+        return next(); 
 });
 
 router.delete("/attend/:eventId", passport.authenticate("jwt", {session: false}),
     //auth.can("Remove Attend"), //TODO: do we need permissions check here?
     (req, res, next) => {
-        res.locals.promise = req.user.removeAttend(req.params.articleId);
+        res.locals.promise = req.user.removeAttend(req.params.eventId);
         return next();
 });
 

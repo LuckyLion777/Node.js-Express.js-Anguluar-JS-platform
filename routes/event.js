@@ -9,7 +9,9 @@ const upload    = require("../config/multer");
 /** Process requests for single event **/
 
 router.post("/", passport.authenticate("jwt", { session: false }),
-    auth.can("Create Event"), upload.single("cover"), (req, res, next) => {
+    //auth.can("Create Event"), 
+            
+    upload.single("cover"), (req, res, next) => {
         if(req.file) req.body.cover = { filename: req.file.filename };
 
         res.locals.promise = models.Event.createEvent(req.body);
