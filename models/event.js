@@ -207,6 +207,7 @@ eventSchema.statics.getAll = function () {
                 path: 'language'
             }
         })
+        .populate('tags')
         .populate('ratings');
                 
     return query;
