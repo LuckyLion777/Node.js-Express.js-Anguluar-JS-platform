@@ -148,6 +148,7 @@ businessSchema.statics.getAll = function () {
         })
         .populate({
             path: 'owner',
+            //select: 'subscription username',
             populate: {
                 path: 'language'
             }
