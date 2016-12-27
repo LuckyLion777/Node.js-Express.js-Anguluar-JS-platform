@@ -30,7 +30,7 @@ tagSchema.methods.updateTag = function (tagInfo) {
 };
 
 tagSchema.methods.removeTag = function () {
-    return this.remove()
+    return this.remove();
 };
 
 const Tag = mongoose.model("Tag", tagSchema);
