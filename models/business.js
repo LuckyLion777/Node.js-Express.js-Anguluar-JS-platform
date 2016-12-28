@@ -162,7 +162,6 @@ businessSchema.statics.getAll = function () {
                 path: 'parent'
             }
         })
-        .populate('tags')
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');
@@ -440,19 +439,3 @@ module.exports = {
     businessSchema: businessSchema,
     Business: mongoose.model("Business", businessSchema)
 };
-
-/*const Tag = require("./tag").Tag;
-businessSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});*/

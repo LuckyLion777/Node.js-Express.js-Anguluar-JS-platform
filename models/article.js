@@ -127,7 +127,6 @@ articleSchema.statics.getAll = function () {
             }
         })
         .populate('language')
-        .populate('tags')
         .populate('comments.language')
         .populate({
             path: 'comments.user',
@@ -147,7 +146,6 @@ articleSchema.statics.getModel = function (id) {
             }
         })
         .populate('language')
-        .populate('tags')
         .populate('comments.language')
         .populate({
             path: 'comments.user',
@@ -251,19 +249,3 @@ module.exports = {
     articleSchema: articleSchema,
     Article: mongoose.model("Article", articleSchema)
 };
-
-/*const Tag = require("./tag").Tag;
-articleSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag"
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});*/

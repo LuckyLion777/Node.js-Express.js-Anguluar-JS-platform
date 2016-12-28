@@ -210,7 +210,6 @@ eventSchema.statics.getAll = function () {
                 path: 'language'
             }
         })
-        .populate('tags')
         .populate('ratings');
                 
     return query;
@@ -383,20 +382,3 @@ module.exports = {
     eventSchema: eventSchema,
     Event: mongoose.model("Event", eventSchema)
 };
-
-
-/*const Tag = require("./tag").Tag;
-eventSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});*/
