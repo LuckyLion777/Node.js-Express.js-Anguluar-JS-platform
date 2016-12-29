@@ -7,10 +7,19 @@ const upload = require("../config/multer");
 const auth = require("../util/auth/index");
 const _ = require("lodash");
 
+const resultHandler    = require("../util/resultHandler")[0]; //hack - we want to process returned data with resultHandler
+
 //TODO import from resultHandler
 const STATUS_SUCCESS =  true;
 const STATUS_FAILED  =  false;
 
+
+/** Get all users ***/
+router.get("/all", (req, res, next) => {
+    res.locals.promise = models.User.getAll();
+    
+    return resultHandler(req, res, next);
+});
 
 
 /** Create user ***/

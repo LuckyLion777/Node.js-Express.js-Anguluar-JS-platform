@@ -4,6 +4,7 @@ const commentSchema = require("./comment");
 const User = require("./user").User;
 const Language = require("./language").Language;
 
+const _promise = require('bluebird');
 
 const STATUS = {
     PUBLISHED: "PUBLISHED",
@@ -103,7 +104,26 @@ articleSchema.methods.updateArticle = function (articleInfo) {
 
 articleSchema.methods.removeArticle = function () {
 
-    return this.remove();
+    //remove this from user bookmarks
+    return User.find()
+        .then(rows => {
+
+            var actions = [];
+            
+            //remove from bookmarks collection for all users
+            _.forEach(rows, function(model){
+
+                actions.push(model.removeBookmark(this._id));
+            });
+            
+            return _promise.all(actions);
+        })
+        .then(rows => {
+        
+            return this.remove();
+        })
+        ;
+        
 };
 
 articleSchema.statics.getArticles = function () {

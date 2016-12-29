@@ -11,6 +11,7 @@ const Collection = require("./collection").Collection;
 const validator = require("validator");
 const _ = require("lodash");
 
+const _promise = require('bluebird');
 
 const STATUS = {
     PUBLISHED: "PUBLISHED",
@@ -307,7 +308,26 @@ businessSchema.methods.updateBusiness = function (businessInfo) {
 };
 
 businessSchema.methods.removeBusiness = function () {
-    return this.remove();
+    
+    //remove this from user favorites
+    return User.find()
+        .then(rows => {
+
+            var actions = [];
+            
+            //remove from favorites collection for all users
+            _.forEach(rows, function(model){
+
+                actions.push(model.removeFavorite(this._id));
+            });
+            
+            return _promise.all(actions);
+        })
+        .then(rows => {
+        
+            return this.remove();
+        })
+        ;
 };
 
 

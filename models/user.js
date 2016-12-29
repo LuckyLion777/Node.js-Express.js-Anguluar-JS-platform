@@ -251,6 +251,15 @@ userSchema.methods.removeUser = function () {
     return this.remove();
 };
 
+userSchema.statics.getAll = function () {
+    
+    return this.find()
+        .populate('bookmarks')
+        .populate('language')
+        .populate('favorites')
+        ;
+};
+
 userSchema.statics.getUsers = function () {
     //return this.find().where("userType").ne("Admin").populate('bookmarks').populate('language');
     //return userSchema.getAll();
