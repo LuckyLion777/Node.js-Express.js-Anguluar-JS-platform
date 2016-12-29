@@ -195,6 +195,18 @@ businessSchema.statics.getFilteredBusinesses = function (status) {
         .populate('comments.user');
 };
 
+/** Get businesses having branch in given city
+ * @param string cityName
+ * @returns promise
+ */
+businessSchema.statics.getBusinessesByCity = function (cityName) {
+
+    return this.getAll()
+        .where({'branches.location.city': cityName })
+        ;
+    
+};
+
 businessSchema.statics.getBusinessesByCategory = function (category) {
     return this.find({ categories: category })
         .populate('reviews.user')
