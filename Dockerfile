@@ -18,4 +18,4 @@ RUN cd /wain; npm i nodemon
 
 EXPOSE 3000 27017
 
-ENTRYPOINT service mongod start && node_modules/.bin/nodemon --delay 3 --watch models --watch routes --watch util -L /usr/local/bin/npm start
+ENTRYPOINT service mongod start && node_modules/.bin/nodemon --delay 1 --watch models --watch routes --watch util -L /usr/local/bin/npm start
