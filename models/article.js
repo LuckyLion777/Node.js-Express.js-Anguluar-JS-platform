@@ -133,8 +133,8 @@ articleSchema.statics.getArticles = function () {
 
 articleSchema.statics.getFeatured = function () {
     
-    return this.getAll()
-        .where(editorPick).eq(true)
+    return this.find()
+        .where('editorPick').eq(true)
         ;
 };
 
