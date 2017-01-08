@@ -159,7 +159,10 @@ businessSchema.statics.getAll = function () {
         .populate({
             path: 'categories',
             populate: {
-                path: 'parent'
+                path: 'parent',
+                populate: {
+                    path: 'parent'
+                }
             }
         })
         .populate('tags')
@@ -187,7 +190,10 @@ businessSchema.statics.getFilteredBusinesses = function (status) {
         .populate({
             path: 'categories',
             populate: {
-                path: 'parent'
+                path: 'parent',
+                populate: {
+                    path: 'parent'
+                }
             }
         })
         .populate('options')
@@ -208,7 +214,10 @@ businessSchema.statics.getBusinessesByCategory = function (category) {
         .populate({
             path: 'categories',
             populate: {
-                path: 'parent'
+                path: 'parent',
+                populate: {
+                    path: 'parent'
+                }
             }
         })
         .populate('language')

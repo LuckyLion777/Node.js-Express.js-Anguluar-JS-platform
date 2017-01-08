@@ -261,7 +261,10 @@ router.param("businessId", (req, res, next, bossinessId) => {
         .populate({
             path: 'categories',
             populate: {
-                path: 'parent'
+                path: 'parent',
+                populate: {
+                    path: 'parent'
+                }
             }
         })
         .populate('options')
