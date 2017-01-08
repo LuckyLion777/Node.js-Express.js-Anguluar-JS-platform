@@ -11,6 +11,7 @@ const Collection = require("./collection").Collection;
 const validator = require("validator");
 const _ = require("lodash");
 
+const _promise = require('bluebird');
 
 const STATUS = {
     PUBLISHED: "PUBLISHED",
@@ -165,7 +166,6 @@ businessSchema.statics.getAll = function () {
                 }
             }
         })
-        .populate('tags')
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');
@@ -199,6 +199,18 @@ businessSchema.statics.getFilteredBusinesses = function (status) {
         .populate('options')
         .populate('comments.language')
         .populate('comments.user');
+};
+
+/** Get businesses having branch in given city
+ * @param string cityName
+ * @returns promise
+ */
+businessSchema.statics.getBusinessesByCity = function (cityName) {
+
+    return this.getAll()
+        .where({'branches.location.city': cityName })
+        ;
+    
 };
 
 businessSchema.statics.getBusinessesByCategory = function (category) {
@@ -317,7 +329,26 @@ businessSchema.methods.updateBusiness = function (businessInfo) {
 };
 
 businessSchema.methods.removeBusiness = function () {
-    return this.remove();
+    
+    //remove this from user favorites
+    return User.find()
+        .then(rows => {
+
+            var actions = [];
+            
+            //remove from favorites collection for all users
+            _.forEach(rows, function(model){
+
+                actions.push(model.removeFavorite(this._id));
+            });
+            
+            return _promise.all(actions);
+        })
+        .then(rows => {
+        
+            return this.remove();
+        })
+        ;
 };
 
 
@@ -449,19 +480,3 @@ module.exports = {
     businessSchema: businessSchema,
     Business: mongoose.model("Business", businessSchema)
 };
-
-/*const Tag = require("./tag").Tag;
-businessSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});*/

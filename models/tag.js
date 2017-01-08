@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const User = require("./user").User;
+
+const _promise = require('bluebird');
 
 const tagSchema = new mongoose.Schema({
     tag: {
@@ -30,7 +33,27 @@ tagSchema.methods.updateTag = function (tagInfo) {
 };
 
 tagSchema.methods.removeTag = function () {
-    return this.remove();
+    
+    
+    //remove this from user tags colletion
+    return User.find()
+        .then(rows => {
+
+            var actions = [];
+            
+            //remove from tags collection for all users
+            _.forEach(rows, function(model){
+
+                actions.push(model.removeTag(this._id));
+            });
+            
+            return _promise.all(actions);
+        })
+        .then(rows => {
+        
+            return this.remove();
+        })
+        ;
 };
 
 const Tag = mongoose.model("Tag", tagSchema);

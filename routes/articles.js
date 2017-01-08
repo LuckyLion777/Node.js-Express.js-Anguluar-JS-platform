@@ -1,5 +1,6 @@
 const models = require("../models");
 const router = require("express").Router();
+const resultHandler    = require("../util/resultHandler")[0]; //hack - we want to process returned data with resultHandler
 
 router.get("/", (req, res, next) => {
     //, passport.authenticate("jwt", { session: false }
@@ -11,11 +12,13 @@ router.get("/", (req, res, next) => {
 router.get("/featured", (req, res, next) => {
 
     res.locals.promise = models.Article.getFeatured();
-    return next();
-
+    return resultHandler(req, res, next);
 });
 
 router.get("/:status?", (req, res, next) => {
+
+    console.log('status');
+
     if(req.query.status) {
         res.locals.promise = models.Article.getFilteredArticles(req.query.status);
         return next();

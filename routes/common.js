@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const models = require("../models");
 const router = require("express").Router();
 const _ = require("lodash");
@@ -45,6 +44,7 @@ router.post("/:model/list", (req, res, next) => {
  * get items with given tags
  * @param string model
  * @param array req.body
+ * @return Promise
  */
 router.post("/:model/tags", (req, res, next) => {
 
@@ -56,34 +56,14 @@ router.post("/:model/tags", (req, res, next) => {
         throw "Requested model does not exist";
     }
 
-    //find corresponding tags
-    res.locals.promise =  models.Tag.find(
-        { $or: [
-                {'tag.english': {$in: req.body } },
-                {'tag.arabic': {$in: req.body } }
-            ]
-        })
-        .then(result =>  {
-            
-            if ( _.isEmpty(result) ) {
-    
-                
-                return next(new Error("tag(s) not found"));
-            }
+    //find corresponding models
+    var model = getModel(modelname);
         
-            var model = getModel(modelname),
-                ids = _.map(result, function(obj){ return obj._id.toString(); })
-                ;
-
-                
-            return model.getAll()
-                .where({ 'tags': {$in: ids } });
+    res.locals.promise = model.getAll()
+        .where({ tags: { $elemMatch: {$in: req.body } } });
             
-        })
-        ;
-        
     return next();
-    
+
 });
 
 

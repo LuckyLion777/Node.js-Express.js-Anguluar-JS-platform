@@ -10,6 +10,8 @@ const Option = require("./eventOption").EventOption;
 const validator = require("validator");
 const _ = require("lodash");
 
+const _promise = require('bluebird');
+
 const STATUS = {
     PUBLISHED: "PUBLISHED",
     APPROVED: "APPROVED",
@@ -167,7 +169,27 @@ eventSchema.methods.updateEvent = function (eventInfo) {
 };
 
 eventSchema.methods.removeEvent = function () {
-    return this.remove();
+    
+    
+    //remove this from user attends colletion
+    return User.find()
+        .then(rows => {
+
+            var actions = [];
+            
+            //remove from attends collection for all users
+            _.forEach(rows, function(model){
+
+                actions.push(model.removeAttend(this._id));
+            });
+            
+            return _promise.all(actions);
+        })
+        .then(rows => {
+        
+            return this.remove();
+        })
+        ;
 };
 
 eventSchema.statics.getModel = function (id) {
@@ -210,7 +232,6 @@ eventSchema.statics.getAll = function () {
                 path: 'language'
             }
         })
-        .populate('tags')
         .populate('ratings');
                 
     return query;
@@ -383,20 +404,3 @@ module.exports = {
     eventSchema: eventSchema,
     Event: mongoose.model("Event", eventSchema)
 };
-
-
-/*const Tag = require("./tag").Tag;
-eventSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});*/

@@ -58,6 +58,31 @@ router.delete("/:businessId", passport.authenticate("jwt", { session: false }),
 
 router.get("/:businessId", (req, res, next) => res.send(req.params.business) );
 
+
+router.get("/city/:cityName", (req, res, next) => {
+
+    var _ret = models.Business
+        .getBusinessesByCity(req.params.cityName)
+        .sort({'isSponsored': 'asc'})
+        ;
+
+    if (req.query.status) {
+
+        res.locals.promise =  _ret
+            .where('status')
+            .eq( req.query.status )
+            ;
+        
+    }
+    else {
+    
+        res.locals.promise =  _ret;
+    }
+    
+    return next();
+});
+
+
 router.get("/category/:categoryId", (req, res, next) => {
 
     var _ret = models.Business

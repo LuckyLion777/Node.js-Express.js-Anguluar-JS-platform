@@ -4,6 +4,7 @@ const commentSchema = require("./comment");
 const User = require("./user").User;
 const Language = require("./language").Language;
 
+const _promise = require('bluebird');
 
 const STATUS = {
     PUBLISHED: "PUBLISHED",
@@ -103,7 +104,26 @@ articleSchema.methods.updateArticle = function (articleInfo) {
 
 articleSchema.methods.removeArticle = function () {
 
-    return this.remove();
+    //remove this from user bookmarks
+    return User.find()
+        .then(rows => {
+
+            var actions = [];
+            
+            //remove from bookmarks collection for all users
+            _.forEach(rows, function(model){
+
+                actions.push(model.removeBookmark(this._id));
+            });
+            
+            return _promise.all(actions);
+        })
+        .then(rows => {
+        
+            return this.remove();
+        })
+        ;
+        
 };
 
 articleSchema.statics.getArticles = function () {
@@ -113,8 +133,8 @@ articleSchema.statics.getArticles = function () {
 
 articleSchema.statics.getFeatured = function () {
     
-    return this.getAll()
-        .where(editorPick).eq(true)
+    return this.find()
+        .where('editorPick').eq(true)
         ;
 };
 
@@ -127,7 +147,6 @@ articleSchema.statics.getAll = function () {
             }
         })
         .populate('language')
-        .populate('tags')
         .populate('comments.language')
         .populate({
             path: 'comments.user',
@@ -147,7 +166,6 @@ articleSchema.statics.getModel = function (id) {
             }
         })
         .populate('language')
-        .populate('tags')
         .populate('comments.language')
         .populate({
             path: 'comments.user',
@@ -251,19 +269,3 @@ module.exports = {
     articleSchema: articleSchema,
     Article: mongoose.model("Article", articleSchema)
 };
-
-/*const Tag = require("./tag").Tag;
-articleSchema.add({
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag"
-        validate: {
-            validator: (tagId, done) => {
-                Tag.count({ _id: tagId })
-                //TODO: log
-                    .then(count => done(count), err => done(false, err));
-            },
-            message: "Tag Does Not Exist"
-        }
-    }]
-});*/
