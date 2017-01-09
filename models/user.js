@@ -126,7 +126,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: [ STATUS.ACTIVE, STATUS.PENDING, STATUS.BLOCKED ],
         default: STATUS.PENDING
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 /**
@@ -227,24 +229,31 @@ userSchema.methods.changeUserPass = function (userInfo, params, callback) {
     
 };
 
-userSchema.methods.resetUserPass = function (userInfo, callback) {
-    userInfo.password = Math.floor((Math.random() * 100000));
-
-    var message_content = {
-        "NEW_PASSWORD":userInfo.password
-    };
-
-    hashPassword(userInfo, (err) => {
-        if(err) {
-            return callback(err, null);
-        } else {
-            emailHandler.sendEmail(userInfo.email, message_content,EmailTemplate.type.RESET, userInfo.language.name);
-
-            return callback(null, this.update(userInfo));
 
 
-        }
-    });
+userSchema.statics.resetUserPass = function (userInfo, callback) {
+    
+    emailHandler.sendEmail(userInfo.email, userInfo,EmailTemplate.type.RESET, userInfo.language.name);
+    return callback(null, userInfo);
+
+};
+
+userSchema.statics.changePass = function (userInfo, password, callback)  {
+    
+    hash(password, HASH_SALT_ROUNDS)
+        .then(hashedPassword => {
+        
+            userInfo.password = hashedPassword;
+            userInfo.resetPasswordToken = null;
+            userInfo.resetPasswordExpires = null;
+            return this.update(userInfo);
+        })
+        .then(user => {
+            
+            //emailHandler.sendEmail(user.email, user, EmailTemplate.type.REGISTER, user.language.name);
+            
+            return callback(null, user);
+        });
 };
 
 userSchema.methods.removeUser = function () {

@@ -6,6 +6,8 @@ const jwtGenerator = require("../util/jwtGenerator");
 const upload = require("../config/multer");
 const auth = require("../util/auth/index");
 const _ = require("lodash");
+const crypto = require('crypto');
+const async = require('async');
 
 const resultHandler    = require("../util/resultHandler")[0]; //hack - we want to process returned data with resultHandler
 
@@ -299,6 +301,80 @@ router.put("/:userId/reset", passport.authenticate("jwt", { session: false }),
             return next();
         }
     });
+});
+
+
+
+router.post("/reset", (req, res, next) => {
+      
+    models.User.findOne({email: req.body.email})
+        .populate('language')
+        .then(user => {
+            if (!user) {
+                return next(new Error("User Does Not Exist"));
+            } else {
+                async.waterfall([
+                    function(done) {
+                        crypto.randomBytes(20, function(err, buf) {
+                            var token = buf.toString('hex');
+                            done(err, token);
+                        })
+                    },
+                    function (token) {
+                        user.resetPasswordToken = token;
+                        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+                        user.save();
+
+                        
+                        models.User.resetUserPass(user, (err, user) => {
+                            if(err) {
+                                return next(err);
+                            } else {
+                                return res.send({
+                                    status: STATUS_SUCCESS,
+                                    message: 'Email Sent',
+                                });
+                            }
+                        });
+                    }
+                ]);
+                
+            }
+        }, err => next(err))
+    
+    // Eamail
+    
+    
+    /*req.params.user.resetUserPass(models.User.findOne({email: req.body.email}), (err, user) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.locals.promise = user;
+            return next();
+        }
+    });*/
+});
+
+router.post('/reset/:token', function(req, res, next) {
+  models.User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+      
+    if (!user) {
+      res.send('error Password reset token is invalid or has expired.');
+    }
+      
+    models.User.changePass(user, req.body.password, (err, user) => {
+        
+        if(err) {
+            return next(err);
+        } else {
+            
+            return res.send({
+                status: STATUS_SUCCESS,
+                message: 'Password Changed',
+            });
+        }
+    });
+  });
 });
 
 router.delete("/:userId", passport.authenticate("jwt", { session: false }),

@@ -51,7 +51,7 @@ module.exports = {
     "type": "RESETPASSWORD",
     "original_template": {
       "english": {
-        "body": "Hello & wellcome to wain013.com",
+        "body": "Hello & wellcome to wain013.com/reset/[[resetPasswordToken]] ress wain013.com",
         "title": "wellcome to wain013.com"
       },
       "arabic": {
@@ -61,7 +61,7 @@ module.exports = {
     },
     "template": {
       "english": {
-        "body": "Hello & wellcome to wain013.com",
+        "body": "Hello & wellcome to wain013.com/reset/[[resetPasswordToken]] ress wain013.com",
         "title": "wellcome to wain013.com"
       },
       "arabic": {

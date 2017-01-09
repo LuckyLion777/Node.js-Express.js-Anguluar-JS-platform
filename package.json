@@ -17,10 +17,12 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/mutawa/wain_back-end#readme",
   "dependencies": {
+    "async": "^2.1.4",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "cors": "^2.7.1",
+    "crypto": "0.0.3",
     "csv-parse": "^1.1.7",
     "express": "^4.14.0",
     "fs": "0.0.1-security",
