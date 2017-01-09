@@ -5,7 +5,7 @@ module.exports = {
     "type": "NEWUSER",
     "original_template": {
       "english": {
-        "body": "Hello &amp; wellcome to [[firstname]]wain013.com",
+        "body": "Hello &amp; wellcome to [[firstName]] wain013.com",
         "title": "wellcome to wain013.com"
       },
       "arabic": {
@@ -15,7 +15,7 @@ module.exports = {
     },
     "template": {
       "english": {
-        "body": "Hello &amp; wellcome to [[firstname]]wain013.com",
+        "body": "Hello &amp; wellcome to [[firstName]] wain013.com",
         "title": "wellcome to wain013.com"
       },
       "arabic": {

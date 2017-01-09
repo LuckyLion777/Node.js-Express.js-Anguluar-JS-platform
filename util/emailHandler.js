@@ -43,15 +43,10 @@ module.exports = {
 
                 }
     
-    
-                keys = Object.keys(content);
-
-                for(var i = 0; i < keys.length; i++){
-                    var find = '[['+keys[i]+']]';
-                    find = find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                    var re = new RegExp(find, 'g');
-                    body = body.replace(re, content[keys[i]]);
-                    title = title.replace(re, content[keys[i]]);
+                for (var key in content) {
+                    var find = '[['+key+']]';
+                    body = body.replace(find, content[key]);
+                    title = title.replace(find, content[key]);
                 }
     
                 emailContent = new mail.Content("text/html", body);
