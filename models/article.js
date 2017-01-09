@@ -135,6 +135,20 @@ articleSchema.statics.getFeatured = function () {
     
     return this.find()
         .where('editorPick').eq(true)
+        .populate({
+            path: 'user',
+            populate: {
+                path: 'language'
+            }
+        })
+        .populate('language')
+        .populate('comments.language')
+        .populate({
+            path: 'comments.user',
+            populate: {
+                path: 'language'
+            }
+        })
         ;
 };
 
