@@ -282,18 +282,29 @@ businessSchema.statics.getTopratedBusinesses = function (limit) {
             ]
         )
         .then(result =>  {
-            
             return mongoose.model("_Business", businessSchema)
-                .populate(result, [
-                    {path: 'reviews.user'},
-                    {path:'owner'},
-                    {path:'categories'},
-                    {path:'options'},
-                    {path:'comments.language'},
-                    {path:'comments.user'},
-                ])
-                ;
-            
+            .populate('reviews.user')
+            .populate({
+                path: 'owner',
+                populate: {
+                    path: 'language'
+                }
+            })
+            .populate('reviews')
+            .populate({
+                path: 'categories',
+                populate: {
+                    path: 'parent',
+                    populate: {
+                        path: 'parent'
+                    }
+                }
+            })
+            .populate('language')
+            .populate('options')
+            .populate('comments.language')
+            .populate('comments.user')
+            ;
         })
         ;
 
