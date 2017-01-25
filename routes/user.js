@@ -248,15 +248,25 @@ router.get("/attends", passport.authenticate("jwt", { session: false }), (req, r
 router.post("/attend", passport.authenticate("jwt", { session: false }),
     //auth.can("Attend Event"), //TODO: do we need permissions check here?
     (req, res, next) => {
-        res.locals.promise = req.user.addAttend(req.body);
-        return next(); 
+    
+        models.User.findById(req.user._id)
+        .populate('language')
+        .then(user => {
+            res.locals.promise = user.addAttend(req.body);
+            return next(); 
+        });
 });
 
 router.delete("/attend/:eventId", passport.authenticate("jwt", {session: false}),
     //auth.can("Remove Attend"), //TODO: do we need permissions check here?
     (req, res, next) => {
-        res.locals.promise = req.user.removeAttend(req.params.eventId);
-        return next();
+    
+        models.User.findById(req.user._id)
+        .populate('language')
+        .then(user => {
+            res.locals.promise = req.user.removeAttend(req.params.eventId);
+            return next();
+        });
 });
 
 
