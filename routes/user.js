@@ -96,7 +96,7 @@ router.post("/changepassword", passport.authenticate("jwt", { session: false }),
 
 
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-        models.User.findById(req.user._id).populate('language')
+        models.User.findById(req.user._id).populate('language').populate('bookmarks')
         .then(user => {
             if (!user) {
                 return next(new Error("User Does Not Exist"));
@@ -199,7 +199,10 @@ router.delete("/favorite/:favoriteId", passport.authenticate("jwt", {session: fa
  * Bookmarks
  */
 router.get("/bookmarks", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-    return res.send(req.user.bookmarks);
+    models.User.findById(req.user._id).populate('bookmarks')
+        .then(user => {
+            return res.send(user.bookmarks);
+        });
 });
 
 /** Add bookmarks to current user
