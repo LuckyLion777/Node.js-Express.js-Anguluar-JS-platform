@@ -17,14 +17,14 @@ router.get("/active", (req, res, next) => {
 
 // GET: Number of buisiness users
 router.get("/buisiness", (req, res, next) => {
-    models.User.find().count({userType:"BUSINESSUSER"},function(err, count){
+    models.User.find().count({userType:"Business User"},function(err, count){
 	    res.send({count: count});
 	});
 });
 
 // GET: Number of regular users
 router.get("/regular", (req, res, next) => {
-    models.User.find().count({status:"USER"},function(err, count){
+    models.User.find().count({userType:"User"},function(err, count){
 	    res.send({count: count});
 	});
 });
