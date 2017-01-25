@@ -8,13 +8,13 @@ const socialMediaSchema = new mongoose.Schema({
     },
     url: {
         type: String,
-        required: true,
-        validate: {
+        //required: true,
+        /*validate: {
             validator: website => {
                 return validator.isURL(website);
             },
             message: "Must Be a Valid URL"
-        }
+        }*/
     }
 });
 

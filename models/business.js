@@ -57,13 +57,14 @@ const businessSchema = new mongoose.Schema({
         english: String
     },
     website: {
-        type: String,
-        validate: {
+        type: String
+        //,
+        /*validate: {
             validator: website => {
                 return validator.isURL(website);
             },
             message: "Must Be a Valid URL"
-        }
+        }*/
     },
     socialMedias: [ socialMediaSchema ],
     photos: [ imageSchema ],

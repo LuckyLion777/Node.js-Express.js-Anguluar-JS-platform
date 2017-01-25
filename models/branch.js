@@ -3,27 +3,27 @@ const validator = require("validator");
 
 const branchSchema = new mongoose.Schema({
     phoneNumber: {
-        type: Number,
-        required: true
+        type: String,
+        //required: true
         //TODO: validate
     },
     email: {
         type: String,
-        required: true,
-        validate: {
+        //required: true,
+        /*validate: {
             validator: (email) => {
                 return validator.isEmail(email);
             }
-        }
+        }*/
     },
     location: {
         latitude: {
             type: String,
-            required: true
+            //required: true
         },
         longitude: {
             type: String,
-            required: true
+            //required: true
         },
         city: {
             type: String,

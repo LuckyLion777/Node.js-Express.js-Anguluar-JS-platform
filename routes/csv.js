@@ -8,24 +8,77 @@ const models = require("../models");
 router.post("/", upload.single('csv'), function(req, res, next) {
     var data = [];
     var index = 0;
+    var id = null;
+    var hasBranch = false;
+    var dataRecord = {};
     
     fs.createReadStream(req.file.path)
         .pipe(parse({delimiter: ','}))
         .on('data', function(record) {
             
             if(index != 0){
-                var dataRecord = {
-                    name: {
-                        english: record[0],
-                        arabic: record[1]
-                    },
-                    description: {
-                        english: record[0],
-                        arabic: record[3]
-                    },
-                    website: record[4],
-                    branches: [{
-                        phoneNumber: record[5],
+
+                // TODO: check if is the last record
+                if((record[17] == 0 && hasBranch || record[17] == 0 && !hasBranch) && index !=1) {
+                    var q = models.Business.createBusiness(dataRecord);
+                    data.push({status:q, data:dataRecord});
+                    hasBranch = false;
+                }
+                
+                if (record[17] == 0 && !hasBranch){
+                    dataRecord = {
+                        name: {
+                            english: record[0],
+                            arabic: record[1]
+                        },
+                        description: {
+                            english: record[0],
+                            arabic: record[3]
+                        },
+                        website: record[4],
+                        branches: [{
+                            phoneNumber: record[5].trim(),
+                            email: record[6],
+                            address: {
+                                english: record[7],
+                                arabic: record[8]
+                            },
+                            location: {
+                                latitude: record[9], 
+                                longitude: record[10],
+                                city: record[11]
+                            },
+                            openingHours: {
+                                english: record[12],
+                                arabic: record[13]
+                            }
+                        }], 
+                        socialMedias: [{
+                            type: "Twitter",
+                            url: record[14]
+                        },
+                        {
+                            type: "Facebook",
+                            url: record[15]
+                        },
+                        {
+                            type: "Instagram",
+                            url: record[16]
+                        }
+                        ],
+                        cover: {"filename": record[18]},
+                        photos: [
+                            { "filename": record[19]},
+                            { "filename": record[20]},
+                            { "filename": record[21]},
+                            { "filename": record[22]},
+                        ]
+                    };
+                    
+                }
+                else {
+                    var branch = {
+                        phoneNumber: record[5].trim(),
                         email: record[6],
                         address: {
                             english: record[7],
@@ -40,24 +93,14 @@ router.post("/", upload.single('csv'), function(req, res, next) {
                             english: record[12],
                             arabic: record[13]
                         }
-                    }], 
-                    socialMedias: [{
-                        type: "Twitter",
-                        url: record[14]
-                    },
-                    {
-                        type: "Facbook",
-                        url: record[15]
-                    },
-                    {
-                        type: "Instagram",
-                        url: record[16]
                     }
-                    ]
-                };
+                    dataRecord.branches.push(branch);
+                    
+                    hasBranch = true;
+                }
                 
-                var q = models.Business.createBusiness(dataRecord);
-                data.push({status:q, data:dataRecord});
+                
+  
             }
             index++;
         })
