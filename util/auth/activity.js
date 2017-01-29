@@ -147,8 +147,8 @@ const activities = (activity, req, res, next) => {
             case "Delete Business":
                 new Permission(req, next)
                     .isActive()
-                    .isBusinessUser()
                     .isBusinessOwner()
+                    .isAdmin()
                     .done();
                 break;
 
