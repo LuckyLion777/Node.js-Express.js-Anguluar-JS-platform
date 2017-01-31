@@ -103,6 +103,12 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
                 path: 'language'
             }
         })
+        .populate({
+            path: 'favorites',
+            populate: {
+                path: 'language'
+            }
+        })
         .then(user => {
             if (!user) {
                 return next(new Error("User Does Not Exist"));
