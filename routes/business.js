@@ -7,8 +7,58 @@ const upload = require("../config/multer");
 const resultHandler    = require("../util/resultHandler")[0]; //hack - we want to process returned data with resultHandler
 
 router.get("/", (req, res, next) => {
-    res.locals.promise = models.Business.getBusinesses();
-    return next();
+    //res.locals.promise = models.Business.getBusinesses();
+    //return next();
+    
+    models.Business.aggregate(
+        [
+            { "$project": { 
+                "ratingsAvg": {$avg: "$ratings.rating" }, 
+                "owner": '$owner',
+                "name": '$name',
+                "logo": '$logo',
+                "cover": '$cover',
+                "description": '$description',
+                "website": '$website',
+                "socialMedias": '$socialMedias',
+                "photos": '$photos',
+                "ownershipDocument": '$ownershipDocument',
+                "tags": '$tags',
+                "editorPick": '$editorPick',
+                "isSponsored": '$isSponsored',
+                "branches": '$branches',
+                "categories": '$categories',
+                "options": '$options',
+                "reviews": '$reviews',
+                "status": '$status',
+                "ratings": '$ratings',
+                "collections": '$collections',
+                
+            }}
+        ],
+        function(err,result) {
+            models.Business
+                .populate(result, {"path": "owner", populate: {path: 'language'} },
+                /*.populate(result, {"path": 'reviews.language'})
+                .populate(result, {"path": 'reviews.user'})
+                .populate(result, {"path": 'reviews.user', populate: {path: 'language'}})
+                .populate(result, {
+                    path: 'categories',
+                    populate: {
+                        path: 'parent',
+                        populate: {
+                            path: 'parent'
+                        }
+                    }
+                })
+                .populate(result, 'options')
+                .populate(result, 'comments.language')
+                .populate(result, 'comments.user'),*/
+                function(err, result) {
+                    res.send(result)
+                });
+        }
+    );
 });
 
 //get top 10 bushiness based high rating
