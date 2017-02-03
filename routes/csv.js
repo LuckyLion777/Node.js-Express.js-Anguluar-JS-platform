@@ -66,15 +66,26 @@ router.post("/", upload.single('csv'), function(req, res, next) {
                             url: record[16]
                         }
                         ],
-                        cover: {"filename": record[18]},
+                        
                         photos: [
-                            { "filename": record[19]},
-                            { "filename": record[20]},
-                            { "filename": record[21]},
-                            { "filename": record[22]},
+
                         ]
                     };
-                    
+                    if (record[18] != '') {
+                        dataRecord.cover = {"filename": record[18]}
+                    }
+                    if (record[19] != '') {
+                        dataRecord.photos.push({ "filename": record[19]})
+                    }
+                    if (record[20] != '') {
+                        dataRecord.photos.push({ "filename": record[20]})
+                    }
+                    if (record[21] != '') {
+                        dataRecord.photos.push({ "filename": record[21]})
+                    }
+                    if (record[22] != '') {
+                        dataRecord.photos.push({ "filename": record[22]})
+                    }
                 }
                 else {
                     var branch = {
