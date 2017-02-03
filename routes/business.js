@@ -38,7 +38,7 @@ router.get("/", (req, res, next) => {
         ],
         function(err,result) {
             models.Business
-                .populate(result, {"path": "owner", populate: {path: 'language'} },
+                .populate(result, {"path": "categories", populate: {path: 'perent'} },
                 /*.populate(result, {"path": 'reviews.language'})
                 .populate(result, {"path": 'reviews.user'})
                 .populate(result, {"path": 'reviews.user', populate: {path: 'language'}})
