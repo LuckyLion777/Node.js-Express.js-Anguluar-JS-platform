@@ -7,9 +7,11 @@ const upload = require("../config/multer");
 const resultHandler    = require("../util/resultHandler")[0]; //hack - we want to process returned data with resultHandler
 
 router.get("/", (req, res, next) => {
-    //res.locals.promise = models.Business.getBusinesses();
-    //return next();
-    
+    res.locals.promise = models.Business.getBusinesses();
+    return next();
+});
+
+router.get("/rate", (req, res, next) => {
     models.Business.aggregate(
         [
             { "$project": { 
