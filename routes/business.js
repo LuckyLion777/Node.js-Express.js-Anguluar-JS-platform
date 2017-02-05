@@ -11,6 +11,38 @@ router.get("/", (req, res, next) => {
     return next();
 });
 
+router.post("/search", (req, res, next) => {
+    var se = req.body.name;
+    
+    models.Business.find({$or: [{"name.arabic": {'$regex' : se}}, {"name.english": {'$regex' : se}}]})
+        .populate('reviews.user')
+        .populate({
+            path: 'owner',
+            populate: {
+                path: 'language'
+            }
+        })
+        .populate({
+            path: 'categories',
+            populate: {
+                path: 'parent',
+                populate: {
+                    path: 'parent'
+                }
+            }
+        })
+        .populate('options')
+        .populate('comments.language')
+        .populate('comments.user')
+        .then(business => {
+            if(!business) {
+                return next(new Error("Business Does Not Exist"));
+            } else {
+                res.send(business);
+            }
+        }, err => next(err) );
+});
+    
 router.get("/rate", (req, res, next) => {
     models.Business.aggregate(
         [
