@@ -120,6 +120,12 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
     //;
 });
 
+router.get("/businesses", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+    models.Business.find({owner: req.user._id}, (err, data) => {
+        res.send(data);
+    });
+});
+
 router.put("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
     
     
