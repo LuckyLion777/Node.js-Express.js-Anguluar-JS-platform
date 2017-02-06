@@ -103,9 +103,14 @@ articleSchema.methods.updateArticle = function (articleInfo) {
 };
 
 articleSchema.methods.removeArticle = function () {
-
+    
+    return User.update({}, {$pull: {bookmarks: this._id}})
+        .then(rows => {
+            return this.remove();
+        })
+    
     //remove this from user bookmarks
-    return User.find()
+    /*return User.find()
         .then(rows => {
 
             var actions = [];
@@ -122,7 +127,7 @@ articleSchema.methods.removeArticle = function () {
         
             return this.remove();
         })
-        ;
+        ;*/
         
 };
 

@@ -342,25 +342,32 @@ businessSchema.methods.updateBusiness = function (businessInfo) {
 
 businessSchema.methods.removeBusiness = function () {
     
-    //remove this from user favorites
-    return User.find()
+    return User.update({}, {$pull: {favorites: this._id}})
         .then(rows => {
-
-            var actions = [];
+            return this.remove();
+        })
+    
+    //return this
+    
+    //remove this from user favorites
+    /*return User.find()
+        .then(rows => {
+            rows.model.update({$pull: {favorites: this._id}});
+            //var actions = [];
             
             //remove from favorites collection for all users
             _.forEach(rows, function(model){
-
+                //model.removeFavorite(this._id)
                 actions.push(model.removeFavorite(this._id));
             });
             
-            return _promise.all(actions);
+            //return _promise.all(actions);
         })
         .then(rows => {
         
-            return this.remove();
+            //return this.remove();
         })
-        ;
+        ;*/
 };
 
 
