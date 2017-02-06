@@ -10,9 +10,17 @@ router.post("/", upload.single("photo"),
     auth.can("Upload Photo"),
     (req, res, next) => {
 
-        if(req.file) req.body.photo = { filename: req.file.filename };
-        res.locals.promise = models.Upload.upload(req.body);
-        return next();
+        if(req.file) { 
+            req.body.photo = { filename: req.file.filename };
+            res.locals.promise = models.Upload.upload(req.body);
+            return next();
+        } 
+        else {
+            res.send({
+                status: false,
+                message: "photo field is require"
+            })
+        }
 });
 
 
