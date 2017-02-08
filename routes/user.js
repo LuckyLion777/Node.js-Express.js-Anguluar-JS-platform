@@ -191,17 +191,7 @@ router.delete("/tag/:tagId", passport.authenticate("jwt", { session: false }),
  * Favorites
  */
 router.get("/favorites", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-    return res.send(req.user.favorites);
-});
-
-/*
-/** Add favorites to current user
- * @param JSON favorites - business ids
- */
-router.post("/favorite", passport.authenticate("jwt", { session: false }),
-    //auth.can("Add Favorite"), //TODO: do we need permissions check here?
-    (req, res, next) => {
-        models.User.findById(req.user._id)
+    models.User.findById(req.user._id)
         .populate({
             path: 'favorites',
             populate: {
@@ -211,6 +201,17 @@ router.post("/favorite", passport.authenticate("jwt", { session: false }),
         .then(user => {
             return res.send(user.favorites);
         });
+});
+
+/*
+/** Add favorites to current user
+ * @param JSON favorites - business ids
+ */
+router.post("/favorite", passport.authenticate("jwt", { session: false }),
+    //auth.can("Add Favorite"), //TODO: do we need permissions check here?
+    (req, res, next) => {
+        res.locals.promise = req.user.addFavorite(req.body);
+        return next();
 });
 
 router.delete("/favorite/:favoriteId", passport.authenticate("jwt", {session: false}),
