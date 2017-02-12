@@ -34,11 +34,11 @@ const eventSchema = new mongoose.Schema({
     title: {
         arabic: {
             type: String,
-            required: false
+            required: true
         },
         english: {
             type: String,
-            required: false
+            required: true
         }
     },
     description: {
@@ -170,9 +170,13 @@ eventSchema.methods.updateEvent = function (eventInfo) {
 
 eventSchema.methods.removeEvent = function () {
     
+    return User.update({}, {$pull: {attends: this._id}})
+        .then(rows => {
+            return this.remove();
+        })
     
     //remove this from user attends colletion
-    return User.find()
+    /*return User.find()
         .then(rows => {
 
             var actions = [];
@@ -189,7 +193,7 @@ eventSchema.methods.removeEvent = function () {
         
             return this.remove();
         })
-        ;
+        ;*/
 };
 
 eventSchema.statics.getModel = function (id) {
