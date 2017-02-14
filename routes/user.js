@@ -106,7 +106,13 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
         .populate({
             path: 'favorites',
             populate: {
-                path: 'language'
+                path: 'options'
+            }
+        })
+        .populate({
+            path: 'favorites',
+            populate: {
+                path: 'categories'
             }
         })
         .then(user => {
