@@ -101,16 +101,22 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res, nex
             path: 'bookmarks',
             populate: {
                 path: 'language'
-            },
+            }
+        }).populate({
+            path: 'bookmarks',
             populate: {
                 path: 'user',
                 populate: {
                     path: 'language'
                 }
-            },
+            }
+        }).populate({
+            path: 'bookmarks',
             populate: {
                 path: 'comments.language'
-            },
+            }
+        }).populate({
+            path: 'bookmarks',
             populate: {
                 path: 'comments.user',
                 populate: {
