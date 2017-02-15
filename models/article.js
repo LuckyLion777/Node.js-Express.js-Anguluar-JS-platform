@@ -69,11 +69,11 @@ const articleSchema = new mongoose.Schema({
     }],
     title: {
         type: String,
-        required: false
+        required: true
     },
     body: {
         type: String,
-        required: false
+        required: true
     },
     status: {
         type: String,

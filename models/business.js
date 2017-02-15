@@ -53,8 +53,14 @@ const businessSchema = new mongoose.Schema({
     logo: imageSchema,
     cover: imageSchema,
     description: {
-        arabic: String,
-        english: String
+        arabic: {
+            type: String,
+            required: true
+        },
+        english: {
+            type: String,
+            required: true
+        }
     },
     website: {
         type: String

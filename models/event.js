@@ -44,37 +44,37 @@ const eventSchema = new mongoose.Schema({
     description: {
         arabic: {
             type: String,
-            required: false
+            required: true
         },
         english: {
             type: String,
-            required: false
+            required: true
         }
     },
     host: {
         type: String,
-        required: false
+        required: true
     },
     startDate: {
         type: Date,
-        required: false
+        required: true
     },
     endDate: {
         type: Date,
-        required: false
+        required: true
     },
     location: {
         latitude: {
             type: String,
-            required: false
+            required: true
         },
         longitude: {
             type: String,
-            required: false
+            required: true
         },
         city: {
             type: String,
-            required: false
+            required: true
         }
 
     },
