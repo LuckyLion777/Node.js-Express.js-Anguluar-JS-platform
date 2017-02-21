@@ -25,7 +25,7 @@ const HASH_SALT_ROUNDS = 10;
 
 const STATUS = {
     ACTIVE: "ACTIVE",
-    PENDING: "PENDING",
+    /*HOLD: "HOLD",*/
     BLOCKED: "BLOCKED"
 };
 
@@ -35,27 +35,31 @@ const USER = {
     USER: "User"
 };
 
-
 const userSchema = new mongoose.Schema({
-    
+
     //validators & field scheme will be added later
     //TODO: why it is needed to describe it after module.export?
-    //TODO: when adding a single tag, for example - validator is fired few times. Why?
-    
-    tags: [],
-    attends: [],
-    bookmarks: [],
-    favorites: [],
-    
-    
-    subscription: {
+    //TODO: when adding a single tag, for example - validator is fired
+few times. Why?
+
+    firstName: {
         type: String,
         required: true
     },
-    userType: {
+    lastName: {
         type: String,
-        enum: [ USER.ADMIN, USER.BUSINESSUSER, USER.USER ],
-        default: USER.USER
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+        unique: false,
+        select: false
     },
     email: {
         type: String,
@@ -68,47 +72,56 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    password: {
+    phone: {
         type: String,
         required: true,
-        unique: false,
-        select: false
     },
-    username: {
+    userType: {
         type: String,
-        required: true,
-        unique: true
+        enum: [ USER.ADMIN, USER.SUPERUSER, USER.VALIDATOR ],
+        default: USER.VALIDATOR
     },
+    status: {
+        type: String,
+        enum: [ STATUS.ACTIVE, /*STATUS.HOLD,*/ STATUS.BLOCKED ],
+        /*default: STATUS.HOLD*/
+        default: STATUS.ACTIVE
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     avatar: imageSchema,
-    language: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Language",
-        required: true,
-        validate: {
-            validator: (languageId, done) => {
-                Language.count({ _id: languageId})
-                    .then(count => {
-                        return done(count);
-                    }, err => {
-                        //TODO: log
-                        return done(false, err);
-                    });
-            },
-            message: "Language Does Not Exist"
-        }
-    },
-    firstName: {
+    /**
+     * What we need is what we have above
+     */
+
+/*    tags: [],
+    attends: [],
+
+    bookmarks: [],
+    favorites: [],
+    subscription: {
         type: String,
         required: true
     },
-    lastName: {
-        type: String,
-        required: true
-    },
-    birthDate: {
-        type: Date,
-        required: true
-    },
+
+     language: {
+     type: mongoose.Schema.Types.ObjectId,
+     ref: "language",
+     //required: true,
+     validate: {
+     validator: (languageId, done) => {
+     Language.count({ _id: languageId})
+     .then(count => {
+     return done(count);
+     }, err => {
+     //TODO: log
+     return done(false, err);
+     });
+     },
+     message: "Language Does Not Exist"
+     }
+     },
+
     location: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Location",
@@ -120,17 +133,12 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    biography: String,
-    phone: String,
-    status: {
-        type: String,
-        enum: [ STATUS.ACTIVE, STATUS.PENDING, STATUS.BLOCKED ],
-        default: STATUS.PENDING
-    },
-    resetPasswordToken: String,
-    resetPasswordExpires: Date
+     birthDate: {
+     type: Date,
+     required: true
+     },
+    biography: String*/
 });
-
 /**
  * Create new user
  * @param Object userInfo

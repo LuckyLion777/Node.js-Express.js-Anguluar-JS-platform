@@ -2,53 +2,48 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 const branchSchema = new mongoose.Schema({
-    phoneNumber: {
-        type: String,
-        //required: true
-        //TODO: validate
-    },
-    email: {
-        type: String,
-        //required: true,
-        /*validate: {
-            validator: (email) => {
-                return validator.isEmail(email);
-            }
-        }*/
-    },
-    location: {
-        latitude: {
-            type: String,
-            //required: true
-        },
-        longitude: {
-            type: String,
-            //required: true
-        },
-        city: {
-            type: String,
-            //required: true
-        }
 
-    },
+    //validators & field scheme will be added later
+    //TODO: why it is needed to describe it after module.export?
+    //TODO: when adding a single tag, for example - validator is firedfew times. Why?
 
     address: {
-        arabic: {
-            type: String
-        },
-        english: {
-            type: String
-        }
+        type: String,
+        required: true,
     },
-
-    openingHours: {
-        arabic: {
-            type: String
-        },
-        english: {
-            type: String
-        }
+    openingDate: {
+        type: Timestamp,
+    },
+    softOpeningDate: {
+        type: Timestamp,
+    },
+    isOpenSoon: {
+        type: Boolean,
+    },
+    PostImage: {
+        type: imageSchema,
+    },
+    PostDesc: {
+        type: String,
+    },
+    PostExpireDate: {
+        type: Timestamp,
+    },
+    placeID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "place",
+        required: true,
+    },
+    workingHours:{
+        Sunday:[ workingHoursSchema ],
+        Monday:[ workingHoursSchema ],
+        Tuesday:[ workingHoursSchema ],
+        Wednesday:[ workingHoursSchema ],
+        Thursday:[ workingHoursSchema ],
+        Friday:[ workingHoursSchema ],
+        Saturday:[ workingHoursSchema ],
     }
+
 });
 
 module.exports = branchSchema;

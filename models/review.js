@@ -4,46 +4,57 @@ const User = require("./user").User;
 const Language = require("./language").Language;
 
 const reviewSchema = new mongoose.Schema({
-    user: {
+
+    //validators & field scheme will be added later
+    //TODO: why it is needed to describe it after module.export?
+    //TODO: when adding a single tag, for example - validator is fired few times. Why?
+
+    placeID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "place",
         required: true,
-        validate: {
-            validator: (userId, done) => {
-                User.count({ _id: userId })
-                    .then(count => {
-                        return done(count)
-                    }, err => {
-                        //TODO: log
-                        return done(false, err)
-                    })
-            },
-            message: "User Does Not Exist"
-        }
     },
-    body: {
+    customerID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "customer",
+        required: true,
+    },
+    ratingGeneral: {
+        type: Integer,
+        enum: [ 0,1,2,3,4,5],
+        default: 0,
+        required: true,
+    },
+    ratingPrice: {
+        type: Integer,
+        enum: [ 1,2,3,4,5],
+        default: 0,
+    },
+    ratingFood: {
+        type: Integer,
+        enum: [ 1,2,3,4,5],
+        default: 0,
+    },
+    ratingService: {
+        type: Integer,
+        enum: [ 1,2,3,4,5],
+        default: 0,
+    },
+    ratingClean: {
+        type: Integer,
+        enum: [ 1,2,3,4,5],
+        default: 0,
+    },
+    writtenReview: {
         type: String,
         required: true,
     },
-    language: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Language",
+    time: {
+        type: Timestamp,
         required: true,
-        validate: {
-            validator: (languageId, done) => {
-                Language.count({ _id: languageId})
-                    .then(count => {
-                        return done(count);
-                    }, err => {
-                        //TODO: log
-                        return done(false, err);
-                    })
-            },
-            message: "Language Does Not Exist"
-        }
     },
-    comments: [ commentSchema ]
-}, { timestamps: true });
+
+});
 
 reviewSchema.methods.addComment = function (commentInfo) {
     this.comments.addToSet(commentInfo);
