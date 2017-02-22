@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const DAY = {
     SUNDAY: "Sunday",
     MONDAY: "Monday",
@@ -12,19 +14,17 @@ const workingHoursSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
     //TODO: why it is needed to describe it after module.export?
-    //TODO: when adding a single tag, for example - validator is fired
-few times. Why?
+    //TODO: when adding a single tag, for example - validator is firedfew times. Why?
 
     startTime: {
-        type: Timestamp,
+        type: Date,
     },
     endTime: {
-        type: Timestamp,
+        type: Date,
     },
     Day: {
         type: String,
-        enum: [ DAY.SUNDAY, DAY.MONDAY, DAY.TUESDAY, DAY.WEDNESDAY,
-DAY.THURSDAY, DAY.FRIDAY, DAY.SATURDAY ],
+        enum: [ DAY.SUNDAY, DAY.MONDAY, DAY.TUESDAY, DAY.WEDNESDAY, DAY.THURSDAY, DAY.FRIDAY, DAY.SATURDAY ],
     },
     branchID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,3 +33,5 @@ DAY.THURSDAY, DAY.FRIDAY, DAY.SATURDAY ],
     },
 
 });
+
+module.exports = workingHoursSchema;

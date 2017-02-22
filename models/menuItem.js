@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const menuItemSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
@@ -11,17 +14,17 @@ const menuItemSchema = new mongoose.Schema({
         type: String,
     },
     price: {
-        type: Double,
+        type: Number,
     },
     image: {
         type: imageSchema,
     },
     viewNo: {
-        type: Integer,
+        type: Number,
         //arr: [0],
     },
     sharesNo: {
-        type: Integer,
+        type: Number,
         //arr: [0],
     },
     menuID: {
@@ -31,3 +34,5 @@ const menuItemSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = menuItemSchema;

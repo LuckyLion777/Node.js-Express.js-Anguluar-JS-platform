@@ -132,7 +132,6 @@ articleSchema.methods.removeArticle = function () {
 };
 
 articleSchema.statics.getArticles = function () {
-    
     return this.getAll();
 };
 

@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const STATUS = {
     ACTIVE: "ACTIVE",
     BLOCKED: "BLOCKED"
@@ -43,7 +46,8 @@ const agentSchema = new mongoose.Schema({
         type: imageSchema,
     },
     joiningDate: {
-        type: Timestamp,
+        type: Date,
+        default: new Date()
     },
     password: {
         type: String,
@@ -55,3 +59,10 @@ const agentSchema = new mongoose.Schema({
     resetPasswordExpires: Date,
 
 });
+
+module.exports = {
+    agentSchema: agentSchema,
+    Agent: mongoose.model("Agent", agentSchema),
+    STATUS: STATUS,
+    //USERTYPE: USER
+};

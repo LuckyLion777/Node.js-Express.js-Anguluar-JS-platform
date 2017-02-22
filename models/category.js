@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const categorySchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
@@ -14,3 +16,5 @@ const categorySchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = categorySchema;

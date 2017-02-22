@@ -1,6 +1,17 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+const _promise = require('bluebird');
+const bcrypt = require("bcryptjs");
+const validator = require("validator");
+
+const compare = _promise.promisify(bcrypt.compare);
+const hash = _promise.promisify(bcrypt.hash);
+
+const HASH_SALT_ROUNDS = 10;
+
 const STATUS = {
     ACTIVE: "ACTIVE",
-//    HOLD: "HOLD",
+    HOLD: "HOLD",
     BLOCKED: "BLOCKED"
 };
 
@@ -39,12 +50,90 @@ const customerSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: [ STATUS.ACTIVE, STATUS.BLOCKED ],
-        /!*default: STATUS.HOLD*!/
+        // default: STATUS.HOLD
         default: STATUS.ACTIVE
     },
-    joiningDate: Date,
+    joiningDate: {
+        type : Date,
+        default: new Date()
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     avatar: imageSchema,
 
 });
+
+customerSchema.statics.createCustomer = function (customerInfo, callback)  {
+
+    hash(customerInfo.password, HASH_SALT_ROUNDS)
+        .then(hashedPassword => {
+
+            customerInfo.password = hashedPassword;
+            return this.create(customerInfo);
+        })
+        .then(newCustomer => {
+            if(!newCustomer) {
+                throw ("Error creating customer");
+            }
+            console.log("here 1 : ");
+            return this.findById(newCustomer._id);
+        })
+        // .then(user => {
+        //
+        //     emailHandler.sendEmail(user.email, user, EmailTemplate.type.REGISTER, user.language.name);
+        //
+        //     return callback(null, user);
+        // })
+        .catch(err => {
+            console.log("here 3");
+            return callback(err.message, null);
+        })
+    ;
+
+};
+
+// customerSchema.statics.getCustomers = function () {
+//     return this.getAll();
+// };
+
+/**
+ * @param object customerInfo
+ * @returns promise
+ */
+customerSchema.statics.getAll = function () {
+    return this.find();
+};
+
+/**
+ * @param object customerId
+ * @returns Query
+ */
+
+customerSchema.statics.getCustomer = function (customerId) {
+    return this.findById(customerId);
+};
+
+
+/**
+ * @param object customerInfo
+ * @returns promise
+ */
+customerSchema.methods.updateCustomer = function (customerInfo) {
+    return this.update(customerInfo);
+};
+
+/**
+ * @param object customerInfo
+ * @returns promise
+ */
+customerSchema.methods.removeCustomer = function () {
+    return this.remove();
+};
+
+
+module.exports = {
+    customerSchema: customerSchema,
+    Customer: mongoose.model("Customer", customerSchema),
+    STATUS: STATUS,
+    //USERTYPE: USER
+};

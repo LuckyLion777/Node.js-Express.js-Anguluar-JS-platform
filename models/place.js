@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const STATUS = {
     ACTIVE: "ACTIVE",
     HOLD: "HOLD",
@@ -47,11 +50,11 @@ const placeSchema = new mongoose.Schema({
         type: Boolean,
     },
     viewNo: {
-        type: Integer,
+        type: Number,
         //arr: [0],
     },
     sharesNo: {
-        type: Integer,
+        type: Number,
         //arr: [0],
     },
     agentID: {
@@ -61,3 +64,5 @@ const placeSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = placeSchema;

@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const taggedCustomerSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
@@ -16,3 +19,5 @@ const taggedCustomerSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = taggedCustomerSchema;

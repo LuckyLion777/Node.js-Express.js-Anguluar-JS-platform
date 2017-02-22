@@ -1,5 +1,6 @@
 module.exports = {
     User: require("./user").User,
+    Customer: require("./customer").Customer,
     Article: require("./article").Article,
     Language: require("./language").Language,
     Business: require("./business").Business,
@@ -15,5 +16,24 @@ module.exports = {
     Tag: require("./tag").Tag,
     SystemVariable: require("./systemVariable").SystemVariable,
     EmailTemplate: require("./emailTemplate").EmailTemplate,
-    Contact: require("./contact").Contact
+    Contact: require("./contact").Contact,
+    addOn: require("./addOn"),
+    agent: require("./agent"),
+    category: require("./category"),
+    favorite: require("./favorite"),
+    favoriteItem: require("./favoriteItem"),
+    featured: require("./featured"),
+    follow: require("./follow"),
+    gathering: require("./gathering"),
+    menu: require("./menu"),
+    menuItem: require("./menuItem"),
+    offer: require("./offer"),
+    place: require("./place"),
+    plan: require("./plan"),
+    review: require("./review"),
+    subscription: require("./subscription"),
+    taggedCustomer: require("./taggedCustomer"),
+    user: require("./user"),
+    visit: require("./visit"),
+    workingHours: require("./workingHours")
 };

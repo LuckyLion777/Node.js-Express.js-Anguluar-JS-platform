@@ -1,5 +1,5 @@
 {
-  "name": "wain_back-end",
+  "name": "Adventie_back-end",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -11,11 +11,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://alshehry@bitbucket.org/mutawa/wain_back-end.git"
+    "url": "git+https://mohammed-a@bitbucket.org/khaleel/Adventie_back-end.git"
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/mutawa/wain_back-end#readme",
+  "homepage": "https://bitbucket.org/khaleel/Adventie_back-end#readme",
   "dependencies": {
     "async": "^2.1.4",
     "bcryptjs": "^2.3.0",

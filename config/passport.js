@@ -42,4 +42,43 @@ passport.use(new JwtStrategy({
             })
     }));
 
+passport.use('customer',new LocalStrategy({ usernameField: "email", passwordField: "password" }, (email, password, done) => {
+    models.Customer.findOne({ email: email }).select("+password")
+        .then( (customer) => {
+            if (!customer) {
+                return done(null, false);
+            } else {
+                bcrypt.compare(password, customer.password, (err, res) => {
+                    if (err) { console.log("1"); return done(err); }
+                    if(res) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false);
+                    }
+                });
+            }
+        }, (err) => {
+            console.log("2");
+            return done(err);
+        });
+}));
+
+passport.use('customer',new JwtStrategy({
+        secretOrKey: process.env.SERVER_KEY,
+        jwtFromRequest: ExtractJwt.fromAuthHeader()
+    },
+    (credentials, done) => {
+        models.Customer.findById(credentials.customerId)
+            .then( user => {
+                if(!user) {
+                    return done(null, false);
+                } else {
+                    return done(null, user);
+                }
+            }, err => {
+                console.log("3");
+                return done(err);
+            })
+    }));
+
 module.exports = passport;
