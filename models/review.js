@@ -20,28 +20,28 @@ const reviewSchema = new mongoose.Schema({
         required: true,
     },
     ratingGeneral: {
-        type: Integer,
+        type: Number,
         enum: [ 0,1,2,3,4,5],
         default: 0,
         required: true,
     },
     ratingPrice: {
-        type: Integer,
+        type: Number,
         enum: [ 1,2,3,4,5],
         default: 0,
     },
     ratingFood: {
-        type: Integer,
+        type: Number,
         enum: [ 1,2,3,4,5],
         default: 0,
     },
     ratingService: {
-        type: Integer,
+        type: Number,
         enum: [ 1,2,3,4,5],
         default: 0,
     },
     ratingClean: {
-        type: Integer,
+        type: Number,
         enum: [ 1,2,3,4,5],
         default: 0,
     },
@@ -50,7 +50,7 @@ const reviewSchema = new mongoose.Schema({
         required: true,
     },
     time: {
-        type: Timestamp,
+        type: Date,
         required: true,
     },
 

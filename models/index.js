@@ -1,5 +1,6 @@
 module.exports = {
     User: require("./user").User,
+    Customer: require("./customer").Customer,
     Article: require("./article").Article,
     Language: require("./language").Language,
     Business: require("./business").Business,

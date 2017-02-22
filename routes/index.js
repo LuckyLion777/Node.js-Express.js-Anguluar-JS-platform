@@ -4,6 +4,7 @@ router.use("/", require("./common"));
 router.use("/csv", require("./csv"));
 
 router.use("/user", require("./user"));
+router.use("/customer", require("./customer"));
 router.use("/signup", require("./signup"));
 
 router.use("/analysis", require("./analysis"));

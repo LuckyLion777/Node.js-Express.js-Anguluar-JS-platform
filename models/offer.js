@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const offerSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
@@ -33,3 +36,5 @@ const offerSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = offerSchema;

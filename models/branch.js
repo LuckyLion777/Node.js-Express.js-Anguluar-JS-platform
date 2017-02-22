@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const imageSchema = require("./image");
+const workingHoursSchema = require("./workingHours");
 
 const branchSchema = new mongoose.Schema({
 
@@ -12,10 +14,10 @@ const branchSchema = new mongoose.Schema({
         required: true,
     },
     openingDate: {
-        type: Timestamp,
+        type: Date,
     },
     softOpeningDate: {
-        type: Timestamp,
+        type: Date,
     },
     isOpenSoon: {
         type: Boolean,
@@ -27,7 +29,7 @@ const branchSchema = new mongoose.Schema({
         type: String,
     },
     PostExpireDate: {
-        type: Timestamp,
+        type: Date,
     },
     placeID: {
         type: mongoose.Schema.Types.ObjectId,

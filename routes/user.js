@@ -37,7 +37,6 @@ router.post("/", (req, res, next) => {
                 status: STATUS_SUCCESS,
                 message: 'User created',
                 data: _.omit(user.toObject(), "password")
-                
             });
         }
     });

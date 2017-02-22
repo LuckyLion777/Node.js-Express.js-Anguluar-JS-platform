@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const STATUS = {
     ACTIVE: "ACTIVE",
     BLOCKED: "BLOCKED"
@@ -7,8 +9,7 @@ const planSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
     //TODO: why it is needed to describe it after module.export?
-    //TODO: when adding a single tag, for example - validator is fired
-few times. Why?
+    //TODO: when adding a single tag, for example - validator is firedfew times. Why?
 
     name: {
         type: String,
@@ -35,3 +36,5 @@ few times. Why?
     },
 
 });
+
+module.exports = planSchema;

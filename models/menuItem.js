@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const menuItemSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
@@ -31,3 +33,5 @@ const menuItemSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = menuItemSchema;

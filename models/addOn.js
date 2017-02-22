@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const TYPE = {
     FEATURED: "Featured",
     OFFER: "Offer"
@@ -32,3 +34,5 @@ const addOnSchema = new mongoose.Schema({
     required: true,
 
 });
+
+module.exports = addOnSchema;

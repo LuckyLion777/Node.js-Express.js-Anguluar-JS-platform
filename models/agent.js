@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const STATUS = {
     ACTIVE: "ACTIVE",
     BLOCKED: "BLOCKED"
@@ -55,3 +58,5 @@ const agentSchema = new mongoose.Schema({
     resetPasswordExpires: Date,
 
 });
+
+module.exports = agentSchema;

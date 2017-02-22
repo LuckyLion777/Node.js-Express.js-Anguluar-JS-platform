@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+const imageSchema = require("./image");
+
 const STATUS = {
     ACTIVE: "ACTIVE",
     HOLD: "HOLD",
@@ -61,3 +64,5 @@ const placeSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = placeSchema;

@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const STATUS = {
     ACTIVE: "ACTIVE",
     HOLD: "HOLD",
@@ -9,8 +11,7 @@ const subscriptionSchema = new mongoose.Schema({
 
     //validators & field scheme will be added later
     //TODO: why it is needed to describe it after module.export?
-    //TODO: when adding a single tag, for example - validator is fired
-few times. Why?
+    //TODO: when adding a single tag, for example - validator is fired few times. Why?
 
     startDate: {
         type: Timestamp,
@@ -38,3 +39,5 @@ few times. Why?
     },
 
 });
+
+module.exports = subscriptionSchema;
