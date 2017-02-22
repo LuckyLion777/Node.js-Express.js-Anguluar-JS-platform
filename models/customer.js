@@ -75,8 +75,7 @@ customerSchema.statics.createCustomer = function (customerInfo, callback)  {
             if(!newCustomer) {
                 throw ("Error creating customer");
             }
-            console.log("here 1 : ");
-            return this.findById(newCustomer._id);
+            callback(null, newCustomer);
         })
         // .then(user => {
         //
