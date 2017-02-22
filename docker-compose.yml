@@ -6,7 +6,7 @@ wain:
       - "27017:27017"
     volumes:
     - ./:/wain
-    command: service mongod start && node_modules/.bin/nodemon --delay 1 --watch models --watch routes --watch util -L /usr/local/bin/npm start
+    command: service mongod start && nodemon--delay 1 --watch models --watch routes --watch util -L npm start
     environment:
       - NODE_ENV=dev
       - PATH=/wain/node_modules/.bin:$PATH
