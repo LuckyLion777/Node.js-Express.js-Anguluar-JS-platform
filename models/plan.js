@@ -18,16 +18,16 @@ const planSchema = new mongoose.Schema({
         type: String,
     },
     period: {
-        type: Integer,
+        type: Number,
     },
     price: {
-        type: Double,
+        type: Number,
     },
     startDate: {
-        type: Timestamp,
+        type: Date,
     },
     expireDate: {
-        type: Timestamp,
+        type: Date,
     },
     Status: {
         type: String,

@@ -14,10 +14,10 @@ const offerSchema = new mongoose.Schema({
         type: imageSchema,
     },
     date: {
-        type: Timestamp,
+        type: Date,
     },
     expireDate: {
-        type: Timestamp,
+        type: Date,
     },
     placeID: {
         type: mongoose.Schema.Types.ObjectId,

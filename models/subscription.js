@@ -14,13 +14,13 @@ const subscriptionSchema = new mongoose.Schema({
     //TODO: when adding a single tag, for example - validator is fired few times. Why?
 
     startDate: {
-        type: Timestamp,
+        type: Date,
     },
     expireDate: {
-        type: Timestamp,
+        type: Date  ,
     },
     price: {
-        type: Double,
+        type: Number,
     },
     Status: {
         type: String,

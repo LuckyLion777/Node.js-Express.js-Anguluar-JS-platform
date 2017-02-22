@@ -10,7 +10,7 @@ const menuSchema = new mongoose.Schema({
         type: String,
     },
     sort: {
-        type: Integer,
+        type: Number,
     },
     placeID: {
         type: mongoose.Schema.Types.ObjectId,

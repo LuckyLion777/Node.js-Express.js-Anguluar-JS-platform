@@ -7,10 +7,6 @@ const TYPE = {
 
 const addOnSchema = new mongoose.Schema({
 
-    //validators & field scheme will be added later
-    //TODO: why it is needed to describe it after module.export?
-    //TODO: when adding a single tag, for example - validator is fired few times. Why?
-
     name: {
         type: String,
     },
@@ -18,21 +14,32 @@ const addOnSchema = new mongoose.Schema({
         type: String,
     },
     period: {
-        type: Integer,
+        type: Number,
     },
     price: {
-        type: Double,
+        type: Number,
     },
     startDate: {
-        type: Timestamp,
+        type: Date,
     },
     endDate: {
-        type: Timestamp,
+        type: Date,
     },
-    type: String,
-    enum: [ TYPE.FEATURED, TYPE.OFFER ],
-    required: true,
+    type:{
+        type: String,
+        enum: [ TYPE.FEATURED, TYPE.OFFER ],
+        required: true,
+    },
+    isActive:{
+        type:Boolean,
+        default : false
+    }
+
 
 });
-
-module.exports = addOnSchema;
+module.exports = {
+    addOnSchema: addOnSchema,
+    AddOn: mongoose.model("AddOn", addOnSchema),
+    TYPE: TYPE,
+    //USERTYPE: USER
+};

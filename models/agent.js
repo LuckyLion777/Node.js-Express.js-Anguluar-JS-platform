@@ -46,7 +46,8 @@ const agentSchema = new mongoose.Schema({
         type: imageSchema,
     },
     joiningDate: {
-        type: Timestamp,
+        type: Date,
+        default: new Date()
     },
     password: {
         type: String,
@@ -59,4 +60,9 @@ const agentSchema = new mongoose.Schema({
 
 });
 
-module.exports = agentSchema;
+module.exports = {
+    agentSchema: agentSchema,
+    Agent: mongoose.model("Agent", agentSchema),
+    STATUS: STATUS,
+    //USERTYPE: USER
+};

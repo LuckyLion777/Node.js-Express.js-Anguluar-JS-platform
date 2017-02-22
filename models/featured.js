@@ -13,13 +13,13 @@ const featuredSchema = new mongoose.Schema({
     //TODO: when adding a single tag, for example - validator is firedfew times. Why?
 
     date: {
-        type: Timestamp,
+        type: Date,
     },
     expireDate: {
-        type: Timestamp,
+        type: Date,
     },
     price: {
-        type: Double,
+        type: Number,
     },
     Status: {
         type: String,
@@ -38,5 +38,12 @@ const featuredSchema = new mongoose.Schema({
     },
 
 });
+
+module.exports = {
+    featuredSchema: featuredSchema,
+    Featured: mongoose.model("Featured", featuredSchema),
+    STATUS: STATUS,
+    //USERTYPE: USER
+};
 
 module.exports = featuredSchema;

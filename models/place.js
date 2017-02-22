@@ -50,11 +50,11 @@ const placeSchema = new mongoose.Schema({
         type: Boolean,
     },
     viewNo: {
-        type: Integer,
+        type: Number,
         //arr: [0],
     },
     sharesNo: {
-        type: Integer,
+        type: Number,
         //arr: [0],
     },
     agentID: {
