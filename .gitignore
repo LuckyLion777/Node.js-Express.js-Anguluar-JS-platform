@@ -11,3 +11,4 @@ npm-debug.log
 .docker/
 .env
 public/
+adventie_front-end/
